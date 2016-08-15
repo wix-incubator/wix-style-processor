@@ -58,42 +58,25 @@ export default class Replacer{
         return _.flatten(tokens);
     }
 
+    tokenizeDirectionVars(tokens) {
+        // Split all text tokens to old fashioned WixRest CSS (extracting all "_@BLAHBLAH", START, END, ...)
+        _.each(tokens, (token) => {
+            if (token.type === 'text') {
+                token.text = _.compact(token.text.split(/(STARTSIGN|ENDSIGN|DIR|END|START)/g));
+            }
+        });
+    }
+
     update({css}) {
         let token = {
             type: 'text',
             text: css
         };
 
-        const defaults = this.loadDefaultVariables(token);
+        this.defaults = this.loadDefaultVariables(token);
         token = this.removeDefaultCssVars(token);
-
-        // Split for CssVar usage as well
-        const tokens = this.tokenizeDynamicValues(token.text);
-
-        // Split all text tokens to old fashioned WixRest CSS (extracting all "_@BLAHBLAH", START, END, ...)
-        _.each(tokens, (token) => {
-            if (token.type !== 'text') return token;
-
-            token.text = _.compact(token.text.split(/"(_@[^"]*?)"|(STARTSIGN|ENDSIGN|DIR|END|START)/g));
-
-            token.text = _.map(token.text, t => {
-                let m = null;
-                if (m = t.match(/_@colors\[(.*)\]\s*\|\|\s*(.*)/)) {
-                    defaults.colors[m[1]] = m[2];
-                    return {type:'color', key:m[1]};
-                } else if (m = t.match(/_@fonts\[(.*)\]\s*\|\|\s*(.*)/)) {
-                    defaults.fonts[m[1]] = m[2];
-                    return {type:'font', key:m[1]};
-                } else {
-                    return t;
-                }
-            });
-
-            return token;
-        });
-
-        this.tokens = tokens;
-        this.defaults = defaults;
+        this.tokens = this.tokenizeDynamicValues(token.text);
+        this.tokenizeDirectionVars(this.tokens);
     }
 
     get({colors, fonts, numbers, isRtl}) {

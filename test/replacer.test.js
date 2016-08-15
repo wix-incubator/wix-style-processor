@@ -3,32 +3,6 @@ import Replacer from '../src/replacer.js';
 
 describe('replacer', () => {
 
-    it('Parses and fills old replacer color data ("_@colors[XXXX] || YYYY")', () => {
-        const replacer = new Replacer({css:'.hello { color: "_@colors[wixorders.orderingcheckoutpopupbackground] || get(color-2)"; }'});
-        expect(replacer.defaults.colors).to.deep.equal({'wixorders.orderingcheckoutpopupbackground':'get(color-2)'});
-
-        const result = replacer.get({colors:{'wixorders.orderingcheckoutpopupbackground':'#777777'}});
-        expect(result).to.equal('.hello { color: #777777; }');
-    });
-
-    it('Parses and fills old replacer font data ("_@fonts[XXXX] || YYYY")', () => {
-        const fonts = {
-            'base': {style:'s1', variant:'v1', weight:'w1', size:'1em', lineHeight:'2em', family:['basefamily']},
-            'wixorders.orderingcheckoutpopupbackground': {style:'ssss', variant:'vvvv', weight:'bolder', size:'12em', lineHeight:'24em', family:['family1', 'family2', 'base']}
-        }
-
-        // Old style tokens
-        const replacer = new Replacer({css:'.hello { font: "_@fonts[wixorders.orderingcheckoutpopupbackground] || preset(Body-L)"; }'});
-        expect(replacer.defaults.fonts).to.deep.equal({'wixorders.orderingcheckoutpopupbackground':'preset(Body-L)'});
-        const result = replacer.get({fonts});
-        expect(result).to.equal('.hello { font: ssss vvvv bolder 12em/24em family1,family2,basefamily; }');
-
-        // New style tokens
-        const replacer2 = new Replacer({css:'.hello { font: "_@fonts[wixorders.orderingcheckoutpopupbackground] || preset(Body-L)"; }'});
-        const result2 = replacer2.get({fonts});
-        expect(result2).to.equal('.hello { font: ssss vvvv bolder 12em/24em family1,family2,basefamily; }');
-    });
-
     it('Parses and fills START, END, STARTSIGN, ENDSIGN, DIR', () => {
         const replacer = new Replacer({css:'.hello { START:2px; END:5px; top:STARTSIGN5px; bottom:ENDSIGN5px; direction:DIR; }'});
 
