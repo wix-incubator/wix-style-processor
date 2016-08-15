@@ -9,7 +9,11 @@ export default class Replacer{
     }
 
     update({css}) {
-        let tokens = splitWss(css);
+        let tokens = [{
+            type: 'text',
+            text: css
+        }];
+
         const defaults = {colors:{}, fonts:{}};
 
         // Support CssVars style definition as well
@@ -144,69 +148,6 @@ export default class Replacer{
         return css.join('');
     }
 };
-
-function splitWss(str) {
-
-    // Split by '-wss' markers
-    var parts = str.split(/(-wss.*?);/);
-
-    let fieldId = null;
-
-    // Run on all parts
-    return _.compact(_.map(parts, part => {
-
-        // if part does not start with -wss, its a simple string
-        if (!part.startsWith('-wss')) {
-            if (part.trim()) {
-                return {
-                    type:'text',
-                    text:part
-                }
-            } else {
-                return null;
-            }
-        }
-
-        let [attribute, value] = part.split(':');
-
-        attribute = attribute.trim();
-        value = value.trim();
-
-        switch (attribute) {
-            case '-wss':
-                fieldId = value;
-                return null;
-
-            case '-wss-background-color':
-            case '-wss-background':
-            case '-wss-color':
-            case '-wss-border-color':
-            case '-wss-border-top-color':
-            case '-wss-border-left-color':
-            case '-wss-border-bottom-color':
-            case '-wss-border-right-color':
-            case '-wss-stroke':
-            case '-wss-fill':
-                return {
-                    type: attribute.substr(5),
-                    fieldId: `${fieldId}.${attribute.substr(5).replace(/-/g, '')}`,
-                    default: value
-                };
-
-            case '-wss-font':
-                const params = parseCssFont(value);
-                return {
-                    type: 'font',
-                    base: _.omit(params, 'family'),
-                    fieldId: `${fieldId}.font`,
-                    default: params.family
-                }
-
-            default:
-                console.warn('Unknown wss attribute', attribute);
-        }
-    }));
-}
 
 function fontJoin(token, fonts) {
 

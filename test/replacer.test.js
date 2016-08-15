@@ -11,18 +11,6 @@ describe('replacer', () => {
         expect(result).to.equal('.hello { color: #777777; }');
     });
 
-    it('Parses and fills new replacer color data ("-wss-color")', () => {
-        const replacer = new Replacer({css:'.hello { -wss:Test; -wss-color: color-8; }'});
-
-        // Test default
-        const result = replacer.get({colors:{'color-8':'#222222'}});
-        expect(result).to.equal('.hello { color: #222222; }');
-
-        // Test specific
-        const result2 = replacer.get({colors:{'color-8':'#222222', 'Test.color':'#333333'}});
-        expect(result2).to.equal('.hello { color: #333333; }');
-    });
-
     it('Parses and fills old replacer font data ("_@fonts[XXXX] || YYYY")', () => {
         const fonts = {
             'base': {style:'s1', variant:'v1', weight:'w1', size:'1em', lineHeight:'2em', family:['basefamily']},
@@ -39,17 +27,6 @@ describe('replacer', () => {
         const replacer2 = new Replacer({css:'.hello { font: "_@fonts[wixorders.orderingcheckoutpopupbackground] || preset(Body-L)"; }'});
         const result2 = replacer2.get({fonts});
         expect(result2).to.equal('.hello { font: ssss vvvv bolder 12em/24em family1,family2,basefamily; }');
-    });
-
-    it('Parses and fills new replacer font data ("-wss-font")', () => {
-        const fonts = {
-            'base': {style:'s1', variant:'v1', weight:'w1', size:'1em', lineHeight:'2em', family:['basefamily']},
-            'wixorders.orderingcheckoutpopupbackground': {style:'ssss', variant:'vvvv', weight:'bolder', size:'12em', lineHeight:'24em', family:['family1', 'family2', 'base']}
-        }
-
-        const replacer = new Replacer({css:'.hello { -wss:Test; -wss-font: light 2em/9em wixorders.orderingcheckoutpopupbackground; }'});
-        const result = replacer.get({fonts});
-        expect(result).to.equal('.hello { font: normal light normal 2em/9em family1,family2,basefamily; }');
     });
 
     it('Parses and fills START, END, STARTSIGN, ENDSIGN, DIR', () => {
