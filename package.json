@@ -8,8 +8,8 @@
   },
   "scripts": {
     "test": "mocha --require babel-register \"test/**/*.test.js\"",
-    "compile": "babel -d dist/ src/",
-    "dev": "babel-watch -d dist/ src/"
+    "compile": "rm -rf dist/ && babel -d dist/ src/",
+    "bundle": "webpack"
   },
   "author": "",
   "license": "ISC",
