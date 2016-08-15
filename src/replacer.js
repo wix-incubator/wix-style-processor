@@ -3,7 +3,7 @@ import parseCssFont from 'parse-css-font';
 import WixStylesColorUtils from './wixStylesColorUtils.js';
 import WixStylesFontUtils from './wixStylesFontUtils.js';
 
-class Css {
+export default class Replacer{
     constructor({css}) {
         this.update({css});
     }
@@ -241,5 +241,3 @@ function toFontCssValue(value) {
 
     return cssValue;
 }
-
-export default Css;

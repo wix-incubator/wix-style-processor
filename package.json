@@ -2,26 +2,33 @@
   "name": "wss",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "dist/index.js",
   "directories": {
     "test": "test"
   },
   "scripts": {
-    "test": "mocha --require babel-register \"test/**/*.test.js\""
+    "test": "mocha --require babel-register \"test/**/*.test.js\"",
+    "compile": "babel -d dist/ src/",
+    "dev": "babel-watch -d dist/ src/"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
     "color": "^0.11.3",
+    "jquery": "^3.1.0",
     "lodash": "^4.15.0",
     "mocha": "^3.0.2",
-    "parse-css-font": "^2.0.2"
+    "parse-css-font": "^2.0.2",
+    "q": "^1.4.1"
   },
   "devDependencies": {
+    "babel": "^6.5.2",
+    "babel-cli": "^6.11.4",
     "babel-plugin-transform-runtime": "^6.12.0",
     "babel-preset-es2015": "^6.13.2",
     "babel-preset-stage-2": "^6.13.0",
     "babel-register": "^6.11.6",
+    "babel-watch": "^2.0.2",
     "chai": "^3.5.0"
   }
 }
