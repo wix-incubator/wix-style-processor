@@ -2,15 +2,58 @@ import {expect} from 'chai';
 import Replacer from '../src/replacer.js';
 
 describe('replacer', () => {
+    let replacer;
+
+    function getReplacer(css) {
+        css = css.split('\n').map(t => t.trim()).join(' ');
+        return new Replacer({css});
+    }
 
     it('Parses and fills START, END, STARTSIGN, ENDSIGN, DIR', () => {
-        const replacer = new Replacer({css:'.hello { START:2px; END:5px; top:STARTSIGN5px; bottom:ENDSIGN5px; direction:DIR; }'});
+        const replacer = getReplacer('.hello { START:2px; END:5px; top:STARTSIGN5px; bottom:ENDSIGN5px; direction:DIR; }');
 
         const result = replacer.get({isRtl:false});
         expect(result).to.equal('.hello { left:2px; right:5px; top:-5px; bottom:5px; direction:ltr; }');
 
         const result2 = replacer.get({isRtl:true});
         expect(result2).to.equal('.hello { right:2px; left:5px; top:5px; bottom:-5px; direction:rtl; }');
+    });
+
+    it('should support assigning dynamic colors', () => {
+        let css = `.foo {
+              background-color: "get(color-1)";
+              color: "var(color-1)";
+              color: "opacity(color-1, 0.5)";
+              color: "join(opacity(color-1, 1), opacity(color-1, 1))";
+        }`;
+
+        const replacer = getReplacer(css);
+
+        let result = replacer.get({colors: {
+            'color-1': '#FF0000'
+        }});
+
+        expect(result).to.equal('.foo { background-color: #FF0000; color: #FF0000; color: rgba(255, 0, 0, 0.5); color: rgb(255, 0, 0); }');
+    });
+
+    it('should support default values', () => {
+        let css = `.foo {
+            --color-bar: "get(color-1)";
+        }
+        .bar {
+            color: "var(color-bar)";
+        }`;
+
+        const replacer = getReplacer(css);
+
+        const result = replacer.get({
+            colors: {
+                'color-1': '#FF0000',
+                'bar': '#777777'
+            }
+        });
+
+        expect(result).to.equal('.foo {  } .bar { color: #777777; }');
     });
 
     it('Parses css var type declarations for defaults and values', () => {
