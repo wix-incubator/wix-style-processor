@@ -8,35 +8,40 @@ export default class Replacer{
         this.update({css});
     }
 
-    update({css}) {
-        let tokens = [{
-            type: 'text',
-            text: css
-        }];
-
+    loadDefaultVariables(token) {
         const defaults = {colors:{}, fonts:{}};
 
         // Support CssVars style definition as well
-        tokens = _.map(tokens, (token) => {
-            if (token.type !== 'text') return token;
-
-            const regex = /--(\S*?)\s*:\s*\"([^"]*?)\"/g;
-            let match = null;
-            while (match = regex.exec(token.text)) {
-                let name = match[1];
-                const value = match[2];
-                if (name.startsWith('color-')) {
-                    defaults.colors[name.substr(6)] = value;
-                } else if (name.startsWith('font-')) {
-                    defaults.fonts[name.substr(5)] = value;
-                }
+        const regex = /--(\S*?)\s*:\s*\"([^"]*?)\"/g;
+        let match = null;
+        while (match = regex.exec(token.text)) {
+            let name = match[1];
+            const value = match[2];
+            if (name.startsWith('color-')) {
+                defaults.colors[name.substr(6)] = value;
+            } else if (name.startsWith('font-')) {
+                defaults.fonts[name.substr(5)] = value;
             }
+        }
 
-            return {type:'text', text:token.text.replace(/--(\S*)\s*:\s*\"([^"]*?)\";/g, "")};
-        });
+        return defaults;
+    }
+
+    removeDefaultCssVars(token) {
+        return {type:'text', text: token.text.replace(/--(\S*)\s*:\s*\"([^"]*?)\";/g, "")};
+    }
+
+    update({css}) {
+        let token = {
+            type: 'text',
+            text: css
+        };
+
+        const defaults = this.loadDefaultVariables(token);
+        token = this.removeDefaultCssVars(token);
 
         // Split for CssVar usage as well
-        tokens = _.flatten(_.map(tokens, (token) => {
+        const tokens = _.flatten(_.map([token], (token) => {
 
             if (token.type !== 'text') return [token];
 
