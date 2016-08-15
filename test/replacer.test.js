@@ -27,4 +27,17 @@ describe('replacer', () => {
         const result = replacer.get({colors:{'bbb':'#777777', 'color-2':'#111111'}, fonts, numbers:{'ccc':10}});
         expect(result).to.equal('.hello {   color:#777777; font:ssss vvvv bolder 12em/24em family1,family2,family3; background-color:rgba(119, 119, 119, 0.5); font:s1 v1 w1 1em/2em basefamily; margin-top:10;}');
     });
+
+    it('should support joining 2 colors', () => {
+        //Given
+        const replacer = new Replacer({css: 'background-color: "join(opacity(color-8, 1), opacity(#00FF00, 1))";'});
+
+        //When
+        const result = replacer.get({colors: {
+            'color-8': '#FF0000'
+        }});
+
+        //Then
+        expect(result).to.equal('background-color: rgb(255, 255, 0);');
+    });
 });
