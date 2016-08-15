@@ -8,13 +8,13 @@ export default class Replacer{
         this.update({css});
     }
 
-    loadDefaultVariables(token) {
+    loadDefaultVariables(css) {
         const defaults = {colors:{}, fonts:{}};
 
         // Support CssVars style definition as well
         const regex = /--(\S*?)\s*:\s*\"([^"]*?)\"/g;
         let match = null;
-        while (match = regex.exec(token.text)) {
+        while (match = regex.exec(css)) {
             let name = match[1];
             const value = match[2];
             if (name.startsWith('color-')) {
@@ -27,8 +27,8 @@ export default class Replacer{
         return defaults;
     }
 
-    removeDefaultCssVars(token) {
-        return {type:'text', text: token.text.replace(/--(\S*)\s*:\s*\"([^"]*?)\";/g, "")};
+    removeDefaultCssVars(css) {
+        return css.replace(/--(\S*)\s*:\s*\"([^"]*?)\";/g, "");
     }
 
     tokenizeDynamicValues(css) {
@@ -68,14 +68,9 @@ export default class Replacer{
     }
 
     update({css}) {
-        let token = {
-            type: 'text',
-            text: css
-        };
-
-        this.defaults = this.loadDefaultVariables(token);
-        token = this.removeDefaultCssVars(token);
-        this.tokens = this.tokenizeDynamicValues(token.text);
+        this.defaults = this.loadDefaultVariables(css);
+        css = this.removeDefaultCssVars(css);
+        this.tokens = this.tokenizeDynamicValues(css);
         this.tokenizeDirectionVars(this.tokens);
     }
 
