@@ -31,6 +31,33 @@ export default class Replacer{
         return {type:'text', text: token.text.replace(/--(\S*)\s*:\s*\"([^"]*?)\";/g, "")};
     }
 
+    tokenizeDynamicValues(css) {
+        const parts = _.compact(css.split(/"([var|join|get|opacity|preset|font][^"]*?)"/g));
+
+        let tokens = _.map(parts, (part) => {
+
+            if (part.startsWith('var(')) {
+                part = part.substr(4, part.length - 5);
+
+                if (part.indexOf('color-') > -1) {
+                    return {type:'css-var-color', value:part};
+                } else if (part.indexOf('font-') > -1) {
+                    return {type:'css-var-font', value:part};
+                } else if (part.indexOf('number-') > -1) {
+                    return {type:'css-var-number', value:part};
+                }
+            } else if (part.match(/^(join|get|opacity)\(/)) {
+                return {type:'css-var-color', value:part};
+            } else if (part.match(/^(preset|font)\(/)) {
+                return {type:'css-var-font', value:part};
+            }
+
+            return {type:'text', text: part};
+        });
+
+        return _.flatten(tokens);
+    }
+
     update({css}) {
         let token = {
             type: 'text',
@@ -41,34 +68,7 @@ export default class Replacer{
         token = this.removeDefaultCssVars(token);
 
         // Split for CssVar usage as well
-        const tokens = _.flatten(_.map([token], (token) => {
-
-            if (token.type !== 'text') return [token];
-
-            const parts = _.compact(token.text.split(/"([var|join|get|opacity|preset|font][^"]*?)"/g));
-
-            return _.map(parts, (p) => {
-
-                if (p.startsWith('var(')) {
-                    p = p.substr(4, p.length - 5);
-
-                    if (p.indexOf('color-') > -1) {
-                        return {type:'css-var-color', value:p};
-                    } else if (p.indexOf('font-') > -1) {
-                        return {type:'css-var-font', value:p};
-                    } else if (p.indexOf('number-') > -1) {
-                        return {type:'css-var-number', value:p};
-                    }
-                } else if (p.match(/^(join|get|opacity)\(/)) {
-                    return {type:'css-var-color', value:p};
-                } else if (p.match(/^(preset|font)\(/)) {
-                    return {type:'css-var-font', value:p};
-                }
-
-
-                return {type:'text', text:p};
-            });
-        }));
+        const tokens = this.tokenizeDynamicValues(token.text);
 
         // Split all text tokens to old fashioned WixRest CSS (extracting all "_@BLAHBLAH", START, END, ...)
         _.each(tokens, (token) => {
