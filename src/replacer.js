@@ -78,53 +78,64 @@ export default class Replacer{
         const css = [];
 
         _.each(this.tokens, token => {
+            switch (token.type) {
+                case 'text': {
+                    _.each(token.text, text => {
 
-            if (token.type === 'text') {
+                        if (text.type === 'color') {
+                            css.push(colors[text.key]);
+                        } else if (text.type === 'font') {
+                            const font = fonts[text.key] || {};
+                            const value = fontJoin({base:font, default:font.family}, fonts);
+                            const cssValue = toFontCssValue(value);
+                            css.push(cssValue);
+                        } else if (text === 'STARTSIGN') {
+                            css.push(isRtl ? '' : '-');
+                        } else if (text === 'ENDSIGN') {
+                            css.push(isRtl ? '-' : '');
+                        } else if (text === 'START') {
+                            css.push(isRtl ? 'right' : 'left');
+                        } else if (text === 'END') {
+                            css.push(isRtl ? 'left' : 'right');
+                        } else if (text === 'DIR') {
+                            css.push(isRtl ? 'rtl' : 'ltr');
+                        } else {
+                            css.push(text);
+                        }
+                    });
+                }
+                break;
 
-                _.each(token.text, text => {
+                case 'css-var-color': {
+                    const value = WixStylesColorUtils.calcValueFromString({str:token.value, values:colors});
+                    css.push(value);
+                }
+                break;
 
-                    if (text.type === 'color') {
-                        css.push(colors[text.key]);
-                    } else if (text.type === 'font') {
-                        const font = fonts[text.key] || {};
-                        const value = fontJoin({base:font, default:font.family}, fonts);
-                        const cssValue = toFontCssValue(value);
-                        css.push(cssValue);
-                    } else if (text === 'STARTSIGN') {
-                        css.push(isRtl ? '' : '-');
-                    } else if (text === 'ENDSIGN') {
-                        css.push(isRtl ? '-' : '');
-                    } else if (text === 'START') {
-                        css.push(isRtl ? 'right' : 'left');
-                    } else if (text === 'END') {
-                        css.push(isRtl ? 'left' : 'right');
-                    } else if (text === 'DIR') {
-                        css.push(isRtl ? 'rtl' : 'ltr');
-                    } else {
-                        css.push(text);
-                    }
-                });
+                case 'css-var-font': {
+                    const value = WixStylesFontUtils.calcValueFromString({str:token.value, values:fonts});
+                    const cssValue = toFontCssValue(value);
+                    css.push(cssValue);
+                }
+                break;
 
-            } else if (token.type === 'css-var-color') {
-                const value = WixStylesColorUtils.calcValueFromString({str:token.value, values:colors});
-                css.push(value);
+                case 'css-var-number': {
+                    const value = numbers[token.value.replace(/^number-/, '')];
+                    css.push(value);
+                }
+                break;
 
-            } else if (token.type === 'css-var-font') {
-                const value = WixStylesFontUtils.calcValueFromString({str:token.value, values:fonts});
-                const cssValue = toFontCssValue(value);
-                css.push(cssValue);
+                case 'font': {
+                    const value = fontJoin(token, fonts);
+                    const cssValue = toFontCssValue(value);
+                    css.push(`${token.type}: ${cssValue};`);
+                }
+                break;
 
-            } else if (token.type === 'css-var-number') {
-                const value = numbers[token.value.replace(/^number-/, '')];
-                css.push(value);
-
-            } else if (token.type === 'font') {
-                const value = fontJoin(token, fonts);
-                const cssValue = toFontCssValue(value);
-                css.push(`${token.type}: ${cssValue};`);
-            } else {
-                const value = colors[token.fieldId] || WixStylesColorUtils.calcValueFromString({str:token.default, values:colors});
-                css.push(`${token.type}: ${value};`);
+                default: {
+                    const value = colors[token.fieldId] || WixStylesColorUtils.calcValueFromString({str:token.default, values:colors});
+                    css.push(`${token.type}: ${value};`);
+                }
             }
         });
 
