@@ -2,47 +2,6 @@ import _ from "lodash";
 import Color from 'color';
 
 let WixColorUtils = {
-
-    publicEmbeddedToSiteColors({colors}) {
-
-        const NAME_TO_REFERENCE = {
-            "color_1":"white/black",
-            "color_2":"black/white",
-            "color_3":"primery-1",
-            "color_4":"primery-2",
-            "color_5":"primery-3",
-            "color_11":"color-1",
-            "color_12":"color-2",
-            "color_13":"color-3",
-            "color_14":"color-4",
-            "color_15":"color-5",
-            "color_16":"color-6",
-            "color_17":"color-7",
-            "color_18":"color-8",
-            "color_19":"color-9",
-            "color_20":"color-10",
-            "color_21":"color-11",
-            "color_22":"color-12",
-            "color_23":"color-13",
-            "color_24":"color-14",
-            "color_25":"color-15",
-            "color_26":"color-16",
-            "color_27":"color-17",
-            "color_28":"color-18",
-            "color_29":"color-19",
-            "color_30":"color-20",
-            "color_31":"color-21",
-            "color_32":"color-22",
-            "color_33":"color-23",
-            "color_34":"color-24",
-            "color_35":"color-25"
-        };
-
-        return _.map(colors, (value, name) => {
-            return {name, reference:NAME_TO_REFERENCE[name], value};
-        });
-    },
-
     getFullColorStyles({colorStyles, siteColors, defaults}) {
         let ret = {};
 

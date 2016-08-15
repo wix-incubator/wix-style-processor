@@ -2,30 +2,6 @@ import _ from "lodash";
 import parseCssFont from 'parse-css-font';
 
 const WixFontUtils = {
-
-    publicEmbeddedToSiteTextsPresets({fonts}) {
-
-        const NAME_TO_REFERENCE = {
-            'font_7':'Body-L',
-            'font_8':'Body-M',
-            'font_9':'Body-S',
-            'font_10':'Body-XS',
-            'font_4':'Heading-L',
-            'font_5':'Heading-M',
-            'font_6':'Heading-S',
-            'font_3':'Heading-XL',
-            'font_1':'Menu',
-            'font_2':'Page-title',
-            'font_0':'Title',
-        };
-
-        const presets = {};
-
-        _.each(fonts, (value, name) => presets[NAME_TO_REFERENCE[name]] = {value : value.replace(/\s*{color_.*}/, ''), editorKey:name});
-
-        return presets;
-    },
-
     getFullFontStyles({fontStyles, siteTextPresets, defaults, isHebrew}) {
         let ret = {};
 
