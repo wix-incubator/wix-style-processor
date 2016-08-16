@@ -15,18 +15,7 @@ let WixColorUtils = {
         ret['black'] = '#000000';
 
         // Basic template colors
-        _.each(['color-1',
-            'color-2',
-            'color-3',
-            'color-4',
-            'color-5',
-            'color-6',
-            'color-7',
-            'color-8',
-            'color-9',
-            'color-10',
-            'color-18'
-        ], (key) => ret[key] = (fixedColorStyles[key] || {}).value ||_.find(siteColors, (c) => c.reference == key).value);
+        _.each(siteColors, ({reference, value}) => ret[reference] = (fixedColorStyles[reference] || {}).value || value);
 
         // Fix for a bug in a very specific template
         ret.background = (fixedColorStyles.background || {}).value || (ret['color-1'] === '#FFFFFF') && (ret['color-2'] === '#F4EFE1') ? ret['color-2'] : ret['color-1'];
