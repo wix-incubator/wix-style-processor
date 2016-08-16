@@ -33,7 +33,7 @@ export default class WixMock {
             updateStyleParams: () => {
                 const cb = this.queue.shift();
                 if (cb) {
-                    cb(this.styleParams);
+                    return cb();
                 }
             }
         };
