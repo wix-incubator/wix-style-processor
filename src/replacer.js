@@ -32,7 +32,7 @@ export default class Replacer{
     }
 
     tokenizeDynamicValues(css) {
-        const parts = _.compact(css.split(/"([var|join|get|opacity|preset|font][^"]*?)"/g));
+        const parts = _.compact(css.split(/"((?:var|join|get|opacity|preset|font)[^"]*?)"/g));
 
         let tokens = _.map(parts, (part) => {
 
