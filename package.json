@@ -9,6 +9,7 @@
   "scripts": {
     "test": "mocha --require babel-register \"test/**/*.test.js\"",
     "compile": "rm -rf dist/ && babel -d dist/ src/",
+    "build": ":",
     "bundle": "webpack",
     "release": "wnpm-release"
   },
@@ -27,6 +28,7 @@
     "q": "^1.4.1"
   },
   "devDependencies": {
+    "@wix/wnpm-ci": "*",
     "babel-cli": "^6.11.4",
     "babel-core": "^6.13.2",
     "babel-loader": "^6.2.4",
