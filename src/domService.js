@@ -3,10 +3,8 @@ import _ from 'lodash';
 
 export default {
     extractStyles() {
-        const css = _.map($('style'),
-                          style => $(style).text().split('\n').join(' ')).join(' ');
-
-        return css;
+        return _.map($('style'),
+            style => $(style).text().split('\n').join(' ')).join(' ');
     },
 
     overrideStyles(css) {

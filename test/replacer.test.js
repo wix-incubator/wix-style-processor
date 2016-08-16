@@ -42,6 +42,9 @@ describe('replacer', () => {
         }
         .bar {
             color: "var(color-bar)";
+            color: "get(bar)";
+            color: "opacity(bar, 1)";
+            color: "join(opacity(bar, 0.5), opacity(bar,0.5))";
         }`;
 
         const replacer = getReplacer(css);
@@ -53,7 +56,7 @@ describe('replacer', () => {
             }
         });
 
-        expect(result).to.equal('.foo {  } .bar { color: #777777; }');
+        expect(result).to.equal('.foo {  } .bar { color: #777777; color: #777777; color: rgb(119, 119, 119); color: rgb(120, 120, 120); }');
     });
 
     it('Parses css var type declarations for defaults and values', () => {
@@ -61,7 +64,7 @@ describe('replacer', () => {
             'Body-L': {style:'s1', variant:'v1', weight:'w1', size:'1em', lineHeight:'2em', family:['basefamily']},
             'base': {style:'s1', variant:'v1', weight:'w1', size:'1em', lineHeight:'2em', family:['basefamily']},
             'aaa.333': {style:'ssss', variant:'vvvv', weight:'bolder', size:'12em', lineHeight:'24em', family:['family1', 'family2', 'family3']}
-        }
+        };
 
         const replacer = new Replacer({css:'.hello { --color-bbb: "get(color-2)"; --font-aaa.333: "preset(Body-L)"; color:"var(color-bbb)"; font:"var(font-aaa.333)"; background-color:"opacity(color-bbb, 0.5)"; font:"preset(Body-L)"; margin-top:"var(number-ccc)";}'});
         expect(replacer.defaults.colors).to.deep.equal({'bbb':'get(color-2)'});

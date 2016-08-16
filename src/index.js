@@ -1,4 +1,3 @@
-import Q from 'q';
 import StyleUpdater from './styleUpdater';
 import domService from './domService';
 import WixService from './wixService';

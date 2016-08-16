@@ -1,6 +1,7 @@
 import wixStylesColorUtils from './wixStylesColorUtils';
 import wixStylesFontUtils from './wixStylesFontUtils';
 import Replacer from './replacer';
+import _ from 'lodash';
 
 export default (wixService, domService) => ({
     update() {
@@ -16,7 +17,10 @@ export default (wixService, domService) => ({
             const fonts = wixStylesFontUtils.getFullFontStyles({fontStyles, siteTextPresets, defaults: replacer.defaults.fonts, isHebrew: false}) || {};
 
             updateStyles({colors, fonts, numbers, replacer, domService});
-        }).catch(err => console.error("failed updating styles", err));
+        }).catch(err => {
+            console.error("failed updating styles", err);
+            throw err;
+        });
     }
 });
 
