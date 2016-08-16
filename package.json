@@ -37,6 +37,7 @@
     "babel-register": "^6.11.6",
     "babel-watch": "^2.0.2",
     "chai": "^3.5.0",
+    "sinon": "^1.17.5",
     "webpack": "^1.13.1",
     "wnpm-ci": "^6.1.200"
   }
