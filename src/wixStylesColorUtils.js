@@ -28,7 +28,7 @@ let WixColorUtils = {
             } catch (e) {
                 if (e === 'unparsed') {
                     if (tried) {
-                        throw(new Error(`[WixStylesColorUtils] Using unkown key as default for ${key}.`));
+                        throw(new Error(`[WixStylesColorUtils] Using unknown key as default for ${key}.`));
                     }
                     working.push([key, defString, true]);
                 } else {

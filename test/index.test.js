@@ -8,7 +8,7 @@ describe('Index', () => {
         driver = new Driver();
 
         driver
-            .given.css('.foo {color: "color(color-1)"}')
+            .given.css('.foo {--bar: "color(color-1)";color: "color(--bar)"}')
             .defaultSiteColors()
             .styleParams({
                 numbers: {},
