@@ -15,16 +15,22 @@ function parse(css, {colors, fonts, numbers, isRtl}) {
             const isSingleMatch = /^(\w*)\(([^()]+)\)$/.test(value);
 
             if (isSingleMatch) {
-                console.log('single match for', value)
                 return singleEval(match[1], match[2]);
             }
 
-            console.log('m1', match[1], 'm2', match[2])
             return singleEval(match[1], recursiveEval(match[2]));
+        } else if (value.indexOf(',') !== -1) {
+            return evalParameterList(value);
         } else {
-            console.log('v', value)
             return value;
         }
+    }
+
+    function evalParameterList(value) {
+        let params = processParams(value);
+        let evaledParams = _.map(params, p => recursiveEval(p));
+        let stringifiedEvaledParams = evaledParams.join(',');
+        return stringifiedEvaledParams;
     }
 
     function singleEval(transformation, rawParams) {

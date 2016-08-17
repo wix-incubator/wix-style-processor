@@ -49,7 +49,7 @@ describe.only('postcssParser', () => {
         });
     });
 
-    it.skip('composed opacity', done => {
+    it('composed opacity', done => {
         let css = `.foo {
             rule1: opacity(get(color-1), 0.5);
         }`;
@@ -66,6 +66,28 @@ describe.only('postcssParser', () => {
         run(css, opts, result => {
             let cssResult = trimCss(result.css);
             assert.equal(cssResult, '.foo { rule1: rgba(255, 0, 0, 0.5); }');
+            done();
+        });
+    });
+
+    it.skip('join', done => {
+        let css = `.foo {
+            rule1: join(color-1, 1, color-2, 1);
+        }`;
+
+        let opts = {
+            colors: {
+                'color-1': '#FF0000',
+                'color-2': '#00FF00'
+            },
+            fonts: {},
+            numbers: {},
+            isRtl: false
+        };
+
+        run(css, opts, result => {
+            let cssResult = trimCss(result.css);
+            assert.equal(cssResult, '.foo { rule1: rgba(255, 255, 0, 1); }');
             done();
         });
     });
