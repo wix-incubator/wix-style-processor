@@ -12,6 +12,7 @@
   },
   "scripts": {
     "test": "mocha --require babel-register \"test/**/*.test.js\"",
+    "test:watch": "mocha --watch --require babel-register \"test/**/*.test.js\"",
     "compile": "rm -rf dist/ && babel -d dist/ src/",
     "build": ":",
     "bundle": "webpack",
@@ -29,7 +30,8 @@
     "lodash": "^4.15.0",
     "mocha": "^3.0.2",
     "parse-css-font": "^2.0.2",
-    "q": "^1.4.1"
+    "q": "^1.4.1",
+    "shady-css-parser": "0.0.8"
   },
   "devDependencies": {
     "@wix/wnpm-ci": "*",

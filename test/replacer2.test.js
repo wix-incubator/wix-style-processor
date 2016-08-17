@@ -1,9 +1,11 @@
-import postcss from 'postcss';
-import parser from '../src/postcssParser';
+import _ from 'lodash';
+import replacer from '../src/replacer2';
 import {assert} from 'chai';
+import {Parser, Stringifier} from 'shady-css-parser';
 
-describe.only('postcssParser', () => {
-    it('get transformation', done => {
+describe.only('replacer2', () => {
+
+    it('get transformation', () => {
         let css = `.foo {
             rule: bar;
             rule3: baz;
@@ -21,14 +23,11 @@ describe.only('postcssParser', () => {
             isRtl: false
         };
 
-        run(css, opts, result => {
-            let cssResult = trimCss(result.css);
-            assert.equal(cssResult, '.foo { rule: bar; rule3: baz; rule4: #FF0000; rule5: #FF0000; }');
-            done();
-        });
+        let cssResult = run(css, opts);
+        assert.equal(cssResult, '.foo{rule:bar;rule3:baz;rule4:#FF0000;rule5:#FF0000;}');
     });
 
-    it('opacity transformation', done => {
+    it('opacity transformation', () => {
         let css = `.foo {
             rule1: opacity(color-1, 0.5);
         }`;
@@ -42,14 +41,11 @@ describe.only('postcssParser', () => {
             isRtl: false
         };
 
-        run(css, opts, result => {
-            let cssResult = trimCss(result.css);
-            assert.equal(cssResult, '.foo { rule1: rgba(255, 0, 0, 0.5); }');
-            done();
-        });
+        let cssResult = run(css, opts);
+        assert.equal(cssResult, '.foo{rule1:rgba(255, 0, 0, 0.5);}');
     });
 
-    it('composed opacity', done => {
+    it('composed opacity', () => {
         let css = `.foo {
             rule1: opacity(get(color-1), 0.5);
         }`;
@@ -63,16 +59,13 @@ describe.only('postcssParser', () => {
             isRtl: false
         };
 
-        run(css, opts, result => {
-            let cssResult = trimCss(result.css);
-            assert.equal(cssResult, '.foo { rule1: rgba(255, 0, 0, 0.5); }');
-            done();
-        });
+        let cssResult = run(css, opts);
+        assert.equal(cssResult, '.foo{rule1:rgba(255, 0, 0, 0.5);}');
     });
 
-    it.skip('join', done => {
+    it('join', () => {
         let css = `.foo {
-            rule1: join(color-1, 1, color-2, 1);
+            rule1: join(get(color-1), 1, get(color-2), 1);
         }`;
 
         let opts = {
@@ -85,19 +78,13 @@ describe.only('postcssParser', () => {
             isRtl: false
         };
 
-        run(css, opts, result => {
-            let cssResult = trimCss(result.css);
-            assert.equal(cssResult, '.foo { rule1: rgba(255, 255, 0, 1); }');
-            done();
-        });
+        let cssResult = run(css, opts);
+        assert.equal(cssResult, '.foo{rule1:rgb(255, 255, 0);}');
     });
 });
 
 function run(css, opts, assert) {
-    return postcss([parser(opts)])
-            .process(css)
-            .then(assert)
-            .catch(err => {setTimeout(() => { throw err; });});
+    return replacer({css, ...opts});
 }
 
 function trimCss(css) {

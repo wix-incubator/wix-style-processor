@@ -1,12 +1,24 @@
 import _ from 'lodash';
-import postcss from 'postcss';
 import Color from 'color';
+import {Parser, Stringifier} from 'shady-css-parser';
 
-function parse(css, {colors, fonts, numbers, isRtl}) {
+function replacer({css, colors, fonts, numbers, isRtl}) {
 
-    css.walkDecls(decl => {
-        decl.value = recursiveEval(decl.value);
-    });
+    return traverse();
+
+    function traverse() {
+        var parser = new Parser();
+        var ast = parser.parse(css);
+
+        walkDecls(ast, decl => {
+            decl.setValue(recursiveEval(decl.value));
+        });
+
+        var stringifier = new Stringifier();
+        let newCss = stringifier.stringify(ast);
+        return newCss;
+    }
+
 
     function recursiveEval(value) {
         const match = value.match(/(\w*)\((.*)\)$/);
@@ -47,7 +59,7 @@ function parse(css, {colors, fonts, numbers, isRtl}) {
                 result = opacity(color(params[0]), params[1]);
                 break;
             case 'join':
-
+                result = join(params);
                 break;
             case 'number':
 
@@ -89,7 +101,7 @@ function parse(css, {colors, fonts, numbers, isRtl}) {
 
     function join(params) {
         let ret = _.reduce(params, (acc, color) => {
-            const c = new Color(fromDefaultString(color));
+            const c = new Color(color);
             acc.red(acc.red()     + c.red()   * c.alpha());
             acc.green(acc.green() + c.green() * c.alpha());
             acc.blue(acc.blue()   + c.blue()  * c.alpha());
@@ -104,5 +116,17 @@ function parse(css, {colors, fonts, numbers, isRtl}) {
 
 //****************************
 
-const plugin = postcss.plugin('wss-parser', opts => css => parse(css, opts));
-export default plugin;
+function walkDecls(ast, cb) {
+    if (ast.type === 'declaration') {
+        return cb({
+            name: ast.name,
+            value: ast.value.text,
+            setValue: newVal => ast.value.text = newVal
+        });
+    }
+
+    ast.rules && _.each(ast.rules, r => walkDecls(r, cb));
+    ast.rulelist && walkDecls(ast.rulelist, cb);
+}
+
+export default replacer;
