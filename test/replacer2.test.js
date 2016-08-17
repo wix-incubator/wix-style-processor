@@ -9,8 +9,8 @@ describe.only('replacer2', () => {
         let css = `.foo {
             rule: bar;
             rule3: baz;
-            rule4: get(color-1);
-            rule5: get(get(color-2));
+            rule4: "get(color-1)";
+            rule5: "get(get(color-2))";
         }`;
 
         let opts = {
@@ -29,7 +29,7 @@ describe.only('replacer2', () => {
 
     it('opacity transformation', () => {
         let css = `.foo {
-            rule1: opacity(color-1, 0.5);
+            rule1: "opacity(color-1, 0.5)";
         }`;
 
         let opts = {
@@ -47,7 +47,7 @@ describe.only('replacer2', () => {
 
     it('composed opacity', () => {
         let css = `.foo {
-            rule1: opacity(get(color-1), 0.5);
+            rule1: "opacity(get(color-1), 0.5)";
         }`;
 
         let opts = {
@@ -65,13 +65,32 @@ describe.only('replacer2', () => {
 
     it('join', () => {
         let css = `.foo {
-            rule1: join(get(color-1), 1, get(color-2), 1);
+            rule1: "join(get(color-1), 1, get(color-2), 1)";
         }`;
 
         let opts = {
             colors: {
                 'color-1': '#FF0000',
                 'color-2': '#00FF00'
+            },
+            fonts: {},
+            numbers: {},
+            isRtl: false
+        };
+
+        let cssResult = run(css, opts);
+        assert.equal(cssResult, '.foo{rule1:rgb(255, 255, 0);}');
+    });
+
+    it('param', () => {
+        let css = `.foo {
+            rule1: "get(--zz)"px;
+        }`;
+
+        let opts = {
+            colors: {
+                'color-1': '#FFFF00',
+                'zz': 'get(color-1)'
             },
             fonts: {},
             numbers: {},

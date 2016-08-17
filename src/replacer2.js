@@ -11,7 +11,9 @@ function replacer({css, colors, fonts, numbers, isRtl}) {
         var ast = parser.parse(css);
 
         walkDecls(ast, decl => {
-            decl.setValue(recursiveEval(decl.value));
+            let match = decl.value.match(/^"([^"]+)"/);
+            if (match)
+                decl.setValue(recursiveEval(match[1]));
         });
 
         var stringifier = new Stringifier();
@@ -26,7 +28,7 @@ function replacer({css, colors, fonts, numbers, isRtl}) {
         if (match) {
             const isSingleMatch = /^(\w*)\(([^()]+)\)$/.test(value);
 
-            if (isSingleMatch) {
+            if (isSingleMatch && !getCustomVar(match[2])) {
                 return singleEval(match[1], match[2]);
             }
 
@@ -34,7 +36,7 @@ function replacer({css, colors, fonts, numbers, isRtl}) {
         } else if (value.indexOf(',') !== -1) {
             return evalParameterList(value);
         } else {
-            return value;
+            return singleEval(value);
         }
     }
 
@@ -46,14 +48,12 @@ function replacer({css, colors, fonts, numbers, isRtl}) {
     }
 
     function singleEval(transformation, rawParams) {
-        let params = processParams(rawParams);
+        let params = rawParams && processParams(rawParams);
         let result;
 
         switch (transformation) {
             case 'get':
                 result = color(params[0]);
-                break;
-            case 'var':
                 break;
             case 'opacity':
                 result = opacity(color(params[0]), params[1]);
@@ -67,10 +67,30 @@ function replacer({css, colors, fonts, numbers, isRtl}) {
             case 'font':
 
                 break;
+            default:
+                if (transformation && !rawParams) {
+                    let customVar = getCustomVar(transformation);
+                    if (customVar){
+                        result = evalCustomVar(customVar);
+                    }
+                    else
+                        result = transformation;
+                }
+                break;
         }
 
         // console.log("trans", transformation, "params", params, "result", result);
         return result;
+    }
+
+    function getCustomVar(value) {
+        return _.startsWith(value, '--') && value.substr(2, value.length - 2);
+    }
+
+    function evalCustomVar(customVar) {
+        let customVarVal = colors[customVar];
+        let evaled = recursiveEval(customVarVal);
+        return evaled;
     }
 
     function processParams(params) {
