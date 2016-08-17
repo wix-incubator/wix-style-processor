@@ -52,7 +52,7 @@ function replacer({css, colors, fonts, numbers, isRtl}) {
         let result;
 
         switch (transformation) {
-            case 'get':
+            case 'color':
                 result = color(params[0]);
                 break;
             case 'opacity':
