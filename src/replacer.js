@@ -4,8 +4,8 @@ import WixStylesColorUtils from './wixStylesColorUtils.js';
 import WixStylesFontUtils from './wixStylesFontUtils.js';
 
 export default class Replacer {
-    static defaultCustomVarRegex = /(--\S*?)\s*:\s*"(\w*?)\(([^\)]*?)\)"/g;
-    static defaultCustomVarRemovalRegex = /(--\S*?)\s*:\s*"(\w*?)\(([^\)]*?)\)";/g;
+    static defaultCustomVarRegex = /--(\S*?)\s*:\s*"(\w*?)\(([^\)]*?)\)"/g;
+    static defaultCustomVarRemovalRegex = /--(\S*?)\s*:\s*"(\w*?)\(([^\)]*?)\)";/g;
 
     constructor({css}) {
         this.update({css});

@@ -65,9 +65,9 @@ describe('replacer', () => {
         };
 
         const replacer = new Replacer({css:'.hello { --bbb: "color(color-2)"; --aaa.333: "fontPreset(Body-L)"; --ccc: "number(42)"; color:"color(--bbb)"; background-color:"opacity(--bbb, 0.5)"; font:"fontPreset(Body-L)"; margin-top:"number(--ccc)";}'});
-        expect(replacer.defaults.colors).to.deep.equal({'--bbb': 'color-2'});
-        expect(replacer.defaults.fonts).to.deep.equal({'--aaa.333': 'Body-L'});
-        expect(replacer.defaults.numbers).to.deep.equal({'--ccc': '42'});
+        expect(replacer.defaults.colors).to.deep.equal({'bbb': 'color-2'});
+        expect(replacer.defaults.fonts).to.deep.equal({'aaa.333': 'Body-L'});
+        expect(replacer.defaults.numbers).to.deep.equal({'ccc': '42'});
 
         const result = replacer.get({colors:{'bbb':'#777777', 'color-2':'#111111'}, fonts, numbers:{'ccc':10}});
         expect(result).to.equal('.hello {    color:#777777; background-color:rgba(119, 119, 119, 0.5); font:s1 v1 w1 1em/2em basefamily; margin-top:10;}');
