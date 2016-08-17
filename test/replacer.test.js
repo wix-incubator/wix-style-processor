@@ -1,7 +1,7 @@
 import {expect} from 'chai';
 import Replacer from '../src/replacer.js';
 
-describe.only('replacer', () => {
+describe('replacer', () => {
     let replacer;
 
     function getReplacer(css) {

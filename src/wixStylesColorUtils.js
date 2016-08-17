@@ -43,7 +43,7 @@ let WixColorUtils = {
     calcValueFromString({str, values}) {
         const functions = {
             'color':(key) => {
-                if (key.startsWith('"') && key.endsWith('"')) {
+                if (_.startsWith(key,'"') && _.endsWith(key, '"')) {
                     key = key.substr(1, key.length - 2);
                 }
 
@@ -57,7 +57,7 @@ let WixColorUtils = {
                 // So, we need to make sure to check for both
                 const value = (() => {
                     if (values[key]) return values[key];
-                    if (key.startsWith('color-')) return values[key.substr(6)]; // support 'bbb' and 'color-bbb' for same variable
+                    if (_.startsWith(key, 'color-')) return values[key.substr(6)]; // support 'bbb' and 'color-bbb' for same variable
                 })();
 
                 if (value) return value;
@@ -77,11 +77,11 @@ let WixColorUtils = {
             },
             'join':(params) => {
 
-                if ((params.startsWith('[')) && (params.endsWith(']'))) {
+                if (_.startsWith(params, '[') && _.endsWith(params,']')) {
                     params = params.substr(1, params.length - 2);
                 }
 
-                var tokenRegex = /\(([^(]*?)\)/
+                var tokenRegex = /\(([^(]*?)\)/;
                 let m = null;
 
                 while (m = params.match(tokenRegex)) {

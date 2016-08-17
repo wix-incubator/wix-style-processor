@@ -27,7 +27,7 @@ export default class Replacer {
                     break;
                 case 'fontPreset':
                     defaults.fonts[name] = value;
-                    break
+                    break;
                 case 'number':
                     defaults.numbers[name] = value;
                     break;
@@ -45,13 +45,13 @@ export default class Replacer {
         const parts = _.compact(css.split(/"((?:join|color|number|opacity|fontPreset)[^"]*?)"/g));
 
         let tokens = _.map(parts, (part) => {
-
+            let matches;
             if (part.match(/^(?:join|color|opacity)\(/)) {
                 return {type:'css-var-color', value: part};
             } else if (part.match(/^fontPreset\(/)) {
                 return {type:'css-var-font', value: part};
-            } else if (part.match(/^number\(/)) {
-                return {type: 'css-var-number', value: part};
+            } else if (matches = part.match(/^number\(([^\)]+)/)) {
+                return {type: 'css-var-number', value: matches[1].trim()};
             } else {
                 return {type:'text', text: part};
             }
@@ -113,7 +113,11 @@ export default class Replacer {
                 break;
 
                 case 'css-var-number': {
-                    const value = numbers[token.value];
+                    let entry = token.value;
+                    if(_.startsWith(token.value, '--')) {
+                        entry = token.value.substr(2, token.value.length-2);
+                    }
+                    const value = numbers[entry];
                     css.push(value);
                 }
                 break;
@@ -133,7 +137,5 @@ function toFontCssValue(value) {
     const size = _.isNumber(value.size) ? value.size + 'px' : value.size;
     const lineHeight = _.isNumber(value.lineHeight) ? value.lineHeight + 'px' : value.lineHeight;
 
-    let cssValue = `${value.style} ${value.variant} ${value.weight} ${size}/${lineHeight} ${value.family.join(',')}`;
-
-    return cssValue;
+    return `${value.style} ${value.variant} ${value.weight} ${size}/${lineHeight} ${value.family.join(',')}`;
 }
