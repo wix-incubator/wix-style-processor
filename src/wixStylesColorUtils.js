@@ -42,12 +42,16 @@ let WixColorUtils = {
 
     calcValueFromString({str, values}) {
         const functions = {
-            'get':(key) => {
+            'color':(key) => {
                 if (key.startsWith('"') && key.endsWith('"')) {
                     key = key.substr(1, key.length - 2);
                 }
 
                 key = key.replace(/\./g, '-');
+
+                if (_.startsWith(key, '--')) {
+                    key = key.substr(2, key.length - 2);
+                }
 
                 // Variables are defined in the css as color-xxx, but in the styles as xxx (for backwards compatibility).
                 // So, we need to make sure to check for both
@@ -101,7 +105,7 @@ let WixColorUtils = {
 
         function fromDefaultString(str) {
             const match = str.match(/(\w*)\((.*)\)$/);
-            if (!match) return functions['get'](str);
+            if (!match) return functions['color'](str);
             return functions[match[1]](match[2]);
         }
 

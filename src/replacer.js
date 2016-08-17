@@ -3,24 +3,34 @@ import parseCssFont from 'parse-css-font';
 import WixStylesColorUtils from './wixStylesColorUtils.js';
 import WixStylesFontUtils from './wixStylesFontUtils.js';
 
-export default class Replacer{
+export default class Replacer {
+    static defaultCustomVarRegex = /(--\S*?)\s*:\s*"(\w*?)\(([^\)]*?)\)"/g
+    static defaultCustomVarRemovalRegex = /(--\S*?)\s*:\s*"(\w*?)\(([^\)]*?)\)";/g
+
     constructor({css}) {
         this.update({css});
     }
 
     loadDefaultVariables(css) {
-        const defaults = {colors:{}, fonts:{}};
+        const defaults = {colors:{}, fonts:{}, numbers: {}};
 
         // Support CssVars style definition as well
-        const regex = /--(\S*?)\s*:\s*\"([^"]*?)\"/g;
         let match = null;
-        while (match = regex.exec(css)) {
+        while (match = Replacer.defaultCustomVarRegex.exec(css)) {
             let name = match[1];
-            const value = match[2];
-            if (name.startsWith('color-')) {
-                defaults.colors[name.substr(6)] = value;
-            } else if (name.startsWith('font-')) {
-                defaults.fonts[name.substr(5)] = value;
+            const type = match[2];
+            const value = match[3];
+
+            switch (type) {
+                case 'color':
+                    defaults.colors[name] = value;
+                    break;
+                case 'fontPreset':
+                    defaults.fonts[name] = value;
+                    break
+                case 'number':
+                    defaults.numbers[name] = value;
+                    break;
             }
         }
 
@@ -28,38 +38,29 @@ export default class Replacer{
     }
 
     removeDefaultCssVars(css) {
-        return css.replace(/--(\S*)\s*:\s*\"([^"]*?)\";/g, "");
+        return css.replace(Replacer.defaultCustomVarRemovalRegex, '');
     }
 
     tokenizeDynamicValues(css) {
-        const parts = _.compact(css.split(/"((?:var|join|get|opacity|preset|font)[^"]*?)"/g));
+        const parts = _.compact(css.split(/"((?:join|color|number|opacity|fontPreset)[^"]*?)"/g));
 
         let tokens = _.map(parts, (part) => {
 
-            if (part.startsWith('var(')) {
-                part = part.substr(4, part.length - 5);
-
-                if (part.indexOf('color-') > -1) {
-                    return {type:'css-var-color', value:part};
-                } else if (part.indexOf('font-') > -1) {
-                    return {type:'css-var-font', value:part};
-                } else if (part.indexOf('number-') > -1) {
-                    return {type:'css-var-number', value:part};
-                }
-            } else if (part.match(/^(join|get|opacity)\(/)) {
-                return {type:'css-var-color', value:part};
-            } else if (part.match(/^(preset|font)\(/)) {
-                return {type:'css-var-font', value:part};
+            if (part.match(/^(?:join|color|opacity)\(/)) {
+                return {type:'css-var-color', value: part};
+            } else if (part.match(/^fontPreset\(/)) {
+                return {type:'css-var-font', value: part};
+            } else if (part.match(/^number\(/)) {
+                return {type: 'css-var-number', value: part};
+            } else {
+                return {type:'text', text: part};
             }
-
-            return {type:'text', text: part};
         });
 
         return _.flatten(tokens);
     }
 
     tokenizeDirectionVars(tokens) {
-        // Split all text tokens to old fashioned WixRest CSS (extracting all "_@BLAHBLAH", START, END, ...)
         _.each(tokens, (token) => {
             if (token.type === 'text') {
                 token.text = _.compact(token.text.split(/(STARTSIGN|ENDSIGN|DIR|END|START)/g));
@@ -81,15 +82,7 @@ export default class Replacer{
             switch (token.type) {
                 case 'text': {
                     _.each(token.text, text => {
-
-                        if (text.type === 'color') {
-                            css.push(colors[text.key]);
-                        } else if (text.type === 'font') {
-                            const font = fonts[text.key] || {};
-                            const value = fontJoin({base:font, default:font.family}, fonts);
-                            const cssValue = toFontCssValue(value);
-                            css.push(cssValue);
-                        } else if (text === 'STARTSIGN') {
+                        if (text === 'STARTSIGN') {
                             css.push(isRtl ? '' : '-');
                         } else if (text === 'ENDSIGN') {
                             css.push(isRtl ? '-' : '');
@@ -120,15 +113,8 @@ export default class Replacer{
                 break;
 
                 case 'css-var-number': {
-                    const value = numbers[token.value.replace(/^number-/, '')];
+                    const value = numbers[token.value];
                     css.push(value);
-                }
-                break;
-
-                case 'font': {
-                    const value = fontJoin(token, fonts);
-                    const cssValue = toFontCssValue(value);
-                    css.push(`${token.type}: ${cssValue};`);
                 }
                 break;
 
@@ -142,31 +128,6 @@ export default class Replacer{
         return css.join('');
     }
 };
-
-function fontJoin(token, fonts) {
-
-    if (fonts[token.fieldId]) return;
-
-    const parseFamily = (family) => {
-
-        if (family.startsWith('MEDIUM_')) {
-            family = family.substr(7);
-        }
-
-        const recursive = fonts[family];
-
-        if (recursive) {
-            return _.map(recursive.family, r => parseFamily(r)).join(',');
-        } else {
-            return family;
-        }
-    }
-
-    const family = _.map(token.default, (r) => parseFamily(r));
-
-    return _.extend({}, token.base, {family});
-
-}
 
 function toFontCssValue(value) {
     const size = _.isNumber(value.size) ? value.size + 'px' : value.size;
