@@ -41,4 +41,14 @@ describe('Index', () => {
             }).catch(err => {setTimeout(function() { throw err; });});
         }).catch(err => {setTimeout(function() { throw err; });});
     });
+
+    it.only('should use START=right given isRtl is true', done => {
+        driver.given.css('.foo {START: 5px;}');
+        driver.when.init({isRtl: true}).then(() => {
+            expect(driver.get.domService().overrideStyles.getCall(0).args[0])
+                .to.equal('.foo {right: 5px;}');
+
+            done();
+        }).catch(err => {setTimeout(function() { throw err; });});;
+    });
 });

@@ -3,7 +3,7 @@ import wixStylesFontUtils from './wixStylesFontUtils';
 import Replacer from './replacer';
 import _ from 'lodash';
 
-export default (wixService, domService) => ({
+export default (wixService, domService, options) => ({
     update() {
         const css = domService.extractStyles();
         const replacer = new Replacer({css});
@@ -16,7 +16,7 @@ export default (wixService, domService) => ({
             const colors = wixStylesColorUtils.getFullColorStyles({colorStyles, siteColors, defaults: replacer.defaults.colors}) || {};
             const fonts = wixStylesFontUtils.getFullFontStyles({fontStyles, siteTextPresets, defaults: replacer.defaults.fonts, isHebrew: false}) || {};
 
-            updateStyles({colors, fonts, numbers, replacer, domService});
+            updateStyles({colors, fonts, numbers, replacer, domService, options});
         }).catch(err => {
             console.error("failed updating styles", err);
             throw err;
@@ -24,7 +24,7 @@ export default (wixService, domService) => ({
     }
 });
 
-function updateStyles({colors, fonts, numbers, replacer, domService}) {
-    const css = replacer.get({colors, fonts, numbers});
+function updateStyles({colors, fonts, numbers, replacer, domService, options}) {
+    const css = replacer.get({colors, fonts, numbers, isRtl: options.isRtl});
     domService.overrideStyles(css);
 }
