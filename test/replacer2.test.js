@@ -65,7 +65,7 @@ describe.only('replacer2', () => {
 
     it('join', () => {
         let css = `.foo {
-            rule1: "join(color(color-1), 1, color(color-2), 1)";
+            rule1: "join(color-1, 1, color-2, 1)";
         }`;
 
         let opts = {
@@ -80,6 +80,25 @@ describe.only('replacer2', () => {
 
         let cssResult = run(css, opts);
         assert.equal(cssResult, '.foo{rule1:rgb(255, 255, 0);}');
+    });
+
+    it('composed join', () => {
+        let css = `.foo {
+            rule1: "join(opacity(color-1, 0.5), 1, opacity(color-2, 0.5), 1)";
+        }`;
+
+        let opts = {
+            colors: {
+                'color-1': '#FF0000',
+                'color-2': '#00FF00'
+            },
+            fonts: {},
+            numbers: {},
+            isRtl: false
+        };
+
+        let cssResult = run(css, opts);
+        assert.equal(cssResult, '.foo{rule1:rgb(128, 128, 0);}');
     });
 
     it('param', () => {

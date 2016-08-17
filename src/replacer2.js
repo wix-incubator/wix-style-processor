@@ -59,7 +59,8 @@ function replacer({css, colors, fonts, numbers, isRtl}) {
                 result = opacity(color(params[0]), params[1]);
                 break;
             case 'join':
-                result = join(params);
+                let joinParams = _.map(params, (v, i) => i % 2 === 0 ? color(v) : v);
+                result = join(joinParams);
                 break;
             case 'number':
 
@@ -94,12 +95,23 @@ function replacer({css, colors, fonts, numbers, isRtl}) {
     }
 
     function processParams(params) {
-        if (_.startsWith(params, 'rgb') || params.indexOf(',') === -1) {
-            return [params.trim()];
-        } else {
-            let splitted = _.map(params.split(","), p => p.trim());
-            return splitted;
+        let commaRegex = /,(?![^(]*\))/g;
+        let match;
+        let indices = [], args = [];
+
+        while ((match = commaRegex.exec(params)) !== null) {
+            indices.push(match.index);
         }
+
+        let pos = 0;
+        for (let i = 0; i < indices.length + 1; i++) {
+            let idx = indices[i] || params.length;
+            let arg = params.substr(pos, idx - pos );
+            args.push(arg.trim());
+            pos = idx + 1;
+        }
+
+        return args;
     }
 
     function color(value) {
