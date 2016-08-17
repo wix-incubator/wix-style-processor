@@ -119,6 +119,24 @@ describe.only('replacer2', () => {
         let cssResult = run(css, opts);
         assert.equal(cssResult, '.foo{rule1:rgb(255, 255, 0);}');
     });
+
+    it("don't throw given invalid css", () => {
+        let css = `.foo {
+            rule1: "gaga(ccc)";
+            rule2: "color(bbb)";
+            rule3: "opacity(iii)";
+            rule4: #fff;
+        }`;
+
+        let opts = {
+            colors: {},
+            fonts: {},
+            numbers: {}
+        };
+
+        let cssResult = run(css, opts);
+        assert.equal(cssResult, '.foo{rule1:undefined;rule2:undefined;rule3:"opacity(iii)";rule4:#fff;}')
+    });
 });
 
 function run(css, opts, assert) {

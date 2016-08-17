@@ -11,9 +11,12 @@ function replacer({css, colors, fonts, numbers, isRtl}) {
         var ast = parser.parse(css);
 
         walkDecls(ast, decl => {
-            let match = decl.value.match(/^"([^"]+)"/);
-            if (match)
-                decl.setValue(recursiveEval(match[1]));
+            try {
+                let match = decl.value.match(/^"([^"]+)"/);
+                if (match)
+                    decl.setValue(recursiveEval(match[1]));
+            } catch (err) {
+            }
         });
 
         var stringifier = new Stringifier();
