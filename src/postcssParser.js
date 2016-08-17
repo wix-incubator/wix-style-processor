@@ -44,9 +44,7 @@ function parse(css, {colors, fonts, numbers, isRtl}) {
             case 'var':
                 break;
             case 'opacity':
-                let baseColor = color(params[0]);
-                let alpha = params[1];
-                result = opacity(baseColor, alpha);
+                result = opacity(color(params[0]), params[1]);
                 break;
             case 'join':
 
@@ -89,8 +87,17 @@ function parse(css, {colors, fonts, numbers, isRtl}) {
         return (new Color(color)).clearer(1 - alpha).rgbString();
     }
 
-    function join(color1, color1Percent, color2, color2Percent) {
+    function join(params) {
+        let ret = _.reduce(params, (acc, color) => {
+            const c = new Color(fromDefaultString(color));
+            acc.red(acc.red()     + c.red()   * c.alpha());
+            acc.green(acc.green() + c.green() * c.alpha());
+            acc.blue(acc.blue()   + c.blue()  * c.alpha());
+            acc.alpha(acc.alpha() + c.alpha());
+            return acc;
+        }, new Color('rgba(0,0,0,0)'));
 
+        return ret.rgbString();
     }
 }
 

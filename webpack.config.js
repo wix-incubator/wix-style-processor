@@ -14,15 +14,18 @@ let config = {
         filename: '[name].js'
     },
     cache: false,
-    plugins: [
-    ],
+    plugins: [],
     externals: {
+
     },
     module: {
         loaders: [{
             test: /\.js$/,
             loader: 'babel'
         }]
+    },
+    node: {
+      fs: "empty"
     }
 };
 
