@@ -31,7 +31,6 @@
     "mocha": "^3.0.2",
     "parse-css-font": "^2.0.2",
     "q": "^1.4.1",
-    "shady-css-parser": "0.0.8"
   },
   "devDependencies": {
     "@wix/wnpm-ci": "*",

@@ -1,10 +1,10 @@
 import _ from 'lodash';
 import Color from 'color';
-import {Parser, Stringifier} from 'shady-css-parser';
 
-let innerQuotesRegex = /^"([^"]+)"/;
-let singleTransformRegex = /^(\w*)\((.*)\)$/;
-let singleMatchRegex = /^(\w*)\(([^()]+)\)$/;
+const declarationRegex = /(.*?):(.*?);/g;
+const innerQuotesRegex = /^"([^"]+)"/;
+const singleTransformRegex = /^(\w*)\((.*)\)$/;
+const singleMatchRegex = /^(\w*)\(([^()]+)\)$/;
 
 function replacer({css, colors, fonts, numbers, isRtl}) {
 
@@ -14,29 +14,40 @@ function replacer({css, colors, fonts, numbers, isRtl}) {
         number: numbers
     };
 
-    return traverse();
+    const transformations = {
+        color,
+        number,
+        font,
+        opacity,
+        join
+    }
 
-    function traverse() {
-        var parser = new Parser();
-        var ast = parser.parse(css);
+    return replace();
 
-        walkDecls(ast, decl => {
+    function replace() {
+        let replacedCss = css.replace(declarationRegex, (match, key, value) => {
+            let result;
+
             try {
-                let match = decl.value.match(innerQuotesRegex);
+                value = value.trim();
+                let innerMatch = value.match(innerQuotesRegex);
 
-                if (match) {
-                    let evaled = recursiveEval(match[1]);
-                    let replaced = decl.value.replace(innerQuotesRegex, evaled);
-                    decl.setValue(replaced);
+                if (innerMatch) {
+                    let evaled = recursiveEval(innerMatch[1]);
+                    let replacedValue = value.replace(innerQuotesRegex, evaled);
+                    result = `${key}: ${replacedValue};`;
+                } else {
+                    result = match;
                 }
             } catch (err) {
-                console.error(err)
+                console.error(err);
+                result = match;
             }
+
+            return result;
         });
 
-        var stringifier = new Stringifier();
-        let newCss = stringifier.stringify(ast);
-        return newCss;
+        return replacedCss;
     }
 
 
@@ -69,34 +80,15 @@ function replacer({css, colors, fonts, numbers, isRtl}) {
         return stringifiedEvaledParams;
     }
 
-    function singleEval(transformation, rawParams) {
+    function singleEval(selectedTransformation, rawParams) {
         let params = rawParams && processParams(rawParams);
-        let result;
+        let transformation = transformations[selectedTransformation];
+        let result = transformation && transformation(params);
 
-        switch (transformation) {
-            case 'color':
-                result = color(params);
-                break;
-            case 'opacity':
-                result = opacity(params);
-                break;
-            case 'join':
-                result = join(params);
-                break;
-            case 'number':
-                result = number(params);
-                break;
-            case 'font':
-                result = font(params);
-                break;
-            default:
-                if (arguments.length === 1) {
-                    result = arguments[0];
-                }
-                break;
+        if (!result && arguments.length === 1) {
+            result = arguments[0];
         }
 
-        // console.log("trans", transformation, "params", params, "result", result);
         return result;
     }
 
@@ -181,7 +173,6 @@ function replacer({css, colors, fonts, numbers, isRtl}) {
         return evalCustomVar('font', params[0]);
     }
 }
-
 
 //****************************
 

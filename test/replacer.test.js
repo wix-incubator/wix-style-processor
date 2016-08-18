@@ -86,4 +86,37 @@ describe('replacer', () => {
         //Then
         expect(result).to.equal('background-color: rgb(255, 255, 0);');
     });
+
+    it('heavy test', () => {
+        //Given
+        let css = '';
+
+        for (let i=0; i<28000; i++) {
+            let decl = 'a' + guid();
+            css += `.${decl} {
+                background-color: "get(color-2)";
+            }\n`;
+        }
+
+        console.time('f');
+        const replacer = new Replacer({css});
+
+        //When
+        const result = replacer.get({colors: {
+            'color-2': '#FF0000'
+        }});
+        console.timeEnd('f')
+
+        //Then
+    });
+
 });
+
+function guid() {
+  function s4() {
+      return Math.floor((1 + Math.random()) * 0x10000)
+        .toString(16)
+        .substring(1);
+  }
+  return s4() + s4() + s4() + s4() + s4() + s4() + s4() + s4();
+}
