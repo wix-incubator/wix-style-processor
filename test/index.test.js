@@ -25,7 +25,7 @@ describe('Index', () => {
         }).catch(err => {setTimeout(function() { throw err; });});
     });
 
-    it('should update ', (done) => {
+    it('should update style on style change event', (done) => {
         driver.when.init().then(() => {
             driver.given.styleParams({
                 numbers: {},
@@ -42,13 +42,36 @@ describe('Index', () => {
         }).catch(err => {setTimeout(function() { throw err; });});
     });
 
-    it.only('should use START=right given isRtl is true', done => {
+    it('should use START=right given isRtl is true', done => {
         driver.given.css('.foo {START: 5px;}');
         driver.when.init({isRtl: true}).then(() => {
             expect(driver.get.domService().overrideStyles.getCall(0).args[0])
                 .to.equal('.foo {right: 5px;}');
 
             done();
-        }).catch(err => {setTimeout(function() { throw err; });});;
+        }).catch(err => {setTimeout(function() { throw err; });});
+    });
+
+    it('should support double font reference', done => {
+        driver.given.css('.font-test{--some-font: "font(Body-M)"; font: "font(--some-font)";}')
+            .siteTextPresets({
+                'Body-M': {
+                    displayName: "Paragraph 2",
+                    editorKey: "font_8",
+                    fontFamily: "din-next-w01-light",
+                    lineHeight: "1.4em",
+                    size: "16px",
+                    style: "normal",
+                    value: "font:normal normal normal 16px/1.4em din-next-w01-light,din-next-w02-light,din-next-w10-light,sans-serif",
+                    weight: "normal"
+                }
+        });
+
+        driver.when.init().then(() => {
+            expect(driver.get.domService().overrideStyles.getCall(0).args[0])
+                .to.equal('.font-test{ font: normal normal normal 16px/1.4em din-next-w01-light,din-next-w02-light,din-next-w10-light,sans-serif;}');
+
+            done();
+        }).catch(err => {setTimeout(function() { throw err; });});
     });
 });

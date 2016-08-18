@@ -12,7 +12,7 @@ export default class Replacer {
     }
 
     loadDefaultVariables(css) {
-        const defaults = {colors:{}, fonts:{}, numbers: {}};
+        const defaults = {colors: {}, fonts: {}, numbers: {}};
 
         // Support CssVars style definition as well
         let match = null;
@@ -25,7 +25,7 @@ export default class Replacer {
                 case 'color':
                     defaults.colors[name] = value;
                     break;
-                case 'fontPreset':
+                case 'font':
                     defaults.fonts[name] = value;
                     break;
                 case 'number':
@@ -42,18 +42,18 @@ export default class Replacer {
     }
 
     tokenizeDynamicValues(css) {
-        const parts = _.compact(css.split(/"((?:join|color|number|opacity|fontPreset)[^"]*?)"/g));
+        const parts = _.compact(css.split(/"((?:join|color|number|opacity|font)[^"]*?)"/g));
 
         let tokens = _.map(parts, (part) => {
             let matches;
             if (part.match(/^(?:join|color|opacity)\(/)) {
-                return {type:'css-var-color', value: part};
-            } else if (part.match(/^fontPreset\(/)) {
-                return {type:'css-var-font', value: part};
+                return {type: 'css-var-color', value: part};
+            } else if (matches = part.match(/^font\(([^\)]+)/)) {
+                return {type: 'css-var-font', value: matches[1].trim()};
             } else if (matches = part.match(/^number\(([^\)]+)/)) {
                 return {type: 'css-var-number', value: matches[1].trim()};
             } else {
-                return {type:'text', text: part};
+                return {type: 'text', text: part};
             }
         });
 
@@ -97,33 +97,32 @@ export default class Replacer {
                         }
                     });
                 }
-                break;
+                    break;
 
                 case 'css-var-color': {
-                    const value = WixStylesColorUtils.calcValueFromString({str:token.value, values:colors});
+                    const value = WixStylesColorUtils.calcValueFromString({str: token.value, values: colors});
                     css.push(value);
                 }
-                break;
+                    break;
 
                 case 'css-var-font': {
-                    const value = WixStylesFontUtils.calcValueFromString({str:token.value, values:fonts});
+                    const value = WixStylesFontUtils.calcValueFromString({str: removeCssVarsPrefix(token.value), values: fonts});
                     const cssValue = toFontCssValue(value);
                     css.push(cssValue);
                 }
-                break;
+                    break;
 
                 case 'css-var-number': {
-                    let entry = token.value;
-                    if(_.startsWith(token.value, '--')) {
-                        entry = token.value.substr(2, token.value.length-2);
-                    }
-                    const value = numbers[entry];
+                    const value = numbers[removeCssVarsPrefix(token.value)];
                     css.push(value);
                 }
-                break;
+                    break;
 
                 default: {
-                    const value = colors[token.fieldId] || WixStylesColorUtils.calcValueFromString({str:token.default, values:colors});
+                    const value = colors[token.fieldId] || WixStylesColorUtils.calcValueFromString({
+                            str: token.default,
+                            values: colors
+                        });
                     css.push(`${token.type}: ${value};`);
                 }
             }
@@ -132,6 +131,14 @@ export default class Replacer {
         return css.join('');
     }
 };
+
+function removeCssVarsPrefix(str) {
+    if (_.startsWith(str, '--')) {
+        str = str.substr(2, str.length - 2);
+    }
+
+    return str;
+}
 
 function toFontCssValue(value) {
     const size = _.isNumber(value.size) ? value.size + 'px' : value.size;

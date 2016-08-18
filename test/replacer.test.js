@@ -12,10 +12,10 @@ describe('replacer', () => {
     it('Parses and fills START, END, STARTSIGN, ENDSIGN, DIR', () => {
         const replacer = getReplacer('.hello { START:2px; END:5px; top:STARTSIGN5px; bottom:ENDSIGN5px; direction:DIR; }');
 
-        const result = replacer.get({isRtl:false});
+        const result = replacer.get({isRtl: false});
         expect(result).to.equal('.hello { left:2px; right:5px; top:-5px; bottom:5px; direction:ltr; }');
 
-        const result2 = replacer.get({isRtl:true});
+        const result2 = replacer.get({isRtl: true});
         expect(result2).to.equal('.hello { right:2px; left:5px; top:5px; bottom:-5px; direction:rtl; }');
     });
 
@@ -64,13 +64,14 @@ describe('replacer', () => {
             'aaa.333': {style:'ssss', variant:'vvvv', weight:'bolder', size:'12em', lineHeight:'24em', family:['family1', 'family2', 'family3']}
         };
 
-        const replacer = new Replacer({css:'.hello { --bbb: "color(color-2)"; --aaa.333: "fontPreset(Body-L)"; --ccc: "number(42)"; color:"color(--bbb)"; background-color:"opacity(--bbb, 0.5)"; font:"fontPreset(Body-L)"; margin-top:"number(--ccc)";}'});
+        const replacer = new Replacer({css: '.hello { --bbb: "color(color-2)"; --aaa.333: "font(Body-L)"; --ccc: "number(42)"; color:"color(--bbb)"; background-color:"opacity(--bbb, 0.5)"; font:"font(Body-L)"; margin-top:"number(--ccc)";}'});
         expect(replacer.defaults.colors).to.deep.equal({'bbb': 'color-2'});
         expect(replacer.defaults.fonts).to.deep.equal({'aaa.333': 'Body-L'});
         expect(replacer.defaults.numbers).to.deep.equal({'ccc': '42'});
 
-        const result = replacer.get({colors:{'bbb':'#777777', 'color-2':'#111111'}, fonts, numbers:{'ccc':10}});
-        expect(result).to.equal('.hello {    color:#777777; background-color:rgba(119, 119, 119, 0.5); font:s1 v1 w1 1em/2em basefamily; margin-top:10;}');
+        const result = replacer.get({colors: {'bbb': '#777777', 'color-2': '#111111'}, fonts, numbers: {'ccc': 10}});
+        expect(result).to
+            .equal('.hello {    color:#777777; background-color:rgba(119, 119, 119, 0.5); font:s1 v1 w1 1em/2em basefamily; margin-top:10;}');
     });
 
     it('should support joining 2 colors', () => {
@@ -84,5 +85,16 @@ describe('replacer', () => {
 
         //Then
         expect(result).to.equal('background-color: rgb(255, 255, 0);');
+    });
+
+    it.skip('should support fonts as variables', () => {
+        const fonts = {
+            'Body-M': {style: 's1', variant: 'v1', weight: 'w1', size: '1em', lineHeight: '2em', family: ['basefamily']}
+        };
+
+        const replacer = new Replacer({css: '.font-test{--some-font: "font(Body-M)"; font: "font(--some-font)";}'});
+        const result = replacer.get({colors: {}, fonts, numbers: {}});
+
+        expect(result).to.equal('.font-test{font: s1 v1 w1 1em/2em basefamily;}');
     });
 });
