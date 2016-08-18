@@ -103,7 +103,7 @@ describe.only('replacer2', () => {
 
     it('param', () => {
         let css = `.foo {
-            rule1: "color(--zz)"px;
+            rule1: "color(--zz)";
         }`;
 
         let opts = {
@@ -118,6 +118,23 @@ describe.only('replacer2', () => {
 
         let cssResult = run(css, opts);
         assert.equal(cssResult, '.foo{rule1:#FFFF00;}');
+    });
+
+    it('number', () => {
+        let css = `.foo {
+            rule1: "number(--foo)"px;
+        }`;
+
+        let opts = {
+            colors: {},
+            fonts: {},
+            numbers: {
+                'foo': '42'
+            }
+        };
+
+        let cssResult = run(css, opts);
+        assert.equal(cssResult, '.foo{rule1:42px;}');
     });
 
     it("don't throw given invalid css", () => {

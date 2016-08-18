@@ -19,8 +19,12 @@ function replacer({css, colors, fonts, numbers, isRtl}) {
         walkDecls(ast, decl => {
             try {
                 let match = decl.value.match(/^"([^"]+)"/);
-                if (match)
-                    decl.setValue(recursiveEval(match[1]));
+
+                if (match) {
+                    let evaled = recursiveEval(match[1]);
+                    let replaced = decl.value.replace(/^"([^"]+)"/, evaled);
+                    decl.setValue(replaced);
+                }
             } catch (err) {
             }
         });
@@ -77,7 +81,7 @@ function replacer({css, colors, fonts, numbers, isRtl}) {
                 result = join(joinParams);
                 break;
             case 'number':
-
+                result = evalCustomVar(transformation, params[0]);
                 break;
             case 'font':
 
