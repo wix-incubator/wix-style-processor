@@ -117,7 +117,7 @@ describe.only('replacer2', () => {
         };
 
         let cssResult = run(css, opts);
-        assert.equal(cssResult, '.foo{rule1:rgb(255, 255, 0);}');
+        assert.equal(cssResult, '.foo{rule1:#FFFF00;}');
     });
 
     it("don't throw given invalid css", () => {

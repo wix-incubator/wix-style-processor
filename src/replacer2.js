@@ -4,6 +4,12 @@ import {Parser, Stringifier} from 'shady-css-parser';
 
 function replacer({css, colors, fonts, numbers, isRtl}) {
 
+    const customVarContainers = {
+        color: colors,
+        font: fonts,
+        number: numbers
+    };
+
     return traverse();
 
     function traverse() {
@@ -31,7 +37,7 @@ function replacer({css, colors, fonts, numbers, isRtl}) {
         if (match) {
             const isSingleMatch = /^(\w*)\(([^()]+)\)$/.test(value);
 
-            if (isSingleMatch && !getCustomVar(match[2])) {
+            if (isSingleMatch) {
                 return singleEval(match[1], match[2]);
             }
 
@@ -56,7 +62,8 @@ function replacer({css, colors, fonts, numbers, isRtl}) {
 
         switch (transformation) {
             case 'color':
-                result = color(params[0]);
+                let colorCustomVar = evalCustomVar(transformation, params[0]);
+                result = colorCustomVar || color(params[0]);
                 break;
             case 'opacity':
                 result = opacity(color(params[0]), params[1]);
@@ -73,12 +80,7 @@ function replacer({css, colors, fonts, numbers, isRtl}) {
                 break;
             default:
                 if (transformation && !rawParams) {
-                    let customVar = getCustomVar(transformation);
-                    if (customVar){
-                        result = evalCustomVar(customVar);
-                    }
-                    else
-                        result = transformation;
+                    result = transformation;
                 }
                 break;
         }
@@ -91,10 +93,12 @@ function replacer({css, colors, fonts, numbers, isRtl}) {
         return _.startsWith(value, '--') && value.substr(2, value.length - 2);
     }
 
-    function evalCustomVar(customVar) {
-        let customVarVal = colors[customVar];
-        let evaled = recursiveEval(customVarVal);
-        return evaled;
+    function evalCustomVar(transform, customVar) {
+        let customVarVal = customVarContainers[transform][getCustomVar(customVar)];
+        if (customVarVal) {
+            let evaled = recursiveEval(customVarVal);
+            return evaled;
+        }
     }
 
     function processParams(params) {
