@@ -3,8 +3,8 @@ import Color from 'color';
 
 const declarationRegex = /(.*?):(.*?);/g;
 const innerQuotesRegex = /^"([^"]+)"/;
-const singleTransformRegex = /^(\w*)\((.*)\)$/;
-const singleMatchRegex = /^(\w*)\(([^()]+)\)$/;
+const transformRegex = /^(\w*)\((.*)\)$/;
+const singleTransformRegex = /^(\w*)\(([^()]+)\)$/;
 
 function replacer({css, colors, fonts, numbers, isRtl}) {
 
@@ -51,12 +51,12 @@ function replacer({css, colors, fonts, numbers, isRtl}) {
     }
 
     function recursiveEval(value) {
-        const match = value.match(singleTransformRegex);
-        const transformation = match && match[1];
-        const params = match && match[2];
+        const hasTransform = value.match(transformRegex);
+        const transformation = hasTransform && hasTransform[1];
+        const params = hasTransform && hasTransform[2];
 
-        if (match) {
-            const isSingleMatch = singleMatchRegex.test(value);
+        if (hasTransform) {
+            const isSingleMatch = singleTransformRegex.test(value);
 
             if (isSingleMatch) {
                 return singleEval(transformation, params);
