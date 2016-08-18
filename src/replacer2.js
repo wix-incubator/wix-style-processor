@@ -2,6 +2,10 @@ import _ from 'lodash';
 import Color from 'color';
 import {Parser, Stringifier} from 'shady-css-parser';
 
+let innerQuotesRegex = /^"([^"]+)"/;
+let singleTransformRegex = /(\w*)\((.*)\)$/;
+let singleMatchRegex = /^(\w*)\(([^()]+)\)$/;
+
 function replacer({css, colors, fonts, numbers, isRtl}) {
 
     const customVarContainers = {
@@ -18,11 +22,11 @@ function replacer({css, colors, fonts, numbers, isRtl}) {
 
         walkDecls(ast, decl => {
             try {
-                let match = decl.value.match(/^"([^"]+)"/);
+                let match = decl.value.match(innerQuotesRegex);
 
                 if (match) {
                     let evaled = recursiveEval(match[1]);
-                    let replaced = decl.value.replace(/^"([^"]+)"/, evaled);
+                    let replaced = decl.value.replace(innerQuotesRegex, evaled);
                     decl.setValue(replaced);
                 }
             } catch (err) {
@@ -36,12 +40,12 @@ function replacer({css, colors, fonts, numbers, isRtl}) {
 
 
     function recursiveEval(value) {
-        const match = value.match(/(\w*)\((.*)\)$/);
+        const match = value.match(singleTransformRegex);
         const transformation = match && match[1];
         const params = match && match[2];
 
         if (match) {
-            const isSingleMatch = /^(\w*)\(([^()]+)\)$/.test(value);
+            const isSingleMatch = singleMatchRegex.test(value);
 
             if (isSingleMatch) {
                 return singleEval(transformation, params);
