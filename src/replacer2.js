@@ -3,7 +3,7 @@ import Color from 'color';
 import {Parser, Stringifier} from 'shady-css-parser';
 
 let innerQuotesRegex = /^"([^"]+)"/;
-let singleTransformRegex = /(\w*)\((.*)\)$/;
+let singleTransformRegex = /^(\w*)\((.*)\)$/;
 let singleMatchRegex = /^(\w*)\(([^()]+)\)$/;
 
 function replacer({css, colors, fonts, numbers, isRtl}) {
@@ -30,6 +30,7 @@ function replacer({css, colors, fonts, numbers, isRtl}) {
                     decl.setValue(replaced);
                 }
             } catch (err) {
+                console.error(err)
             }
         });
 
@@ -74,21 +75,19 @@ function replacer({css, colors, fonts, numbers, isRtl}) {
 
         switch (transformation) {
             case 'color':
-                let colorCustomVar = evalCustomVar(transformation, params[0]);
-                result = colorCustomVar || color(params[0]);
+                result = color(params);
                 break;
             case 'opacity':
-                result = opacity(color(params[0]), params[1]);
+                result = opacity(params);
                 break;
             case 'join':
-                let joinParams = _.map(params, (v, i) => i % 2 === 0 ? color(v) : v);
-                result = join(joinParams);
+                result = join(params);
                 break;
             case 'number':
-                result = evalCustomVar(transformation, params[0]);
+                result = number(params);
                 break;
             case 'font':
-
+                result = font(params);
                 break;
             default:
                 if (transformation && !rawParams) {
@@ -133,7 +132,14 @@ function replacer({css, colors, fonts, numbers, isRtl}) {
         return args;
     }
 
-    function color(value) {
+    function color(params) {
+        let value = params[0];
+
+        let colorCustomVar = evalCustomVar('color', value);
+
+        if (colorCustomVar)
+            return colorCustomVar;
+
         let predefined = colors[value];
 
         if (predefined)
@@ -146,12 +152,16 @@ function replacer({css, colors, fonts, numbers, isRtl}) {
         }
     }
 
-    function opacity(color, alpha) {
-        return (new Color(color)).clearer(1 - alpha).rgbString();
+    function opacity(params) {
+        let colorVal = color(params);
+        let alpha = params[1];
+        return (new Color(colorVal)).clearer(1 - alpha).rgbString();
     }
 
     function join(params) {
-        let ret = _.reduce(params, (acc, color) => {
+        let joinParams = _.map(params, (v, i) => i % 2 === 0 ? color([v]) : v);
+
+        let ret = _.reduce(joinParams, (acc, color) => {
             const c = new Color(color);
             acc.red(acc.red()     + c.red()   * c.alpha());
             acc.green(acc.green() + c.green() * c.alpha());
@@ -161,6 +171,14 @@ function replacer({css, colors, fonts, numbers, isRtl}) {
         }, new Color('rgba(0,0,0,0)'));
 
         return ret.rgbString();
+    }
+
+    function number(params) {
+        return evalCustomVar('number', params[0]);
+    }
+
+    function font(params) {
+        return evalCustomVar('font', params[0]);
     }
 }
 

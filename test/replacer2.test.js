@@ -5,7 +5,7 @@ import {Parser, Stringifier} from 'shady-css-parser';
 
 describe.only('replacer2', () => {
 
-    it('get transformation', () => {
+    it('color transformation', () => {
         let css = `.foo {
             rule: bar;
             rule3: baz;
@@ -19,8 +19,7 @@ describe.only('replacer2', () => {
                 'color-2': 'color-1'
             },
             fonts: {},
-            numbers: {},
-            isRtl: false
+            numbers: {}
         };
 
         let cssResult = run(css, opts);
@@ -37,8 +36,7 @@ describe.only('replacer2', () => {
                 'color-1': '#FF0000',
             },
             fonts: {},
-            numbers: {},
-            isRtl: false
+            numbers: {}
         };
 
         let cssResult = run(css, opts);
@@ -55,12 +53,28 @@ describe.only('replacer2', () => {
                 'color-1': '#FF0000',
             },
             fonts: {},
-            numbers: {},
-            isRtl: false
+            numbers: {}
         };
 
         let cssResult = run(css, opts);
         assert.equal(cssResult, '.foo{rule1:rgba(255, 0, 0, 0.5);}');
+    });
+
+    it('composed opacity with custom var', () => {
+        let css = `.foo {
+            rule1: "opacity(--foo, 0.5)";
+        }`;
+
+        let opts = {
+            colors: {
+                'foo': '#FFFF00',
+            },
+            fonts: {},
+            numbers: {},
+        };
+
+        let cssResult = run(css, opts);
+        assert.equal(cssResult, '.foo{rule1:rgba(255, 255, 0, 0.5);}');
     });
 
     it('join', () => {
@@ -74,8 +88,7 @@ describe.only('replacer2', () => {
                 'color-2': '#00FF00'
             },
             fonts: {},
-            numbers: {},
-            isRtl: false
+            numbers: {}
         };
 
         let cssResult = run(css, opts);
@@ -93,8 +106,7 @@ describe.only('replacer2', () => {
                 'color-2': '#00FF00'
             },
             fonts: {},
-            numbers: {},
-            isRtl: false
+            numbers: {}
         };
 
         let cssResult = run(css, opts);
@@ -112,8 +124,7 @@ describe.only('replacer2', () => {
                 'zz': 'color(color-1)'
             },
             fonts: {},
-            numbers: {},
-            isRtl: false
+            numbers: {}
         };
 
         let cssResult = run(css, opts);
@@ -135,6 +146,23 @@ describe.only('replacer2', () => {
 
         let cssResult = run(css, opts);
         assert.equal(cssResult, '.foo{rule1:42px;}');
+    });
+
+    it('font', () => {
+        let css = `.foo {
+            rule1: "font(--foo)"px;
+        }`;
+
+        let opts = {
+            colors: {},
+            fonts: {
+                'foo': '21'
+            },
+            numbers: {}
+        };
+
+        let cssResult = run(css, opts);
+        assert.equal(cssResult, '.foo{rule1:21px;}');
     });
 
     it("don't throw given invalid css", () => {
