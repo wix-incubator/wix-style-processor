@@ -28,7 +28,9 @@ import styleProcessor from 'wix-style-processor';
 $(document).ready(() => {
     styleProcessor.init({
         isRtl: true
-    });
+    }).then(() => {
+	//start rendering your application here - otherwise your app will flicker
+    })
 });
 ```
 # Installation
