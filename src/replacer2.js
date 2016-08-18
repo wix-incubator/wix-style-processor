@@ -90,8 +90,8 @@ function replacer({css, colors, fonts, numbers, isRtl}) {
                 result = font(params);
                 break;
             default:
-                if (transformation && !rawParams) {
-                    result = transformation;
+                if (arguments.length === 1) {
+                    result = arguments[0];
                 }
                 break;
         }
