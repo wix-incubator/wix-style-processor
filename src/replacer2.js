@@ -25,31 +25,30 @@ function replacer({css, colors, fonts, numbers, isRtl}) {
     return replace();
 
     function replace() {
-        let replacedCss = css.replace(declarationRegex, (match, key, value) => {
-            let result;
-
+        let replacedCss = css.replace(declarationRegex, (decl, key, val) => {
             try {
-                value = value.trim();
-                let innerMatch = value.match(innerQuotesRegex);
-
-                if (innerMatch) {
-                    let evaled = recursiveEval(innerMatch[1]);
-                    let replacedValue = value.replace(innerQuotesRegex, evaled);
-                    result = `${key}: ${replacedValue};`;
-                } else {
-                    result = match;
-                }
+                return replaceDeclaration(decl, key, val)
             } catch (err) {
-                console.error(err);
-                result = match;
+                console.error('failed replacing declaration', err);
+                return decl;
             }
-
-            return result;
         });
 
         return replacedCss;
     }
 
+    function replaceDeclaration(decl, key, val) {
+        val = val.trim();
+        let innerMatch = val.match(innerQuotesRegex);
+
+        if (innerMatch) {
+            let evaled = recursiveEval(innerMatch[1]);
+            let replacedVal = val.replace(innerQuotesRegex, evaled);
+            return `${key}: ${replacedVal};`;
+        } else {
+            return decl;
+        }
+    }
 
     function recursiveEval(value) {
         const match = value.match(singleTransformRegex);
@@ -172,21 +171,6 @@ function replacer({css, colors, fonts, numbers, isRtl}) {
     function font(params) {
         return evalCustomVar('font', params[0]);
     }
-}
-
-//****************************
-
-function walkDecls(ast, cb) {
-    if (ast.type === 'declaration') {
-        return cb({
-            name: ast.name,
-            value: ast.value.text,
-            setValue: newVal => ast.value.text = newVal
-        });
-    }
-
-    ast.rules && _.each(ast.rules, r => walkDecls(r, cb));
-    ast.rulelist && walkDecls(ast.rulelist, cb);
 }
 
 export default replacer;
