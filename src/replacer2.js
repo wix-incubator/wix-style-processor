@@ -33,17 +33,18 @@ function replacer({css, colors, fonts, numbers, isRtl}) {
 
     function recursiveEval(value) {
         const match = value.match(/(\w*)\((.*)\)$/);
+        const transformation = match && match[1];
+        const params = match && match[2];
 
         if (match) {
             const isSingleMatch = /^(\w*)\(([^()]+)\)$/.test(value);
 
             if (isSingleMatch) {
-                return singleEval(match[1], match[2]);
+                return singleEval(transformation, params);
             }
 
-            return singleEval(match[1], recursiveEval(match[2]));
-        } else if (value.indexOf(',') !== -1) {
-            return evalParameterList(value);
+            let evaledParams = evalParameterList(params);
+            return singleEval(transformation, evaledParams);
         } else {
             return singleEval(value);
         }
@@ -51,7 +52,10 @@ function replacer({css, colors, fonts, numbers, isRtl}) {
 
     function evalParameterList(value) {
         let params = processParams(value);
-        let evaledParams = _.map(params, p => recursiveEval(p));
+        let evaledParams = _.map(params, p => {
+            let p2 = recursiveEval(p);
+            return p2;
+        });
         let stringifiedEvaledParams = evaledParams.join(',');
         return stringifiedEvaledParams;
     }
