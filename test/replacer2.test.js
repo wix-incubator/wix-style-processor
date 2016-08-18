@@ -1,7 +1,6 @@
 import _ from 'lodash';
 import replacer from '../src/replacer2';
 import {assert} from 'chai';
-import {Parser, Stringifier} from 'shady-css-parser';
 import css from 'css';
 
 describe.only('replacer2', () => {
@@ -146,7 +145,7 @@ describe.only('replacer2', () => {
     });
 
     it("don't throw given invalid css", () => {
-        let css = `.foo { rule1: "gaga(ccc)"; rule2: "color(bbb)"; rule3: "opacity(iii)"; rule4: #fff; }`; 
+        let css = `.foo { rule1: "gaga(ccc)"; rule2: "color(bbb)"; rule3: "opacity(iii)"; rule4: #fff; }`;
 
         let opts = {
             colors: {},
@@ -182,10 +181,6 @@ describe.only('replacer2', () => {
 
 function run(css, opts, assert) {
     return replacer({css, ...opts});
-}
-
-function trimCss(css) {
-    return css.split('\n').map(t => t.trim()).join(' ');
 }
 
 function guid() {
