@@ -14,7 +14,7 @@
     "test": "mocha --require babel-register \"test/**/*.test.js\"",
     "test:watch": "mocha --watch --require babel-register \"test/**/*.test.js\"",
     "compile": "rm -rf dist/ && babel -d dist/ src/",
-    "build": ":",
+    "build": "npm run compile",
     "bundle": "webpack",
     "release": "wnpm-release"
   },
