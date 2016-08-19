@@ -28,7 +28,7 @@ let WixColorUtils = {
             } catch (e) {
                 if (e === 'unparsed') {
                     if (tried) {
-                        throw(new Error(`[WixStylesColorUtils] Using unkown key as default for ${key}.`));
+                        throw(new Error(`[WixStylesColorUtils] Using unknown key as default for ${key}.`));
                     }
                     working.push([key, defString, true]);
                 } else {
@@ -42,18 +42,22 @@ let WixColorUtils = {
 
     calcValueFromString({str, values}) {
         const functions = {
-            'get':(key) => {
-                if (key.startsWith('"') && key.endsWith('"')) {
+            'color':(key) => {
+                if (_.startsWith(key,'"') && _.endsWith(key, '"')) {
                     key = key.substr(1, key.length - 2);
                 }
 
                 key = key.replace(/\./g, '-');
 
+                if (_.startsWith(key, '--')) {
+                    key = key.substr(2, key.length - 2);
+                }
+
                 // Variables are defined in the css as color-xxx, but in the styles as xxx (for backwards compatibility).
                 // So, we need to make sure to check for both
                 const value = (() => {
                     if (values[key]) return values[key];
-                    if (key.startsWith('color-')) return values[key.substr(6)]; // support 'bbb' and 'color-bbb' for same variable
+                    if (_.startsWith(key, 'color-')) return values[key.substr(6)]; // support 'bbb' and 'color-bbb' for same variable
                 })();
 
                 if (value) return value;
@@ -73,11 +77,11 @@ let WixColorUtils = {
             },
             'join':(params) => {
 
-                if ((params.startsWith('[')) && (params.endsWith(']'))) {
+                if (_.startsWith(params, '[') && _.endsWith(params,']')) {
                     params = params.substr(1, params.length - 2);
                 }
 
-                var tokenRegex = /\(([^(]*?)\)/
+                var tokenRegex = /\(([^(]*?)\)/;
                 let m = null;
 
                 while (m = params.match(tokenRegex)) {
@@ -101,7 +105,7 @@ let WixColorUtils = {
 
         function fromDefaultString(str) {
             const match = str.match(/(\w*)\((.*)\)$/);
-            if (!match) return functions['get'](str);
+            if (!match) return functions['color'](str);
             return functions[match[1]](match[2]);
         }
 

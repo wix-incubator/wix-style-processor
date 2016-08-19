@@ -18,9 +18,9 @@ export default class Driver {
         };
 
         this.when = {
-            init: () => {
+            init: (options) => {
                 __RewireAPI__.__set__('domService', this.mocks.domService);
-                return Index.init();
+                return Index.init(options);
             },
             updateStyleParams: () => {
                 return this.mocks.Wix.when.updateStyleParams();

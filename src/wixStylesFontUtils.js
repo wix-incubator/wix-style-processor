@@ -84,18 +84,10 @@ const WixFontUtils = {
 
         let m = null;
 
-        if (m = str.match(/preset\((.*)\)$/)) {
+        if (m = str.match(/fontPreset\((.*)\)$/)) {
             return preset(m[1].trim());
-
-        } else if (m = str.match(/font\((.*)\)$/)) {
-            return font(JSON.parse(m[1].trim().replace(/'/g, '"')));
-
         } else if (values[str]) {
             return values[str];
-
-        } else if ((str.startsWith('font-')) && (values[str.substr(5)])) {
-            return values[str.substr(5)];
-
         } else {
             throw(new Error(`Unknown font default ${str}`));
         }
