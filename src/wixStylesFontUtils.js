@@ -57,28 +57,7 @@ const WixFontUtils = {
         return ret;
     },
 
-    fontToUiLibStructure(font) {
-        return {
-            size:parseInt(font.size),
-            style:{},
-            family:font.family.join(','),
-            preset:font.preset,
-            editorKey: font.editorKey,
-            displayName: font.displayName
-        };
-    },
-
-    toFontCssValue(font) {
-        const size = _.isNumber(font.size) ? font.size + 'px' : font.size;
-        const lineHeight = _.isNumber(font.lineHeight) ? font.lineHeight + 'px' : font.lineHeight;
-
-        let cssValue = `${font.style} ${font.variant} ${font.weight} ${size}/${lineHeight} ${font.family.join(',')}`;
-
-        return cssValue;
-    },
-
     calcValueFromString({str, values}) {
-
         const preset = (_default) => values[_default];
         const font = (_default) => _.extend({}, values[_default.template], _.omit(_default, 'template'));
 
@@ -91,8 +70,14 @@ const WixFontUtils = {
         } else {
             throw(new Error(`Unknown font default ${str}`));
         }
-    }
+    },
 
+    toFontCssValue(value) {
+        const size = _.isNumber(value.size) ? value.size + 'px' : value.size;
+        const lineHeight = _.isNumber(value.lineHeight) ? value.lineHeight + 'px' : value.lineHeight;
+
+        return `${value.style} ${value.variant} ${value.weight} ${size}/${lineHeight} ${value.family.join(',')}`;
+    }
 };
 
 function parseWixStylesFont(font) {

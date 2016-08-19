@@ -3,7 +3,7 @@ import replacer from '../src/replacer2';
 import {assert} from 'chai';
 import css from 'css';
 
-describe.only('replacer2', () => {
+describe('replacer2', () => {
     let opts;
 
     beforeEach(() => {
@@ -321,6 +321,28 @@ describe.only('replacer2', () => {
         let cssResult = run(cssStr, opts);
         console.timeEnd('f')
     });
+
+    it('number without quotes', () => {
+        const css = '.foo { --ccc: 21; margin-top: "number(--ccc)"; }';
+
+        let result = run(css, opts);
+
+        assert.equal(result, '.foo { --ccc: 21; margin-top: 21; }');
+    });
+
+    // it.skip('Parses css var type declarations for defaults and values', () => {
+    //     const fonts = {
+    //         'Body-L': {style:'s1', variant:'v1', weight:'w1', size:'1em', lineHeight:'2em', family:['basefamily']},
+    //         'base': {style:'s1', variant:'v1', weight:'w1', size:'1em', lineHeight:'2em', family:['basefamily']},
+    //         'aaa.333': {style:'ssss', variant:'vvvv', weight:'bolder', size:'12em', lineHeight:'24em', family:['family1', 'family2', 'family3']}
+    //     };
+    //
+    //     const css = '.hello { --ccc: "21"; margin-top:"number(--ccc)"; }';
+    //     opts = {colors:{'bbb':'#777777', 'color-2':'#111111'}, fonts, numbers:{'ccc':10}};
+    //
+    //     const result = run(css, opts);
+    //     assert.equal(result, '.hello {    color:#777777; background-color:rgba(119, 119, 119, 0.5); font:s1 v1 w1 1em/2em basefamily; margin-top:10;}');
+    // });
 });
 
 function run(css, opts, assert) {

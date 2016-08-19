@@ -1,8 +1,9 @@
 import _ from 'lodash';
 import Color from 'color';
+import fontUtils from './wixStylesFontUtils';
 
 const declarationRegex = /(.*?):(.*?);/g;
-const defaultVarDeclarationRegex = /--(.*?):\s*"(.*?)";/g;
+const defaultVarDeclarationRegex = /--(.*?):\s*"?(.*?)"?;/g;
 const innerQuotesRegex = /^"([^"]+)"/;
 const transformRegex = /^(\w*)\((.*)\)$/;
 const singleTransformRegex = /^(\w*)\(([^()]+)\)$/;
@@ -86,6 +87,7 @@ function replacer({css, colors, fonts, numbers, isRtl}) {
     }
 
     function recursiveEval(value) {
+        value = value.toString();
         const hasTransform = value.match(transformRegex);
         const transformation = hasTransform && hasTransform[1];
         const params = hasTransform && hasTransform[2];
@@ -217,8 +219,10 @@ function replacer({css, colors, fonts, numbers, isRtl}) {
         if (!val)
             val = fonts[params[0]];
 
+        if (typeof(val) === 'object')
+            val = fontUtils.toFontCssValue(val);
+
         return val
     }
 }
-
 export default replacer;
