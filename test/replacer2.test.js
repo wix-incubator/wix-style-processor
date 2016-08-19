@@ -3,7 +3,7 @@ import replacer from '../src/replacer2';
 import {assert} from 'chai';
 import css from 'css';
 
-describe.only('replacer2', () => {
+describe('replacer2', () => {
     let opts;
 
     beforeEach(() => {
