@@ -12,8 +12,7 @@
   },
   "scripts": {
     "test": "mocha --require babel-register \"test/**/*.test.js\"",
-    "compile": "rm -rf dist/ && babel -d dist/ src/",
-    "build": ":",
+    "build": "rm -rf dist/ && babel -d dist/ src/",
     "bundle": "webpack",
     "release": "wnpm-release"
   },
