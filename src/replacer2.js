@@ -1,6 +1,5 @@
 import _ from 'lodash';
-import Color from 'color';
-import fontUtils from './wixStylesFontUtils';
+import transformations from './transformations';
 
 const declarationRegex = /(.*?):(.*?);/g;
 const defaultVarDeclarationRegex = /--(.*?):\s*"?(.*?)"?;/g;
@@ -10,20 +9,13 @@ const singleTransformRegex = /^(\w*)\(([^()]+)\)$/;
 const processParamsRegex = /,(?![^(]*\))/g;
 const trimRegex = /^\s*(\S.*\S*)\s*$/;
 
-function replacer({css, colors, fonts, numbers, isRtl}) {
+function replacer(replacerParams) {
+    const {css, colors, fonts, numbers, isRtl} = replacerParams;
 
     const customVarContainers = {
         color: colors,
         font: fonts,
         number: numbers
-    };
-
-    const transformations = {
-        color,
-        number,
-        font,
-        opacity,
-        join
     };
 
     const defaultVarDeclarations = {};
@@ -89,11 +81,12 @@ function replacer({css, colors, fonts, numbers, isRtl}) {
     function recursiveEval(value) {
         value = value.toString();
         const hasTransform = value.match(transformRegex);
-        const transformation = hasTransform && hasTransform[1];
-        const params = hasTransform && hasTransform[2];
 
         if (hasTransform) {
+            const transformation = hasTransform[1];
+            const params = hasTransform[2];
             const isSingleMatch = singleTransformRegex.test(value);
+
             let evaledParams = evalParameterList(params);
 
             if (isSingleMatch) {
@@ -119,13 +112,17 @@ function replacer({css, colors, fonts, numbers, isRtl}) {
     function singleEval(selectedTransformation, rawParams) {
         let params = rawParams && processParams(rawParams);
         let transformation = transformations[selectedTransformation];
-        let result = transformation && transformation(params);
+        let result = invokeTransformation(transformation, params);
 
         if (!result && arguments.length === 1) {
             result = arguments[0];
         }
 
         return result;
+    }
+
+    function invokeTransformation(transformation, params) {
+        return transformation && transformation(params, replacerParams, evalCustomVar);
     }
 
     function getCustomVar(value) {
@@ -162,67 +159,6 @@ function replacer({css, colors, fonts, numbers, isRtl}) {
 
         return args;
     }
-
-    function color(params) {
-        let value = params[0];
-
-        let colorCustomVar = evalCustomVar('color', value);
-
-        if (colorCustomVar)
-            return colorCustomVar;
-
-        let predefined = colors[value];
-
-        if (predefined)
-            return predefined;
-
-        try {
-            return new Color(value).rgbString();
-        } catch (e) {
-            return 'undefined';
-        }
-    }
-
-    function opacity(params) {
-        let colorVal = color(params);
-        let alpha = params[1];
-        return (new Color(colorVal)).clearer(1 - alpha).rgbString();
-    }
-
-    function join(params) {
-        let joinParams = _.map(params, (v, i) => i % 2 === 0 ? color([v]) : v);
-
-        let ret = _.reduce(joinParams, (acc, color) => {
-            const c = new Color(color);
-            acc.red(acc.red()     + c.red()   * c.alpha());
-            acc.green(acc.green() + c.green() * c.alpha());
-            acc.blue(acc.blue()   + c.blue()  * c.alpha());
-            acc.alpha(acc.alpha() + c.alpha());
-            return acc;
-        }, new Color('rgba(0,0,0,0)'));
-
-        return ret.rgbString();
-    }
-
-    function number(params) {
-        let val = evalCustomVar('number', params[0]);
-
-        if (!val)
-            val = numbers[params[0]];
-
-        return val;
-    }
-
-    function font(params) {
-        let val = evalCustomVar('font', params[0]);
-
-        if (!val)
-            val = fonts[params[0]];
-
-        if (typeof(val) === 'object')
-            val = fontUtils.toFontCssValue(val);
-
-        return val
-    }
 }
+
 export default replacer;
