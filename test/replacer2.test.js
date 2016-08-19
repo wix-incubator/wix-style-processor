@@ -4,7 +4,7 @@ import {assert} from 'chai';
 import css from 'css';
 
 describe('replacer2', () => {
-    let opts;
+    let opts, pluginTransformations;
 
     beforeEach(() => {
         opts = {
@@ -12,6 +12,8 @@ describe('replacer2', () => {
             fonts: {},
             numbers: {}
         };
+
+        pluginTransformations = {};
     });
 
     it('color transformation', () => {
@@ -22,7 +24,7 @@ describe('replacer2', () => {
             'color-2': 'color-1'
         };
 
-        let cssResult = run(css, opts);
+        let cssResult = run(css);
         assert.equal(cssResult, '.foo { rule: bar; rule3: baz; rule4: #FF0000; rule5: #FF0000; }');
     });
 
@@ -33,7 +35,7 @@ describe('replacer2', () => {
             'color-1': '#FF0000',
         };
 
-        let cssResult = run(css, opts);
+        let cssResult = run(css);
         assert.equal(cssResult, '.foo { rule1: rgba(255, 0, 0, 0.5); }');
     });
 
@@ -44,7 +46,7 @@ describe('replacer2', () => {
             'color-1': '#FF0000'
         };
 
-        let cssResult = run(css, opts);
+        let cssResult = run(css);
         assert.equal(cssResult, '.foo { rule1: rgba(255, 0, 0, 0.5); }');
     });
 
@@ -55,7 +57,7 @@ describe('replacer2', () => {
             'foo': '#FFFF00'
         };
 
-        let cssResult = run(css, opts);
+        let cssResult = run(css);
         assert.equal(cssResult, '.foo { rule1: rgba(255, 255, 0, 0.5); }');
     });
 
@@ -67,7 +69,7 @@ describe('replacer2', () => {
             'color-2': '#00FF00'
         };
 
-        let cssResult = run(css, opts);
+        let cssResult = run(css);
         assert.equal(cssResult, '.foo { rule1: rgb(255, 255, 0); }');
     });
 
@@ -79,7 +81,7 @@ describe('replacer2', () => {
             'color-2': '#00FF00'
         };
 
-        let cssResult = run(css, opts);
+        let cssResult = run(css);
         assert.equal(cssResult, '.foo { rule1: rgb(128, 128, 0); }');
     });
 
@@ -91,7 +93,7 @@ describe('replacer2', () => {
             'zz': 'color(color-1)'
         };
 
-        let cssResult = run(css, opts);
+        let cssResult = run(css);
         assert.equal(cssResult, '.foo { rule1: #FFFF00; }');
     });
 
@@ -102,7 +104,7 @@ describe('replacer2', () => {
             'foo': '42'
         };
 
-        let cssResult = run(css, opts);
+        let cssResult = run(css);
         assert.equal(cssResult, '.foo { rule1: 42px; }');
     });
 
@@ -113,7 +115,7 @@ describe('replacer2', () => {
             'foo': '21'
         };
 
-        let cssResult = run(css, opts);
+        let cssResult = run(css);
         assert.equal(cssResult, '.foo { rule1: 21px; }');
     });
 
@@ -128,7 +130,7 @@ describe('replacer2', () => {
                 let css = '.foo { margin-START: 5px; }'
 
                 //When
-                let cssResult = run(css, opts);
+                let cssResult = run(css);
 
                 //Then
                 assert.equal(cssResult, '.foo { margin-right: 5px; }');
@@ -139,7 +141,7 @@ describe('replacer2', () => {
                 let css = '.foo { margin-END: 5px; }';
 
                 //When
-                let result = run(css, opts);
+                let result = run(css);
 
                 //Then
                 assert.equal(result, '.foo { margin-left: 5px; }');
@@ -150,7 +152,7 @@ describe('replacer2', () => {
                 let css = '.foo { padding: STARTSIGN5px; }';
 
                 //When
-                let result = run(css, opts);
+                let result = run(css);
 
                 //Then
                 assert.equal(result, '.foo { padding: 5px; }');
@@ -161,7 +163,7 @@ describe('replacer2', () => {
                 let css = '.foo { padding: ENDSIGN5px; }';
 
                 //When
-                let result = run(css, opts);
+                let result = run(css);
 
                 //Then
                 assert.equal(result, '.foo { padding: -5px; }');
@@ -172,7 +174,7 @@ describe('replacer2', () => {
                 let css = '.foo { direction: DIR; }';
 
                 //When
-                let result = run(css, opts);
+                let result = run(css);
 
                 //Then
                 assert.equal(result, '.foo { direction: rtl; }');
@@ -189,7 +191,7 @@ describe('replacer2', () => {
                 let css = '.foo { margin-START: 5px; }'
 
                 //When
-                let cssResult = run(css, opts);
+                let cssResult = run(css);
 
                 //Then
                 assert.equal(cssResult, '.foo { margin-left: 5px; }');
@@ -200,7 +202,7 @@ describe('replacer2', () => {
                 let css = '.foo { margin-END: 5px; }';
 
                 //When
-                let result = run(css, opts);
+                let result = run(css);
 
                 //Then
                 assert.equal(result, '.foo { margin-right: 5px; }');
@@ -211,7 +213,7 @@ describe('replacer2', () => {
                 let css = '.foo { padding: STARTSIGN5px; }';
 
                 //When
-                let result = run(css, opts);
+                let result = run(css);
 
                 //Then
                 assert.equal(result, '.foo { padding: -5px; }');
@@ -222,7 +224,7 @@ describe('replacer2', () => {
                 let css = '.foo { padding: ENDSIGN5px; }';
 
                 //When
-                let result = run(css, opts);
+                let result = run(css);
 
                 //Then
                 assert.equal(result, '.foo { padding: 5px; }');
@@ -233,7 +235,7 @@ describe('replacer2', () => {
                 let css = '.foo { direction: DIR; }';
 
                 //When
-                let result = run(css, opts);
+                let result = run(css);
 
                 //Then
                 assert.equal(result, '.foo { direction: ltr; }');
@@ -244,7 +246,7 @@ describe('replacer2', () => {
     it("don't throw given invalid css", () => {
         let css = `.foo { rule1: "gaga(ccc)"; rule2: "color(bbb)"; rule3: "opacity(iii)"; rule4: #fff; }`;
 
-        let cssResult = run(css, opts);
+        let cssResult = run(css);
         assert.equal(cssResult, '.foo { rule1: undefined; rule2: undefined; rule3: "opacity(iii)"; rule4: #fff; }')
     });
 
@@ -325,9 +327,30 @@ describe('replacer2', () => {
     it('number without quotes', () => {
         const css = '.foo { --ccc: 21; margin-top: "number(--ccc)"; }';
 
-        let result = run(css, opts);
+        let result = run(css);
 
         assert.equal(result, '.foo { --ccc: 21; margin-top: 21; }');
+    });
+
+    it('plugin transformation', () => {
+        //Given
+        const css = '.foo { margin: "incrementer(number(--num))"px; }';
+
+        pluginTransformations = {
+            incrementer(params, siteVars) {
+                return parseInt(params[0]) + 1;
+            }
+        };
+
+        opts.numbers = {
+            num: 1
+        };
+
+        //When
+        let result = run(css);
+
+        //Then
+        assert.equal(result, '.foo { margin: 2px; }');
     });
 
     // it.skip('Parses css var type declarations for defaults and values', () => {
@@ -343,11 +366,11 @@ describe('replacer2', () => {
     //     const result = run(css, opts);
     //     assert.equal(result, '.hello {    color:#777777; background-color:rgba(119, 119, 119, 0.5); font:s1 v1 w1 1em/2em basefamily; margin-top:10;}');
     // });
-});
 
-function run(css, opts, assert) {
-    return replacer({css, ...opts});
-}
+    function run(css) {
+        return replacer({css, ...opts}, pluginTransformations);
+    }
+});
 
 function guid() {
   function s4() {

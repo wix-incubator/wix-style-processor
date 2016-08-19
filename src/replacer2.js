@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import transformations from './transformations';
+import basicTransformations from './transformations';
 
 const declarationRegex = /(.*?):(.*?);/g;
 const defaultVarDeclarationRegex = /--(.*?):\s*"?(.*?)"?;/g;
@@ -9,7 +9,7 @@ const singleTransformRegex = /^(\w*)\(([^()]+)\)$/;
 const processParamsRegex = /,(?![^(]*\))/g;
 const trimRegex = /^\s*(\S.*\S*)\s*$/;
 
-function replacer(replacerParams) {
+function replacer(replacerParams, pluginTransformations = {}) {
     const {css, colors, fonts, numbers, isRtl} = replacerParams;
 
     const customVarContainers = {
@@ -111,7 +111,9 @@ function replacer(replacerParams) {
 
     function singleEval(selectedTransformation, rawParams) {
         let params = rawParams && processParams(rawParams);
-        let transformation = transformations[selectedTransformation];
+        let pluginTransformation = pluginTransformations[selectedTransformation];
+        let basicTransformation = basicTransformations[selectedTransformation];
+        let transformation = pluginTransformation || basicTransformation;
         let result = invokeTransformation(transformation, params);
 
         if (!result && arguments.length === 1) {
@@ -122,7 +124,8 @@ function replacer(replacerParams) {
     }
 
     function invokeTransformation(transformation, params) {
-        return transformation && transformation(params, replacerParams, evalCustomVar);
+        return transformation &&
+               transformation(params, replacerParams, evalCustomVar);
     }
 
     function getCustomVar(value) {
