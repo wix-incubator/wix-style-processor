@@ -3,7 +3,7 @@ import replacer from '../src/replacer2';
 import {assert} from 'chai';
 import css from 'css';
 
-describe('replacer2', () => {
+describe.only('replacer2', () => {
     let opts;
 
     beforeEach(() => {
@@ -248,8 +248,65 @@ describe('replacer2', () => {
         assert.equal(cssResult, '.foo { rule1: undefined; rule2: undefined; rule3: "opacity(iii)"; rule4: #fff; }')
     });
 
+    describe('default param', () => {
+        it('default param - color', () => {
+            testDefaultParam('color');
+        });
+
+        it('default param override - color', () => {
+            testDefaultParamOverride('color');
+        });
+
+        it('default param - font', () => {
+            testDefaultParam('font');
+        });
+
+        it('default param override - font', () => {
+            testDefaultParamOverride('font');
+        });
+
+        it('default param - number', () => {
+            testDefaultParam('number');
+        });
+
+        it('default param override - number', () => {
+            testDefaultParamOverride('number');
+        });
+
+        function testDefaultParam(type) {
+            //Given
+            let css = `.foo { --bar: "${type}(qux)"; baz: "${type}(--bar)";}`;
+
+            opts[`${type}s`] = {
+                'qux': 'quux'
+            };
+
+            //When
+            let result = run(css, opts);
+
+            //Then
+            assert.equal(result, '.foo { --bar: quux; baz: quux;}');
+        }
+
+        function testDefaultParamOverride(type) {
+            //Given
+            let css = `.foo { --bar: "${type}(qux)"; baz: "${type}(--bar)";}`;
+
+            opts[`${type}s`] = {
+                'qux': 'quux',
+                'bar': '42'
+            };
+
+            //When
+            let result = run(css, opts);
+
+            //Then
+            assert.equal(result, '.foo { --bar: quux; baz: 42;}');
+        }
+    });
+
     it.skip('timing test', () => {
-        let cssStr = '';
+        let cssStr = '.decl {--foo: bar;}';
 
         for (let i=0; i<28000; i++) {
             let decl = 'a' + guid();

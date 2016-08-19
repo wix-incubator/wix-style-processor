@@ -2,10 +2,12 @@ import _ from 'lodash';
 import Color from 'color';
 
 const declarationRegex = /(.*?):(.*?);/g;
+const defaultVarDeclarationRegex = /--(.*?):\s*"(.*?)";/g;
 const innerQuotesRegex = /^"([^"]+)"/;
 const transformRegex = /^(\w*)\((.*)\)$/;
 const singleTransformRegex = /^(\w*)\(([^()]+)\)$/;
 const processParamsRegex = /,(?![^(]*\))/g;
+const trimRegex = /^\s*(\S.*\S*)\s*$/;
 
 function replacer({css, colors, fonts, numbers, isRtl}) {
 
@@ -21,26 +23,42 @@ function replacer({css, colors, fonts, numbers, isRtl}) {
         font,
         opacity,
         join
-    }
+    };
+
+    const defaultVarDeclarations = {};
 
     return replace();
 
     function replace() {
-        let replacedCss = css.replace(declarationRegex, (decl, key, val) => {
+        scanDefaultVarDecls(css);
+
+        let replacedCss = css.replace(declarationRegex, (decl, key, val, idx) => {
             try {
-                return replaceDeclaration(decl, key, val)
+                return replaceDeclaration(decl, key, val);
             } catch (err) {
                 console.error('failed replacing declaration', err);
-                return decl;
             }
+
+            return decl;
         });
 
         return replacedCss;
     }
 
+    function scanDefaultVarDecls(css) {
+        let match;
+
+        while ((match = defaultVarDeclarationRegex.exec(css)) !== null) {
+            let key = match[1];
+            let val = match[2];
+
+            defaultVarDeclarations[key] = val;
+        }
+    }
+
     function replaceDeclaration(decl, key, val) {
-        let replacedVal = val.trim();
         let replacedKey = key.trimRight();
+        let replacedVal = val.trim();
         let innerMatch = replacedVal.match(innerQuotesRegex);
 
         replacedVal = replaceRtlStrings(replacedVal);
@@ -74,12 +92,12 @@ function replacer({css, colors, fonts, numbers, isRtl}) {
 
         if (hasTransform) {
             const isSingleMatch = singleTransformRegex.test(value);
+            let evaledParams = evalParameterList(params);
 
             if (isSingleMatch) {
-                return singleEval(transformation, params);
+                return singleEval(transformation, evaledParams);
             }
 
-            let evaledParams = evalParameterList(params);
             return singleEval(transformation, evaledParams);
         } else {
             return singleEval(value);
@@ -113,9 +131,13 @@ function replacer({css, colors, fonts, numbers, isRtl}) {
     }
 
     function evalCustomVar(transform, customVar) {
-        let customVarVal = customVarContainers[transform][getCustomVar(customVar)];
-        if (customVarVal) {
-            let evaled = recursiveEval(customVarVal);
+        customVar = getCustomVar(customVar);
+        let valFromWix = customVarContainers[transform][customVar];
+        let valFromDefault = defaultVarDeclarations[customVar];
+        let val = valFromWix || valFromDefault;
+
+        if (val) {
+            let evaled = recursiveEval(val);
             return evaled;
         }
     }
@@ -181,11 +203,21 @@ function replacer({css, colors, fonts, numbers, isRtl}) {
     }
 
     function number(params) {
-        return evalCustomVar('number', params[0]);
+        let val = evalCustomVar('number', params[0]);
+
+        if (!val)
+            val = numbers[params[0]];
+
+        return val;
     }
 
     function font(params) {
-        return evalCustomVar('font', params[0]);
+        let val = evalCustomVar('font', params[0]);
+
+        if (!val)
+            val = fonts[params[0]];
+
+        return val
     }
 }
 
