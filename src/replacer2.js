@@ -5,6 +5,7 @@ const declarationRegex = /(.*?):(.*?);/g;
 const innerQuotesRegex = /^"([^"]+)"/;
 const transformRegex = /^(\w*)\((.*)\)$/;
 const singleTransformRegex = /^(\w*)\(([^()]+)\)$/;
+const processParamsRegex = /,(?![^(]*\))/g;
 
 function replacer({css, colors, fonts, numbers, isRtl}) {
 
@@ -38,16 +39,32 @@ function replacer({css, colors, fonts, numbers, isRtl}) {
     }
 
     function replaceDeclaration(decl, key, val) {
-        val = val.trim();
-        let innerMatch = val.match(innerQuotesRegex);
+        let replacedVal = val.trim();
+        let replacedKey = key.trimRight();
+        let innerMatch = replacedVal.match(innerQuotesRegex);
+
+        replacedVal = replaceRtlStrings(replacedVal);
+        replacedKey = replaceRtlStrings(replacedKey);
 
         if (innerMatch) {
-            let evaled = recursiveEval(innerMatch[1]);
-            let replacedVal = val.replace(innerQuotesRegex, evaled);
-            return `${key}: ${replacedVal};`;
-        } else {
-            return decl;
+            replacedVal = replaceInnerQuotes(replacedVal, innerMatch[1]);
         }
+
+        return `${replacedKey}: ${replacedVal};`;
+    }
+
+    function replaceInnerQuotes(val, innerVal) {
+        let evaled = recursiveEval(innerVal);
+        return val.replace(innerQuotesRegex, evaled);
+    }
+
+    function replaceRtlStrings(str) {
+        let replaced = str.replace(/STARTSIGN/g, isRtl ? '' : '-')
+                          .replace(/ENDSIGN/g, isRtl ? '-' : '')
+                          .replace(/START/g, isRtl ? 'right' : 'left')
+                          .replace(/END/g, isRtl ? 'left' : 'right')
+                          .replace(/DIR/g, isRtl ? 'rtl' : 'ltr');
+        return replaced;
     }
 
     function recursiveEval(value) {
@@ -104,11 +121,10 @@ function replacer({css, colors, fonts, numbers, isRtl}) {
     }
 
     function processParams(params) {
-        let commaRegex = /,(?![^(]*\))/g;
         let match;
         let indices = [], args = [];
 
-        while ((match = commaRegex.exec(params)) !== null) {
+        while ((match = processParamsRegex.exec(params)) !== null) {
             indices.push(match.index);
         }
 

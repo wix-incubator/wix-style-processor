@@ -4,17 +4,22 @@ import {assert} from 'chai';
 import css from 'css';
 
 describe.only('replacer2', () => {
+    let opts;
+
+    beforeEach(() => {
+        opts = {
+            colors: {},
+            fonts: {},
+            numbers: {}
+        };
+    });
 
     it('color transformation', () => {
         let css = `.foo { rule: bar; rule3: baz; rule4: "color(color-1)"; rule5: "color(color(color-2))"; }`;
 
-        let opts = {
-            colors: {
-                'color-1': '#FF0000',
-                'color-2': 'color-1'
-            },
-            fonts: {},
-            numbers: {}
+        opts.colors = {
+            'color-1': '#FF0000',
+            'color-2': 'color-1'
         };
 
         let cssResult = run(css, opts);
@@ -24,12 +29,8 @@ describe.only('replacer2', () => {
     it('opacity transformation', () => {
         let css = `.foo { rule1: "opacity(color-1, 0.5)"; }`;
 
-        let opts = {
-            colors: {
-                'color-1': '#FF0000',
-            },
-            fonts: {},
-            numbers: {}
+        opts.colors ={
+            'color-1': '#FF0000',
         };
 
         let cssResult = run(css, opts);
@@ -39,12 +40,8 @@ describe.only('replacer2', () => {
     it('composed opacity', () => {
         let css = `.foo { rule1: "opacity(color(color-1), 0.5)"; }`;
 
-        let opts = {
-            colors: {
-                'color-1': '#FF0000',
-            },
-            fonts: {},
-            numbers: {}
+        opts.colors = {
+            'color-1': '#FF0000'
         };
 
         let cssResult = run(css, opts);
@@ -54,12 +51,8 @@ describe.only('replacer2', () => {
     it('composed opacity with custom var', () => {
         let css = `.foo { rule1: "opacity(--foo, 0.5)"; }`;
 
-        let opts = {
-            colors: {
-                'foo': '#FFFF00',
-            },
-            fonts: {},
-            numbers: {},
+        opts.colors = {
+            'foo': '#FFFF00'
         };
 
         let cssResult = run(css, opts);
@@ -69,13 +62,9 @@ describe.only('replacer2', () => {
     it('join', () => {
         let css = `.foo { rule1: "join(color-1, 1, color-2, 1)"; }`;
 
-        let opts = {
-            colors: {
-                'color-1': '#FF0000',
-                'color-2': '#00FF00'
-            },
-            fonts: {},
-            numbers: {}
+        opts.colors = {
+            'color-1': '#FF0000',
+            'color-2': '#00FF00'
         };
 
         let cssResult = run(css, opts);
@@ -85,13 +74,9 @@ describe.only('replacer2', () => {
     it('composed join', () => {
         let css = `.foo { rule1: "join(opacity(color-1, 0.5), 1, opacity(color-2, 0.5), 1)"; }`;
 
-        let opts = {
-            colors: {
-                'color-1': '#FF0000',
-                'color-2': '#00FF00'
-            },
-            fonts: {},
-            numbers: {}
+        opts.colors = {
+            'color-1': '#FF0000',
+            'color-2': '#00FF00'
         };
 
         let cssResult = run(css, opts);
@@ -101,13 +86,9 @@ describe.only('replacer2', () => {
     it('param', () => {
         let css = `.foo { rule1: "color(--zz)"; }`;
 
-        let opts = {
-            colors: {
-                'color-1': '#FFFF00',
-                'zz': 'color(color-1)'
-            },
-            fonts: {},
-            numbers: {}
+        opts.colors = {
+            'color-1': '#FFFF00',
+            'zz': 'color(color-1)'
         };
 
         let cssResult = run(css, opts);
@@ -117,12 +98,8 @@ describe.only('replacer2', () => {
     it('number', () => {
         let css = `.foo { rule1: "number(--foo)"px; }`;
 
-        let opts = {
-            colors: {},
-            fonts: {},
-            numbers: {
-                'foo': '42'
-            }
+        opts.numbers = {
+            'foo': '42'
         };
 
         let cssResult = run(css, opts);
@@ -132,26 +109,140 @@ describe.only('replacer2', () => {
     it('font', () => {
         let css = `.foo { rule1: "font(--foo)"px; }`;
 
-        let opts = {
-            colors: {},
-            fonts: {
-                'foo': '21'
-            },
-            numbers: {}
+        opts.fonts = {
+            'foo': '21'
         };
 
         let cssResult = run(css, opts);
         assert.equal(cssResult, '.foo { rule1: 21px; }');
     });
 
+    describe('RTL/LTR transformations', () => {
+        describe('RTL', () => {
+            beforeEach(() => {
+                opts.isRtl = true;
+            });
+
+            it('START', () => {
+                //Given
+                let css = '.foo { margin-START: 5px; }'
+
+                //When
+                let cssResult = run(css, opts);
+
+                //Then
+                assert.equal(cssResult, '.foo { margin-right: 5px; }');
+            });
+
+            it('END', () => {
+                //Given
+                let css = '.foo { margin-END: 5px; }';
+
+                //When
+                let result = run(css, opts);
+
+                //Then
+                assert.equal(result, '.foo { margin-left: 5px; }');
+            });
+
+            it('STARTSIGN', () => {
+                //Given
+                let css = '.foo { padding: STARTSIGN5px; }';
+
+                //When
+                let result = run(css, opts);
+
+                //Then
+                assert.equal(result, '.foo { padding: 5px; }');
+            });
+
+            it('ENDSIGN', () => {
+                //Given
+                let css = '.foo { padding: ENDSIGN5px; }';
+
+                //When
+                let result = run(css, opts);
+
+                //Then
+                assert.equal(result, '.foo { padding: -5px; }');
+            });
+
+            it('DIR', () => {
+                //Given
+                let css = '.foo { direction: DIR; }';
+
+                //When
+                let result = run(css, opts);
+
+                //Then
+                assert.equal(result, '.foo { direction: rtl; }');
+            });
+        });
+
+        describe('LTR', () => {
+            beforeEach(() => {
+                opts.isRtl = false;
+            });
+
+            it('START', () => {
+                //Given
+                let css = '.foo { margin-START: 5px; }'
+
+                //When
+                let cssResult = run(css, opts);
+
+                //Then
+                assert.equal(cssResult, '.foo { margin-left: 5px; }');
+            });
+
+            it('END', () => {
+                //Given
+                let css = '.foo { margin-END: 5px; }';
+
+                //When
+                let result = run(css, opts);
+
+                //Then
+                assert.equal(result, '.foo { margin-right: 5px; }');
+            });
+
+            it('STARTSIGN', () => {
+                //Given
+                let css = '.foo { padding: STARTSIGN5px; }';
+
+                //When
+                let result = run(css, opts);
+
+                //Then
+                assert.equal(result, '.foo { padding: -5px; }');
+            });
+
+            it('ENDSIGN', () => {
+                //Given
+                let css = '.foo { padding: ENDSIGN5px; }';
+
+                //When
+                let result = run(css, opts);
+
+                //Then
+                assert.equal(result, '.foo { padding: 5px; }');
+            });
+
+            it('DIR', () => {
+                //Given
+                let css = '.foo { direction: DIR; }';
+
+                //When
+                let result = run(css, opts);
+
+                //Then
+                assert.equal(result, '.foo { direction: ltr; }');
+            });
+        });
+    });
+
     it("don't throw given invalid css", () => {
         let css = `.foo { rule1: "gaga(ccc)"; rule2: "color(bbb)"; rule3: "opacity(iii)"; rule4: #fff; }`;
-
-        let opts = {
-            colors: {},
-            fonts: {},
-            numbers: {}
-        };
 
         let cssResult = run(css, opts);
         assert.equal(cssResult, '.foo { rule1: undefined; rule2: undefined; rule3: "opacity(iii)"; rule4: #fff; }')
@@ -165,13 +256,9 @@ describe.only('replacer2', () => {
             cssStr += `.${decl} { background-color: "color(color-2)"; }`;
         }
 
-        let opts = {
-            colors: {
-                'color-2': '#FF0000'
-            },
-            fonts: {},
-            numbers: {}
-        }
+        opts.colors = {
+            'color-2': '#FF0000'
+        };
 
         console.time('f');
         let cssResult = run(cssStr, opts);
