@@ -14,7 +14,7 @@ function replacer(replacerParams,
                       valueTransformers: {},
                       declarationTransformers: []
                   }) {
-    const {css, colors, fonts, numbers, isRtl} = replacerParams;
+    const {css, colors, fonts, numbers} = replacerParams;
 
     const customVarContainers = {
         color: colors,
@@ -60,9 +60,8 @@ function replacer(replacerParams,
         let replacedVal = val.trim();
         let innerMatch = replacedVal.match(innerQuotesRegex);
 
-        // ({replacedKey, replacedVal}) = plugins.fullReplacers[]
-        replacedVal = replaceRtlStrings(replacedVal);
-        replacedKey = replaceRtlStrings(replacedKey);
+        ({replacedKey, replacedVal} = runDeclarationTransformers(replacedKey,
+                                                                 replacedVal));
 
         if (innerMatch) {
             replacedVal = replaceInnerQuotes(replacedVal, innerMatch[1]);
@@ -74,15 +73,6 @@ function replacer(replacerParams,
     function replaceInnerQuotes(val, innerVal) {
         let evaled = recursiveEval(innerVal);
         return val.replace(innerQuotesRegex, evaled);
-    }
-
-    function replaceRtlStrings(str) {
-        let replaced = str.replace(/STARTSIGN/g, isRtl ? '' : '-')
-                          .replace(/ENDSIGN/g, isRtl ? '-' : '')
-                          .replace(/START/g, isRtl ? 'right' : 'left')
-                          .replace(/END/g, isRtl ? 'left' : 'right')
-                          .replace(/DIR/g, isRtl ? 'rtl' : 'ltr');
-        return replaced;
     }
 
     function recursiveEval(value) {
@@ -168,6 +158,17 @@ function replacer(replacerParams,
         }
 
         return args;
+    }
+
+    function runDeclarationTransformers(key, value) {
+        _.each(declarationPlugins, plugin => {
+            ({key, value} = plugin(key, value));
+        });
+
+        return {
+            replacedKey: key,
+            replacedVal: value
+        };
     }
 }
 

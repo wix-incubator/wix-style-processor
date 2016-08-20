@@ -119,6 +119,25 @@ describe('replacer', () => {
     });
 
     describe('RTL/LTR transformations', () => {
+        function replaceRtlStrings(str) {
+            let replaced = str.replace(/STARTSIGN/g, opts.isRtl ? '' : '-')
+                              .replace(/ENDSIGN/g, opts.isRtl ? '-' : '')
+                              .replace(/START/g, opts.isRtl ? 'right' : 'left')
+                              .replace(/END/g, opts.isRtl ? 'left' : 'right')
+                              .replace(/DIR/g, opts.isRtl ? 'rtl' : 'ltr');
+            return replaced;
+        }
+
+        function rtlPlugin(key, value) {
+            key = replaceRtlStrings(key);
+            value = replaceRtlStrings(value);
+            return {key, value};
+        }
+
+        beforeEach(() => {
+            pluginTransformations.declarationTransformers = [rtlPlugin];
+        })
+
         describe('RTL', () => {
             beforeEach(() => {
                 opts.isRtl = true;

@@ -30,7 +30,6 @@ export default {
 
 function setDefaultOptions(options, plugins) {
     options = options || {};
-    options.isRtl = options.isRtl || false;
     options.plugins = options.plugins || plugins;
     return options;
 }

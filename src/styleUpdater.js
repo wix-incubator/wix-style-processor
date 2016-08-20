@@ -19,8 +19,7 @@ export default (wixService, domService, options) => ({
                 css,
                 colors,
                 fonts,
-                numbers,
-                isRtl: options.isRtl
+                numbers
             }, options.plugins);
 
             domService.overrideStyles(newCss);

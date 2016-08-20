@@ -42,16 +42,6 @@ describe('Index', () => {
         }).catch(err => {setTimeout(function() { throw err; });});
     });
 
-    it('should use START=right given isRtl is true', done => {
-        driver.given.css('.foo {START: 5px;}');
-        driver.when.init({isRtl: true}).then(() => {
-            expect(getOverrideStyleCallArg(driver))
-                .to.equal('.foo {right: 5px;}');
-
-            done();
-        }).catch(err => {setTimeout(function() { throw err; });});
-    });
-
     it('has plugin support', done => {
         driver.given.css('.foo {bar: "increment(number(--baz))"px; --baz: 1;}')
                     .plugin('increment', params => parseInt(params[0]) + 1);
