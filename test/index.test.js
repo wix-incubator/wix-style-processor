@@ -49,6 +49,17 @@ describe('Index', () => {
                 .to.equal('.foo {right: 5px;}');
 
             done();
-        }).catch(err => {setTimeout(function() { throw err; });});;
+        }).catch(err => {setTimeout(function() { throw err; });});
+    });
+
+    it('has plugin support', done => {
+        driver.given.css('.foo {bar: "increment(number(--baz))"px; --baz: 1;}')
+                    .plugin('increment', params => parseInt(params[0]) + 1);
+
+        driver.when.init().then(() => {
+            expect(driver.get.domService().overrideStyles.getCall(0).args[0])
+                .to.equal('.foo {bar: 2px; --baz: 1;}');
+            done();
+        }).catch(err => {setTimeout(function() { throw err; });});
     });
 });

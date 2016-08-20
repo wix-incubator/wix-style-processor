@@ -15,7 +15,14 @@ export default (wixService, domService, options) => ({
             const colors = wixStylesColorUtils.getFullColorStyles({colorStyles, siteColors}) || {};
             const fonts = wixStylesFontUtils.getFullFontStyles({fontStyles, siteTextPresets}) || {};
 
-            let newCss = replacer({css, colors, fonts, numbers, isRtl: options.isRtl});
+            let newCss = replacer({
+                css,
+                colors,
+                fonts,
+                numbers,
+                isRtl: options.isRtl
+            }, options.plugins);
+
             domService.overrideStyles(newCss);
         }).catch(err => {
             console.error("failed updating styles", err);

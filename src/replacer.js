@@ -2,7 +2,7 @@ import _ from 'lodash';
 import basicTransformations from './transformations';
 
 const declarationRegex = /(.*?):(.*?);/g;
-const defaultVarDeclarationRegex = /--(.*?):\s*"?(.*?)"?;/g;
+const defaultVarDeclarationRegex = /--([^;]*?):\s*"?([^;]*?)"?;/g;
 const innerQuotesRegex = /^"([^"]+)"/;
 const transformRegex = /^(\w*)\((.*)\)$/;
 const singleTransformRegex = /^(\w*)\(([^()]+)\)$/;

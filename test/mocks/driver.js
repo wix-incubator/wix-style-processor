@@ -43,7 +43,11 @@ export default class Driver {
             styleParams: (styleParams) => {
                 this.mocks.Wix.given.styleParams(styleParams);
                 return this.given;
-            }
+            },
+            plugin: (...args) => {
+                Index.plugin(...args);
+                return this.given;
+            },
         };
 
         this.get = {
