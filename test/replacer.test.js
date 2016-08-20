@@ -281,6 +281,28 @@ describe('replacer', () => {
         assert.equal(typeof(parameters[2]), 'function');
     });
 
+    it('does not modify static params', () => {
+        //Given
+        const css = '.foo { padding: 10px 11px 12px 13px;margin-right: 20px;color: blue; }'
+
+        //When
+        let result = run(css);
+
+        //Then
+        assert.equal(result, css);
+    });
+
+    it('does not modify regular css vars', () => {
+        //Given
+        const css = '.foo { --bar: var(42);--baz: var(21);padding: --baz;}';
+
+        //When
+        let result = run(css);
+
+        //Then
+        assert.equal(result, css)
+    });
+
     function run(css) {
         return replacer({css, ...opts}, pluginTransformations);
     }
