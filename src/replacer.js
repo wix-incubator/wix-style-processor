@@ -9,7 +9,11 @@ const singleTransformRegex = /^(\w*)\(([^()]+)\)$/;
 const processParamsRegex = /,(?![^(]*\))/g;
 const trimRegex = /^\s*(\S.*\S*)\s*$/;
 
-function replacer(replacerParams, pluginTransformations = {}) {
+function replacer(replacerParams,
+                  plugins = {
+                      valueTransformers: {},
+                      declarationTransformers: []
+                  }) {
     const {css, colors, fonts, numbers, isRtl} = replacerParams;
 
     const customVarContainers = {
@@ -19,6 +23,8 @@ function replacer(replacerParams, pluginTransformations = {}) {
     };
 
     const defaultVarDeclarations = {};
+    const declarationPlugins = plugins.declarationTransformers;
+    const valuePlugins = plugins.valueTransformers;
 
     return replace();
 
@@ -54,6 +60,7 @@ function replacer(replacerParams, pluginTransformations = {}) {
         let replacedVal = val.trim();
         let innerMatch = replacedVal.match(innerQuotesRegex);
 
+        // ({replacedKey, replacedVal}) = plugins.fullReplacers[]
         replacedVal = replaceRtlStrings(replacedVal);
         replacedKey = replaceRtlStrings(replacedKey);
 
@@ -111,7 +118,7 @@ function replacer(replacerParams, pluginTransformations = {}) {
 
     function singleEval(selectedTransformation, rawParams) {
         let params = rawParams && processParams(rawParams);
-        let pluginTransformation = pluginTransformations[selectedTransformation];
+        let pluginTransformation = valuePlugins[selectedTransformation];
         let basicTransformation = basicTransformations[selectedTransformation];
         let transformation = pluginTransformation || basicTransformation;
         let result = invokeTransformation(transformation, params);

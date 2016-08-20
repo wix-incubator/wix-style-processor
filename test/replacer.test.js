@@ -12,7 +12,7 @@ describe('replacer', () => {
             numbers: {}
         };
 
-        pluginTransformations = {};
+        pluginTransformations = {valueTransformers: {}, declarationTransformers: []};
     });
 
     it('color transformation', () => {
@@ -336,8 +336,10 @@ describe('replacer', () => {
         const css = '.foo { margin: "incrementer(number(--num))"px; }';
 
         pluginTransformations = {
-            incrementer(params, siteVars) {
-                return parseInt(params[0]) + 1;
+            valueTransformers: {
+                incrementer(params, siteVars) {
+                    return parseInt(params[0]) + 1;
+                }
             }
         };
 

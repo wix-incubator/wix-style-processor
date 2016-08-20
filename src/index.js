@@ -3,7 +3,7 @@ import domService from './domService';
 import WixService from './wixService';
 
 export default {
-    plugins: {},
+    plugins: {valueTransformers: {}, declarationTransformers: []},
 
     init(options) {
         options = setDefaultOptions(options, this.plugins);
@@ -13,8 +13,17 @@ export default {
         return styleUpdater.update();
     },
 
-    plugin(name, fun) {
-        this.plugins[name] = fun;
+    plugin(...args) {
+        return this.valuePlugin(...args);
+    },
+
+    valuePlugin(name, fun) {
+        this.plugins.valueTransformers[name] = fun;
+        return this;
+    },
+
+    declarationPlugin(fun) {
+        this.plugins.declarationTransformers.push(fun);
         return this;
     }
 }
