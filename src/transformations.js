@@ -60,7 +60,7 @@ function font(params, siteVars, evalCustomVar) {
         val = siteVars.fonts[params[0]];
 
     if (typeof(val) === 'object')
-        val = siteVars.fontUtils.toFontCssValue(val);
+        val = fontUtils.toFontCssValue(val);
 
     return val
 }
