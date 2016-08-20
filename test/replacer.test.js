@@ -24,7 +24,7 @@ describe('replacer', () => {
         };
 
         let cssResult = run(css);
-        assert.equal(cssResult, '.foo { rule: bar; rule3: baz; rule4: #FF0000; rule5: #FF0000; }');
+        assert.equal(cssResult, '.foo { rule: bar;rule3: baz;rule4: #FF0000;rule5: #FF0000; }');
     });
 
     it('opacity transformation', () => {
@@ -118,154 +118,11 @@ describe('replacer', () => {
         assert.equal(cssResult, '.foo { rule1: 21px; }');
     });
 
-    describe('RTL/LTR transformations', () => {
-        function replaceRtlStrings(str) {
-            let replaced = str.replace(/STARTSIGN/g, opts.isRtl ? '' : '-')
-                              .replace(/ENDSIGN/g, opts.isRtl ? '-' : '')
-                              .replace(/START/g, opts.isRtl ? 'right' : 'left')
-                              .replace(/END/g, opts.isRtl ? 'left' : 'right')
-                              .replace(/DIR/g, opts.isRtl ? 'rtl' : 'ltr');
-            return replaced;
-        }
-
-        function rtlPlugin(key, value) {
-            key = replaceRtlStrings(key);
-            value = replaceRtlStrings(value);
-            return {key, value};
-        }
-
-        beforeEach(() => {
-            pluginTransformations.declarationTransformers = [rtlPlugin];
-        })
-
-        describe('RTL', () => {
-            beforeEach(() => {
-                opts.isRtl = true;
-            });
-
-            it('START', () => {
-                //Given
-                let css = '.foo { margin-START: 5px; }'
-
-                //When
-                let cssResult = run(css);
-
-                //Then
-                assert.equal(cssResult, '.foo { margin-right: 5px; }');
-            });
-
-            it('END', () => {
-                //Given
-                let css = '.foo { margin-END: 5px; }';
-
-                //When
-                let result = run(css);
-
-                //Then
-                assert.equal(result, '.foo { margin-left: 5px; }');
-            });
-
-            it('STARTSIGN', () => {
-                //Given
-                let css = '.foo { padding: STARTSIGN5px; }';
-
-                //When
-                let result = run(css);
-
-                //Then
-                assert.equal(result, '.foo { padding: 5px; }');
-            });
-
-            it('ENDSIGN', () => {
-                //Given
-                let css = '.foo { padding: ENDSIGN5px; }';
-
-                //When
-                let result = run(css);
-
-                //Then
-                assert.equal(result, '.foo { padding: -5px; }');
-            });
-
-            it('DIR', () => {
-                //Given
-                let css = '.foo { direction: DIR; }';
-
-                //When
-                let result = run(css);
-
-                //Then
-                assert.equal(result, '.foo { direction: rtl; }');
-            });
-        });
-
-        describe('LTR', () => {
-            beforeEach(() => {
-                opts.isRtl = false;
-            });
-
-            it('START', () => {
-                //Given
-                let css = '.foo { margin-START: 5px; }'
-
-                //When
-                let cssResult = run(css);
-
-                //Then
-                assert.equal(cssResult, '.foo { margin-left: 5px; }');
-            });
-
-            it('END', () => {
-                //Given
-                let css = '.foo { margin-END: 5px; }';
-
-                //When
-                let result = run(css);
-
-                //Then
-                assert.equal(result, '.foo { margin-right: 5px; }');
-            });
-
-            it('STARTSIGN', () => {
-                //Given
-                let css = '.foo { padding: STARTSIGN5px; }';
-
-                //When
-                let result = run(css);
-
-                //Then
-                assert.equal(result, '.foo { padding: -5px; }');
-            });
-
-            it('ENDSIGN', () => {
-                //Given
-                let css = '.foo { padding: ENDSIGN5px; }';
-
-                //When
-                let result = run(css);
-
-                //Then
-                assert.equal(result, '.foo { padding: 5px; }');
-            });
-
-            it('DIR', () => {
-                //Given
-                let css = '.foo { direction: DIR; }';
-
-                //When
-                let result = run(css);
-
-                //Then
-                assert.equal(result, '.foo { direction: ltr; }');
-            });
-        });
-    });
-
     it("don't throw given invalid css", () => {
-        let css = `.foo { rule1: "gaga(ccc)"; rule2: "color(bbb)"; rule3: "opacity(iii)"; rule4: #fff; }`;
+        let css = `.foo { rule1: "gaga(ccc)";rule2: "color(bbb)";rule3: "opacity(iii)";rule4: #fff; }`;
 
         let cssResult = run(css);
-        assert.equal(cssResult, '.foo { rule1: undefined; rule2: undefined; rule3: "opacity(iii)"; rule4: #fff; }')
+        assert.equal(cssResult, '.foo { rule1: undefined;rule2: undefined;rule3: "opacity(iii)";rule4: #fff; }');
     });
 
     describe('default param', () => {
@@ -305,7 +162,7 @@ describe('replacer', () => {
             let result = run(css, opts);
 
             //Then
-            assert.equal(result, '.foo { --bar: quux; baz: quux;}');
+            assert.equal(result, '.foo { --bar: quux;baz: quux;}');
         }
 
         function testDefaultParamOverride(type) {
@@ -321,7 +178,7 @@ describe('replacer', () => {
             let result = run(css, opts);
 
             //Then
-            assert.equal(result, '.foo { --bar: quux; baz: 42;}');
+            assert.equal(result, '.foo { --bar: quux;baz: 42;}');
         }
     });
 
@@ -347,7 +204,7 @@ describe('replacer', () => {
 
         let result = run(css);
 
-        assert.equal(result, '.foo { --ccc: 21; margin-top: 21; }');
+        assert.equal(result, '.foo { --ccc: 21;margin-top: 21; }');
     });
 
     it('plugin transformation', () => {
@@ -371,6 +228,57 @@ describe('replacer', () => {
 
         //Then
         assert.equal(result, '.foo { margin: 2px; }');
+    });
+
+    it('pass correct parameters to declaration plugins', () => {
+        //Given
+        const css = '.foo { bar: baz; one: two; }';
+
+        let parameters;
+
+        pluginTransformations = {
+            declarationTransformers: [((...args) => parameters = args)]
+        };
+
+        //When
+        run(css);
+
+        //Then
+        assert.equal(parameters[0], 'one');
+        assert.equal(parameters[1], 'two');
+        assert.deepEqual(parameters[2], {
+            css: '.foo { bar: baz; one: two; }',
+            colors: {},
+            fonts: {},
+            numbers: {}
+        });
+        assert.equal(typeof(parameters[3]), 'function');
+    });
+
+    it('pass correct parameters to value plugins', () => {
+        //Given
+        const css = '.foo { bar: "increment(number(--baz))"; --baz: 3; }';
+
+        let parameters;
+
+        pluginTransformations = {
+            valueTransformers: {
+                increment: (...args) => {parameters = args;}
+            }
+        };
+
+        //When
+        run(css);
+
+        //Then
+        assert.deepEqual(parameters[0], ['3']);
+        assert.deepEqual(parameters[1], {
+            css: '.foo { bar: "increment(number(--baz))"; --baz: 3; }',
+            colors: {},
+            fonts: {},
+            numbers: {}
+        });
+        assert.equal(typeof(parameters[2]), 'function');
     });
 
     function run(css) {

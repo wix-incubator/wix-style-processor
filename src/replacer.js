@@ -56,7 +56,7 @@ function replacer(replacerParams,
     }
 
     function replaceDeclaration(decl, key, val) {
-        let replacedKey = key.trimRight();
+        let replacedKey = key.trim();
         let replacedVal = val.trim();
         let innerMatch = replacedVal.match(innerQuotesRegex);
 
@@ -162,7 +162,7 @@ function replacer(replacerParams,
 
     function runDeclarationTransformers(key, value) {
         _.each(declarationPlugins, plugin => {
-            ({key, value} = plugin(key, value));
+            ({key, value} = plugin(key, value, replacerParams, evalCustomVar));
         });
 
         return {

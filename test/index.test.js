@@ -48,7 +48,7 @@ describe('Index', () => {
 
         driver.when.init().then(() => {
             expect(getOverrideStyleCallArg(driver))
-                .to.equal('.foo {bar: 2px; --baz: 1;}');
+                .to.equal('.foo {bar: 2px;--baz: 1;}');
             done();
         }).catch(err => {setTimeout(function() { throw err; });});
     });
@@ -70,7 +70,7 @@ describe('Index', () => {
 
         driver.when.init().then(() => {
             expect(getOverrideStyleCallArg(driver))
-                .to.equal('.font-test{--some-font: normal normal normal 16px/1.4em din-next-w01-light,din-next-w02-light,din-next-w10-light,sans-serif; font: normal normal normal 16px/1.4em din-next-w01-light,din-next-w02-light,din-next-w10-light,sans-serif;}');
+                .to.equal('.font-test{--some-font: normal normal normal 16px/1.4em din-next-w01-light,din-next-w02-light,din-next-w10-light,sans-serif;font: normal normal normal 16px/1.4em din-next-w01-light,din-next-w02-light,din-next-w10-light,sans-serif;}');
             done();
         }).catch(err => {setTimeout(function() { throw err; });});
     });
