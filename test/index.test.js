@@ -56,13 +56,13 @@ describe('Index', () => {
     it('has declaration plugin support', done => {
         driver.given.css('.foo {bar: 4;}')
                     .declarationPlugin((key, val) => ({
-                        key: key + '$',
-                        value: val + '#'
+                        key: 'ZzZ' + key + 'ZzZ',
+                        value: '#' + val + '#'
                     }));
 
         driver.when.init().then(() => {
             expect(getOverrideStyleCallArg(driver))
-                .to.equal('.foo { bar$: 4#;}');
+                .to.equal('.foo { ZzZbarZzZ: #4#;}');
             done();
         }).catch(err => {setTimeout(function() { throw err; });});
     });
