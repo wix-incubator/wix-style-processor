@@ -31,9 +31,9 @@ function replacer(replacerParams,
     function replace() {
         scanDefaultVarDecls(css);
 
-        let replacedCss = css.replace(declarationRegex, (decl, key, val, idx) => {
+        let replacedCss = css.replace(declarationRegex, (decl, key, val) => {
             try {
-                return replaceDeclaration(decl, key, val);
+                return replaceDeclaration(key, val);
             } catch (err) {
                 console.error('failed replacing declaration', err);
             }
@@ -55,7 +55,7 @@ function replacer(replacerParams,
         }
     }
 
-    function replaceDeclaration(decl, key, val) {
+    function replaceDeclaration(key, val) {
         let replacedKey = key.trim();
         let replacedVal = val.trim();
         let innerMatch = replacedVal.match(innerQuotesRegex);
@@ -98,16 +98,11 @@ function replacer(replacerParams,
 
     function evalParameterList(value) {
         let params = processParams(value);
-        let evaledParams = _.map(params, p => {
-            let p2 = recursiveEval(p);
-            return p2;
-        });
-        let stringifiedEvaledParams = evaledParams.join(',');
-        return stringifiedEvaledParams;
+        let evaledParams = _.map(params, p => recursiveEval(p));
+        return evaledParams;
     }
 
-    function singleEval(selectedTransformation, rawParams) {
-        let params = rawParams && processParams(rawParams);
+    function singleEval(selectedTransformation, params) {
         let pluginTransformation = valuePlugins[selectedTransformation];
         let basicTransformation = basicTransformations[selectedTransformation];
         let transformation = pluginTransformation || basicTransformation;
