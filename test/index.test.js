@@ -8,7 +8,7 @@ describe('Index', () => {
         driver = new Driver();
 
         driver
-            .given.css('.foo {--bar: "color(color-1)";color: "color(--bar)"}')
+            .given.css('.foo {--bar: "color(color-1)";color: "color(--bar)";}')
             .defaultSiteColors()
             .styleParams({
                 numbers: {},
@@ -20,7 +20,7 @@ describe('Index', () => {
 
     it('should update on init', (done) => {
         driver.when.init().then(() => {
-            expect(driver.get.domService().overrideStyles.getCall(0).args[0]).to.equal('.foo {color: #FFFFFF}');
+            expect(driver.get.domService().overrideStyles.getCall(0).args[0]).to.equal('.foo {--bar: #FFFFFF;color: #FFFFFF;}');
             done();
         }).catch(err => {setTimeout(function() { throw err; });});
     });
@@ -36,7 +36,7 @@ describe('Index', () => {
             });
 
             driver.when.updateStyleParams().then(() => {
-                expect(driver.get.domService().overrideStyles.getCall(1).args[0]).to.equal('.foo {color: red}');
+                expect(driver.get.domService().overrideStyles.getCall(1).args[0]).to.equal('.foo {--bar: red;color: red;}');
                 done();
             }).catch(err => {setTimeout(function() { throw err; });});
         }).catch(err => {setTimeout(function() { throw err; });});

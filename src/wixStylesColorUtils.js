@@ -2,7 +2,7 @@ import _ from "lodash";
 import Color from 'color';
 
 let WixColorUtils = {
-    getFullColorStyles({colorStyles, siteColors, defaults}) {
+    getFullColorStyles({colorStyles, siteColors}) {
         let ret = {};
 
         // Fix color styles due to '.' to '-' conversion
@@ -19,23 +19,6 @@ let WixColorUtils = {
 
         // Fix for a bug in a very specific template
         ret.background = (fixedColorStyles.background || {}).value || (ret['color-1'] === '#FFFFFF') && (ret['color-2'] === '#F4EFE1') ? ret['color-2'] : ret['color-1'];
-
-        const working = _.clone(_.toPairs(defaults));
-        while (working.length > 0) {
-            const [key, defString, tried = false] = working.shift();
-            try {
-                ret[key] = (fixedColorStyles[key] || {}).value || (fixedColorStyles[key] || {}).rgba || this.calcValueFromString({ str: defString, values: ret });
-            } catch (e) {
-                if (e === 'unparsed') {
-                    if (tried) {
-                        throw(new Error(`[WixStylesColorUtils] Using unknown key as default for ${key}.`));
-                    }
-                    working.push([key, defString, true]);
-                } else {
-                    throw(e);
-                }
-            }
-        }
 
         return ret;
     },

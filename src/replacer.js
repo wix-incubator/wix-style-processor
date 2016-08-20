@@ -1,141 +1,167 @@
 import _ from 'lodash';
-import parseCssFont from 'parse-css-font';
-import WixStylesColorUtils from './wixStylesColorUtils.js';
-import WixStylesFontUtils from './wixStylesFontUtils.js';
+import basicTransformations from './transformations';
 
-export default class Replacer {
-    static defaultCustomVarRegex = /--(\S*?)\s*:\s*"(\w*?)\(([^\)]*?)\)"/g;
-    static defaultCustomVarRemovalRegex = /--(\S*?)\s*:\s*"(\w*?)\(([^\)]*?)\)";/g;
+const declarationRegex = /(.*?):(.*?);/g;
+const defaultVarDeclarationRegex = /--(.*?):\s*"?(.*?)"?;/g;
+const innerQuotesRegex = /^"([^"]+)"/;
+const transformRegex = /^(\w*)\((.*)\)$/;
+const singleTransformRegex = /^(\w*)\(([^()]+)\)$/;
+const processParamsRegex = /,(?![^(]*\))/g;
+const trimRegex = /^\s*(\S.*\S*)\s*$/;
 
-    constructor({css}) {
-        this.update({css});
+function replacer(replacerParams, pluginTransformations = {}) {
+    const {css, colors, fonts, numbers, isRtl} = replacerParams;
+
+    const customVarContainers = {
+        color: colors,
+        font: fonts,
+        number: numbers
+    };
+
+    const defaultVarDeclarations = {};
+
+    return replace();
+
+    function replace() {
+        scanDefaultVarDecls(css);
+
+        let replacedCss = css.replace(declarationRegex, (decl, key, val, idx) => {
+            try {
+                return replaceDeclaration(decl, key, val);
+            } catch (err) {
+                console.error('failed replacing declaration', err);
+            }
+
+            return decl;
+        });
+
+        return replacedCss;
     }
 
-    loadDefaultVariables(css) {
-        const defaults = {colors:{}, fonts:{}, numbers: {}};
+    function scanDefaultVarDecls(css) {
+        let match;
 
-        // Support CssVars style definition as well
-        let match = null;
-        while (match = Replacer.defaultCustomVarRegex.exec(css)) {
-            let name = match[1];
-            const type = match[2];
-            const value = match[3];
+        while ((match = defaultVarDeclarationRegex.exec(css)) !== null) {
+            let key = match[1];
+            let val = match[2];
 
-            switch (type) {
-                case 'color':
-                    defaults.colors[name] = value;
-                    break;
-                case 'fontPreset':
-                    defaults.fonts[name] = value;
-                    break;
-                case 'number':
-                    defaults.numbers[name] = value;
-                    break;
-            }
+            defaultVarDeclarations[key] = val;
+        }
+    }
+
+    function replaceDeclaration(decl, key, val) {
+        let replacedKey = key.trimRight();
+        let replacedVal = val.trim();
+        let innerMatch = replacedVal.match(innerQuotesRegex);
+
+        replacedVal = replaceRtlStrings(replacedVal);
+        replacedKey = replaceRtlStrings(replacedKey);
+
+        if (innerMatch) {
+            replacedVal = replaceInnerQuotes(replacedVal, innerMatch[1]);
         }
 
-        return defaults;
+        return `${replacedKey}: ${replacedVal};`;
     }
 
-    removeDefaultCssVars(css) {
-        return css.replace(Replacer.defaultCustomVarRemovalRegex, '');
+    function replaceInnerQuotes(val, innerVal) {
+        let evaled = recursiveEval(innerVal);
+        return val.replace(innerQuotesRegex, evaled);
     }
 
-    tokenizeDynamicValues(css) {
-        const parts = _.compact(css.split(/"((?:join|color|number|opacity|fontPreset)[^"]*?)"/g));
+    function replaceRtlStrings(str) {
+        let replaced = str.replace(/STARTSIGN/g, isRtl ? '' : '-')
+                          .replace(/ENDSIGN/g, isRtl ? '-' : '')
+                          .replace(/START/g, isRtl ? 'right' : 'left')
+                          .replace(/END/g, isRtl ? 'left' : 'right')
+                          .replace(/DIR/g, isRtl ? 'rtl' : 'ltr');
+        return replaced;
+    }
 
-        let tokens = _.map(parts, (part) => {
-            let matches;
-            if (part.match(/^(?:join|color|opacity)\(/)) {
-                return {type:'css-var-color', value: part};
-            } else if (part.match(/^fontPreset\(/)) {
-                return {type:'css-var-font', value: part};
-            } else if (matches = part.match(/^number\(([^\)]+)/)) {
-                return {type: 'css-var-number', value: matches[1].trim()};
-            } else {
-                return {type:'text', text: part};
+    function recursiveEval(value) {
+        value = value.toString();
+        const hasTransform = value.match(transformRegex);
+
+        if (hasTransform) {
+            const transformation = hasTransform[1];
+            const params = hasTransform[2];
+            const isSingleMatch = singleTransformRegex.test(value);
+
+            let evaledParams = evalParameterList(params);
+
+            if (isSingleMatch) {
+                return singleEval(transformation, evaledParams);
             }
+
+            return singleEval(transformation, evaledParams);
+        } else {
+            return singleEval(value);
+        }
+    }
+
+    function evalParameterList(value) {
+        let params = processParams(value);
+        let evaledParams = _.map(params, p => {
+            let p2 = recursiveEval(p);
+            return p2;
         });
-
-        return _.flatten(tokens);
+        let stringifiedEvaledParams = evaledParams.join(',');
+        return stringifiedEvaledParams;
     }
 
-    tokenizeDirectionVars(tokens) {
-        _.each(tokens, (token) => {
-            if (token.type === 'text') {
-                token.text = _.compact(token.text.split(/(STARTSIGN|ENDSIGN|DIR|END|START)/g));
-            }
-        });
+    function singleEval(selectedTransformation, rawParams) {
+        let params = rawParams && processParams(rawParams);
+        let pluginTransformation = pluginTransformations[selectedTransformation];
+        let basicTransformation = basicTransformations[selectedTransformation];
+        let transformation = pluginTransformation || basicTransformation;
+        let result = invokeTransformation(transformation, params);
+
+        if (!result && arguments.length === 1) {
+            result = arguments[0];
+        }
+
+        return result;
     }
 
-    update({css}) {
-        this.defaults = this.loadDefaultVariables(css);
-        css = this.removeDefaultCssVars(css);
-        this.tokens = this.tokenizeDynamicValues(css);
-        this.tokenizeDirectionVars(this.tokens);
+    function invokeTransformation(transformation, params) {
+        return transformation &&
+               transformation(params, replacerParams, evalCustomVar);
     }
 
-    get({colors, fonts, numbers, isRtl}) {
-        const css = [];
-
-        _.each(this.tokens, token => {
-            switch (token.type) {
-                case 'text': {
-                    _.each(token.text, text => {
-                        if (text === 'STARTSIGN') {
-                            css.push(isRtl ? '' : '-');
-                        } else if (text === 'ENDSIGN') {
-                            css.push(isRtl ? '-' : '');
-                        } else if (text === 'START') {
-                            css.push(isRtl ? 'right' : 'left');
-                        } else if (text === 'END') {
-                            css.push(isRtl ? 'left' : 'right');
-                        } else if (text === 'DIR') {
-                            css.push(isRtl ? 'rtl' : 'ltr');
-                        } else {
-                            css.push(text);
-                        }
-                    });
-                }
-                break;
-
-                case 'css-var-color': {
-                    const value = WixStylesColorUtils.calcValueFromString({str:token.value, values:colors});
-                    css.push(value);
-                }
-                break;
-
-                case 'css-var-font': {
-                    const value = WixStylesFontUtils.calcValueFromString({str:token.value, values:fonts});
-                    const cssValue = toFontCssValue(value);
-                    css.push(cssValue);
-                }
-                break;
-
-                case 'css-var-number': {
-                    let entry = token.value;
-                    if(_.startsWith(token.value, '--')) {
-                        entry = token.value.substr(2, token.value.length-2);
-                    }
-                    const value = numbers[entry];
-                    css.push(value);
-                }
-                break;
-
-                default: {
-                    const value = colors[token.fieldId] || WixStylesColorUtils.calcValueFromString({str:token.default, values:colors});
-                    css.push(`${token.type}: ${value};`);
-                }
-            }
-        });
-
-        return css.join('');
+    function getCustomVar(value) {
+        return _.startsWith(value, '--') && value.substr(2, value.length - 2);
     }
-};
 
-function toFontCssValue(value) {
-    const size = _.isNumber(value.size) ? value.size + 'px' : value.size;
-    const lineHeight = _.isNumber(value.lineHeight) ? value.lineHeight + 'px' : value.lineHeight;
+    function evalCustomVar(transform, customVar) {
+        customVar = getCustomVar(customVar);
+        let valFromWix = customVarContainers[transform][customVar];
+        let valFromDefault = defaultVarDeclarations[customVar];
+        let val = valFromWix || valFromDefault;
 
-    return `${value.style} ${value.variant} ${value.weight} ${size}/${lineHeight} ${value.family.join(',')}`;
+        if (val) {
+            let evaled = recursiveEval(val);
+            return evaled;
+        }
+    }
+
+    function processParams(params) {
+        let match;
+        let indices = [], args = [];
+
+        while ((match = processParamsRegex.exec(params)) !== null) {
+            indices.push(match.index);
+        }
+
+        let pos = 0;
+        for (let i = 0; i < indices.length + 1; i++) {
+            let idx = indices[i] || params.length;
+            let arg = params.substr(pos, idx - pos );
+            args.push(arg.trim());
+            pos = idx + 1;
+        }
+
+        return args;
+    }
 }
+
+export default replacer;

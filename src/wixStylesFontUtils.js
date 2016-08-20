@@ -2,7 +2,7 @@ import _ from "lodash";
 import parseCssFont from 'parse-css-font';
 
 const WixFontUtils = {
-    getFullFontStyles({fontStyles, siteTextPresets, defaults, isHebrew}) {
+    getFullFontStyles({fontStyles, siteTextPresets, isHebrew}) {
         let ret = {};
 
         // Fix color styles due to '.' to '-' conversion
@@ -32,10 +32,6 @@ const WixFontUtils = {
             ret['MEDIUM'] = parseCssFont('12px HelveticaNeueW01-55Roma');
             ret['STRONG'] = parseCssFont('12px HelveticaNeueW01-65Medi');
         }
-
-        _.each(_.toPairs(defaults), ([key, value]) => {
-            ret[key] = parsedFontStyles[key] || this.calcValueFromString({str:value, values:ret});
-        });
 
         _.each(ret, (font, key) => {
             if (isHebrew) {
