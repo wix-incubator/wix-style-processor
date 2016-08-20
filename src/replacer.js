@@ -1,13 +1,12 @@
 import _ from 'lodash';
 import basicTransformations from './transformations';
 
-const declarationRegex = /(.*?):(.*?);/g;
+const declarationRegex = /\s*([^;{]*?)\s*:\s*(.*?)\s*;/g
 const defaultVarDeclarationRegex = /--([^;]*?):\s*"?([^;]*?)"?;/g;
 const innerQuotesRegex = /^"([^"]+)"/;
 const transformRegex = /^(\w*)\((.*)\)$/;
 const singleTransformRegex = /^(\w*)\(([^()]+)\)$/;
 const processParamsRegex = /,(?![^(]*\))/g;
-const trimRegex = /^\s*(\S.*\S*)\s*$/;
 
 function replacer(replacerParams,
                   plugins = {
@@ -56,8 +55,8 @@ function replacer(replacerParams,
     }
 
     function replaceDeclaration(key, val) {
-        let replacedKey = key.trim();
-        let replacedVal = val.trim();
+        let replacedKey = key;
+        let replacedVal = val;
         let innerMatch = replacedVal.match(innerQuotesRegex);
 
         ({replacedKey, replacedVal} = runDeclarationTransformers(replacedKey,
@@ -67,7 +66,7 @@ function replacer(replacerParams,
             replacedVal = replaceInnerQuotes(replacedVal, innerMatch[1]);
         }
 
-        return `${replacedKey}: ${replacedVal};`;
+        return ` ${replacedKey}: ${replacedVal};`;
     }
 
     function replaceInnerQuotes(val, innerVal) {

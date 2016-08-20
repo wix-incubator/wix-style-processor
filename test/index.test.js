@@ -8,7 +8,7 @@ describe('Index', () => {
         driver = new Driver();
 
         driver
-            .given.css('.foo {--bar: "color(color-1)";color: "color(--bar)";}')
+            .given.css('.foo { --bar: "color(color-1)"; color: "color(--bar)";}')
             .defaultSiteColors()
             .styleParams({
                 numbers: {},
@@ -20,7 +20,7 @@ describe('Index', () => {
 
     it('should update on init', (done) => {
         driver.when.init().then(() => {
-            expect(getOverrideStyleCallArg(driver)).to.equal('.foo {--bar: #FFFFFF;color: #FFFFFF;}');
+            expect(getOverrideStyleCallArg(driver)).to.equal('.foo { --bar: #FFFFFF; color: #FFFFFF;}');
             done();
         }).catch(err => {setTimeout(function() { throw err; });});
     });
@@ -36,7 +36,7 @@ describe('Index', () => {
             });
 
             driver.when.updateStyleParams().then(() => {
-                expect(getOverrideStyleCallArg(driver, 1)).to.equal('.foo {--bar: red;color: red;}');
+                expect(getOverrideStyleCallArg(driver, 1)).to.equal('.foo { --bar: red; color: red;}');
                 done();
             }).catch(err => {setTimeout(function() { throw err; });});
         }).catch(err => {setTimeout(function() { throw err; });});
@@ -48,7 +48,7 @@ describe('Index', () => {
 
         driver.when.init().then(() => {
             expect(getOverrideStyleCallArg(driver))
-                .to.equal('.foo {bar: 2px;--baz: 1;}');
+                .to.equal('.foo { bar: 2px; --baz: 1;}');
             done();
         }).catch(err => {setTimeout(function() { throw err; });});
     });
@@ -62,7 +62,7 @@ describe('Index', () => {
 
         driver.when.init().then(() => {
             expect(getOverrideStyleCallArg(driver))
-                .to.equal('.foo {bar$: 4#;}');
+                .to.equal('.foo { bar$: 4#;}');
             done();
         }).catch(err => {setTimeout(function() { throw err; });});
     });
@@ -84,7 +84,7 @@ describe('Index', () => {
 
         driver.when.init().then(() => {
             expect(getOverrideStyleCallArg(driver))
-                .to.equal('.font-test{--some-font: normal normal normal 16px/1.4em din-next-w01-light,din-next-w02-light,din-next-w10-light,sans-serif;font: normal normal normal 16px/1.4em din-next-w01-light,din-next-w02-light,din-next-w10-light,sans-serif;}');
+                .to.equal('.font-test{ --some-font: normal normal normal 16px/1.4em din-next-w01-light,din-next-w02-light,din-next-w10-light,sans-serif; font: normal normal normal 16px/1.4em din-next-w01-light,din-next-w02-light,din-next-w10-light,sans-serif;}');
             done();
         }).catch(err => {setTimeout(function() { throw err; });});
     });

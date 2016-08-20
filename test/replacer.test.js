@@ -24,7 +24,7 @@ describe('replacer', () => {
         };
 
         let cssResult = run(css);
-        assert.equal(cssResult, '.foo { rule: bar;rule3: baz;rule4: #FF0000;rule5: #FF0000; }');
+        assert.equal(cssResult, '.foo { rule: bar; rule3: baz; rule4: #FF0000; rule5: #FF0000; }');
     });
 
     it('opacity transformation', () => {
@@ -119,10 +119,10 @@ describe('replacer', () => {
     });
 
     it("don't throw given invalid css", () => {
-        let css = `.foo { rule1: "gaga(ccc)";rule2: "color(bbb)";rule3: "opacity(iii)";rule4: #fff; }`;
+        let css = `.foo { rule1: "gaga(ccc)"; rule2: "color(bbb)"; rule3: "opacity(iii)"; rule4: #fff; }`;
 
         let cssResult = run(css);
-        assert.equal(cssResult, '.foo { rule1: undefined;rule2: undefined;rule3: "opacity(iii)";rule4: #fff; }');
+        assert.equal(cssResult, '.foo { rule1: undefined; rule2: undefined; rule3: "opacity(iii)"; rule4: #fff; }');
     });
 
     describe('default param', () => {
@@ -162,7 +162,7 @@ describe('replacer', () => {
             let result = run(css, opts);
 
             //Then
-            assert.equal(result, '.foo { --bar: quux;baz: quux;}');
+            assert.equal(result, '.foo { --bar: quux; baz: quux;}');
         }
 
         function testDefaultParamOverride(type) {
@@ -178,7 +178,7 @@ describe('replacer', () => {
             let result = run(css, opts);
 
             //Then
-            assert.equal(result, '.foo { --bar: quux;baz: 42;}');
+            assert.equal(result, '.foo { --bar: quux; baz: 42;}');
         }
     });
 
@@ -204,7 +204,7 @@ describe('replacer', () => {
 
         let result = run(css);
 
-        assert.equal(result, '.foo { --ccc: 21;margin-top: 21; }');
+        assert.equal(result, '.foo { --ccc: 21; margin-top: 21; }');
     });
 
     it('plugin transformation', () => {
@@ -283,7 +283,7 @@ describe('replacer', () => {
 
     it('does not modify static params', () => {
         //Given
-        const css = '.foo { padding: 10px 11px 12px 13px;margin-right: 20px;color: blue; }'
+        const css = '.foo { padding: 10px 11px 12px 13px; margin-right: 20px; color: blue; }'
 
         //When
         let result = run(css);
@@ -294,13 +294,28 @@ describe('replacer', () => {
 
     it('does not modify regular css vars', () => {
         //Given
-        const css = '.foo { --bar: var(42);--baz: var(21);padding: --baz;}';
+        const css = '.foo { --bar: var(42); --baz: var(21); padding: --baz;}';
 
         //When
         let result = run(css);
 
         //Then
         assert.equal(result, css)
+    });
+
+    it('does not modify selectors', () => {
+        //Given
+        const css = '.foo {bar: baz;}';
+
+        pluginTransformations.declarationTransformers.push(
+            (key, value) => ({key: '$' + key, value})
+        );
+
+        //When
+        let result = run(css);
+
+        //Then
+        assert.equal(result, '.foo { $bar: baz;}');
     });
 
     function run(css) {
