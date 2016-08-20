@@ -53,6 +53,20 @@ describe('Index', () => {
         }).catch(err => {setTimeout(function() { throw err; });});
     });
 
+    it('has declaration plugin support', done => {
+        driver.given.css('.foo {bar: 4;}')
+                    .declarationPlugin((key, val) => ({
+                        key: key + '$',
+                        value: val + '#'
+                    }));
+
+        driver.when.init().then(() => {
+            expect(getOverrideStyleCallArg(driver))
+                .to.equal('.foo {bar$: 4#;}');
+            done();
+        }).catch(err => {setTimeout(function() { throw err; });});
+    });
+
     it('should support double font reference', done => {
         driver.given.css('.font-test{--some-font: "font(Body-M)"; font: "font(--some-font)";}')
             .siteTextPresets({

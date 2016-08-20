@@ -17,6 +17,8 @@ export default class Driver {
             Wix: (() => this.mocks.Wix)()
         };
 
+        Index.resetPlugins();
+
         this.when = {
             init: (options) => {
                 __RewireAPI__.__set__('domService', this.mocks.domService);
@@ -48,6 +50,10 @@ export default class Driver {
                 Index.plugin(...args);
                 return this.given;
             },
+            declarationPlugin: (...args) => {
+                Index.declarationPlugin(...args);
+                return this.given;
+            }
         };
 
         this.get = {

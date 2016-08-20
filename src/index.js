@@ -3,7 +3,17 @@ import domService from './domService';
 import WixService from './wixService';
 
 export default {
-    plugins: {valueTransformers: {}, declarationTransformers: []},
+    plugins: {
+        valueTransformers: {},
+        declarationTransformers: []
+    },
+
+    resetPlugins() {
+        this.plugins = {
+            valueTransformers: {},
+            declarationTransformers: []
+        }
+    },
 
     init(options) {
         options = setDefaultOptions(options, this.plugins);
