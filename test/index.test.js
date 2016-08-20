@@ -20,7 +20,7 @@ describe('Index', () => {
 
     it('should update on init', (done) => {
         driver.when.init().then(() => {
-            expect(driver.get.domService().overrideStyles.getCall(0).args[0]).to.equal('.foo {--bar: #FFFFFF;color: #FFFFFF;}');
+            expect(getOverrideStyleCallArg(driver)).to.equal('.foo {--bar: #FFFFFF;color: #FFFFFF;}');
             done();
         }).catch(err => {setTimeout(function() { throw err; });});
     });
@@ -36,7 +36,7 @@ describe('Index', () => {
             });
 
             driver.when.updateStyleParams().then(() => {
-                expect(driver.get.domService().overrideStyles.getCall(1).args[0]).to.equal('.foo {--bar: red;color: red;}');
+                expect(getOverrideStyleCallArg(driver, 1)).to.equal('.foo {--bar: red;color: red;}');
                 done();
             }).catch(err => {setTimeout(function() { throw err; });});
         }).catch(err => {setTimeout(function() { throw err; });});
@@ -45,7 +45,7 @@ describe('Index', () => {
     it('should use START=right given isRtl is true', done => {
         driver.given.css('.foo {START: 5px;}');
         driver.when.init({isRtl: true}).then(() => {
-            expect(driver.get.domService().overrideStyles.getCall(0).args[0])
+            expect(getOverrideStyleCallArg(driver))
                 .to.equal('.foo {right: 5px;}');
 
             done();
@@ -57,7 +57,7 @@ describe('Index', () => {
                     .plugin('increment', params => parseInt(params[0]) + 1);
 
         driver.when.init().then(() => {
-            expect(driver.get.domService().overrideStyles.getCall(0).args[0])
+            expect(getOverrideStyleCallArg(driver))
                 .to.equal('.foo {bar: 2px; --baz: 1;}');
             done();
         }).catch(err => {setTimeout(function() { throw err; });});
@@ -79,10 +79,13 @@ describe('Index', () => {
         });
 
         driver.when.init().then(() => {
-            expect(driver.get.domService().overrideStyles.getCall(0).args[0])
+            expect(getOverrideStyleCallArg(driver))
                 .to.equal('.font-test{--some-font: normal normal normal 16px/1.4em din-next-w01-light,din-next-w02-light,din-next-w10-light,sans-serif; font: normal normal normal 16px/1.4em din-next-w01-light,din-next-w02-light,din-next-w10-light,sans-serif;}');
-
             done();
         }).catch(err => {setTimeout(function() { throw err; });});
     });
+
+    function getOverrideStyleCallArg(driver, callIdx = 0) {
+        return driver.get.domService().overrideStyles.getCall(callIdx).args[0];
+    }
 });
