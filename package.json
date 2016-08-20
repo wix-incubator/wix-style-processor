@@ -26,7 +26,6 @@
   "license": "ISC",
   "dependencies": {
     "color": "^0.11.3",
-    "jquery": "^3.1.0",
     "lodash": "^4.15.0",
     "mocha": "^3.0.2",
     "parse-css-font": "^2.0.2",

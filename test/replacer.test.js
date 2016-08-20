@@ -353,20 +353,6 @@ describe('replacer', () => {
         assert.equal(result, '.foo { margin: 2px; }');
     });
 
-    // it.skip('Parses css var type declarations for defaults and values', () => {
-    //     const fonts = {
-    //         'Body-L': {style:'s1', variant:'v1', weight:'w1', size:'1em', lineHeight:'2em', family:['basefamily']},
-    //         'base': {style:'s1', variant:'v1', weight:'w1', size:'1em', lineHeight:'2em', family:['basefamily']},
-    //         'aaa.333': {style:'ssss', variant:'vvvv', weight:'bolder', size:'12em', lineHeight:'24em', family:['family1', 'family2', 'family3']}
-    //     };
-    //
-    //     const css = '.hello { --ccc: "21"; margin-top:"number(--ccc)"; }';
-    //     opts = {colors:{'bbb':'#777777', 'color-2':'#111111'}, fonts, numbers:{'ccc':10}};
-    //
-    //     const result = run(css, opts);
-    //     assert.equal(result, '.hello {    color:#777777; background-color:rgba(119, 119, 119, 0.5); font:s1 v1 w1 1em/2em basefamily; margin-top:10;}');
-    // });
-
     function run(css) {
         return replacer({css, ...opts}, pluginTransformations);
     }
