@@ -12,9 +12,6 @@ This package provides a parser / transformer that scans your inlined CSS, and re
     font: "font(--my-font)"; /* assign a dynamic font value from a custom var */
     width: "number(--default-width)"px; /* assign a dynamic numeric value from a custom var */
     color: "color(color-8)"; /* assign a color from the site's palette */
-    padding-START: 9px; /* START will be replaced with left / right, given isRtl = false / true */
-    padding-END: 9px; /* END will be replaced with right / left, given isRtl = false / true */
-    direction: "DIR"; /* DIR will be replaced with ltr / rtl, given isRtl = false / true */
     background-color: "join(opacity(color-1, 0.5), opacity(color-8, 0.5))"; /* blends 2 colors */
     color: "opacity(color-8, 0.3)"; /* add opacity to a site palette color */
 }
@@ -26,10 +23,8 @@ This package provides a parser / transformer that scans your inlined CSS, and re
 import styleProcessor from 'wix-style-processor';
 
 $(document).ready(() => {
-    styleProcessor.init({
-        isRtl: true
-    }).then(() => {
-	//start rendering your application here - otherwise your app will flicker
+    styleProcessor.init().then(() => {
+        //start rendering your application here - otherwise your app will flicker
     })
 });
 ```
