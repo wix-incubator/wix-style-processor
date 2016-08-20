@@ -1,7 +1,6 @@
 import _ from 'lodash';
 import replacer from '../src/replacer';
 import {assert} from 'chai';
-import css from 'css';
 
 describe('replacer', () => {
     let opts, pluginTransformations;
