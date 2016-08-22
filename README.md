@@ -12,14 +12,14 @@ $ npm i -S wix-style-processor
 ##### CSS
 ```css
 .my-selector {
-    --my-font: "font(Body-M)"; /* define a custom variable with a default value */
-    --default-width: "number(42)"; /* define a numeric custom var */
+    --my-font: "font(Body-M)";                                              /* define a custom variable with a default value */
+    --default-width: "number(42)";                                          /* define a numeric custom var */
 
-    font: "font(--my-font)"; /* assign a dynamic font value from a custom var */
-    width: "number(--default-width)"px; /* assign a dynamic numeric value from a custom var */
-    color: "color(color-8)"; /* assign a color from the site's palette */
+    font: "font(--my-font)";                                                /* assign a dynamic font value from a custom var */
+    width: "number(--default-width)"px;                                     /* assign a dynamic numeric value from a custom var */
+    color: "color(color-8)";                                                /* assign a color from the site's palette */
     background-color: "join(opacity(color-1, 0.5), opacity(color-8, 0.5))"; /* blends 2 colors */
-    color: "opacity(color-8, 0.3)"; /* add opacity to a site palette color */
+    color: "opacity(color-8, 0.3)";                                         /* add opacity to a site palette color */
 }
 ```
 
