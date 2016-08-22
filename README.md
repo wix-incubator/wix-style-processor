@@ -114,7 +114,10 @@ The CSS above will be replaced to:
 }
 ```
 
-### Important
+# [RTL/LTR plugin](https://github.com/wix/wsp-plugin-rtl)
+If you need dynamic LTR/RTL replacements in your CSS, you can use this plugin.
+
+# Important
 This module only parses inline CSS.
 It won't process any wix style params from an external (linked) CSS file.
 The recommended approach for CSS inlining is by automating it in your build step - e.g. by using Webpack's style-loader.
