@@ -1,5 +1,5 @@
 {
-  "name": "wix-style-processor",
+  "name": "@wix/wix-style-processor",
   "version": "1.0.0",
   "description": "An alternative Wix Styles TPA processor",
   "main": "dist/index.js",
