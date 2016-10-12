@@ -16,7 +16,7 @@
     "compile": "rm -rf dist/ && babel -d dist/ src/",
     "build": "npm run compile",
     "bundle": "webpack",
-    "release": "wnpm-release"
+    "release": "npm install @wix/wnpm-ci && wnpm-release"
   },
   "private": false,
   "publishConfig": {
@@ -44,8 +44,5 @@
     "chai": "^3.5.0",
     "sinon": "^1.17.5",
     "webpack": "^1.13.1"
-  },
-  "optionalDependencies": {
-    "@wix/wnpm-ci": "*"
   }
 }
