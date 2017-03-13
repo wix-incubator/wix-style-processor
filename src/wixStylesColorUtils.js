@@ -7,8 +7,9 @@ let WixColorUtils = {
 
         // Fix color styles due to '.' to '-' conversion
         const fixedColorStyles = {};
-        _.each(colorStyles, (v, k) => fixedColorStyles[k.replace(/\./g, '-')] = v);
-
+        _.each(colorStyles, (v, k) => fixedColorStyles[k.replace(/\./g, '-')] = v.value);
+        ret = Object.assign(ret, fixedColorStyles);
+        
         // Helper functions
         // Basic definitions
         ret['white'] = '#FFFFFF';
