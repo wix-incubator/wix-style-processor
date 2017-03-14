@@ -3,7 +3,7 @@ import _ from 'lodash';
 export default {
     extractStyles() {
         return _.map(
-            document.getElementsByTagName('style').filter(styleElement => styleElement.attributes[0] !== 'wix-style'),
+            document.querySelectorAll('style:not([wix-style])'),
             style => style.textContent.split('\n').join(' ')
         ).join(' ');
     },
