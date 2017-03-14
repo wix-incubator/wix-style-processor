@@ -4,7 +4,7 @@ import basicTransformations from './transformations';
 const declarationRegex = /\s*([^;{]*?)\s*:\s*(.*?)\s*;/g
 const defaultVarDeclarationRegex = /--([^;]*?):\s*"?([^;]*?)"?;/g;
 const innerQuotesRegex = /^"([^"]+)"/;
-const transformRegex = /^(\w*)\((.*)\)$/;
+const transformRegex = /^(color|opacity|join|number|font|increment|incrementer)\((.*)\)$/;
 const singleTransformRegex = /^(\w*)\(([^()]+)\)$/;
 const processParamsRegex = /,(?![^(]*\))/g;
 
@@ -60,7 +60,7 @@ function replacer(replacerParams,
         let innerMatch = replacedVal.match(innerQuotesRegex);
 
         ({replacedKey, replacedVal} = runDeclarationTransformers(replacedKey,
-                                                                 replacedVal));
+            replacedVal));
 
         if (innerMatch) {
             replacedVal = replaceInnerQuotes(replacedVal, innerMatch[1]);
@@ -116,7 +116,7 @@ function replacer(replacerParams,
 
     function invokeTransformation(transformation, params) {
         return transformation &&
-               transformation(params, replacerParams, evalCustomVar);
+            transformation(params, replacerParams, evalCustomVar);
     }
 
     function getCustomVar(value) {
@@ -146,7 +146,7 @@ function replacer(replacerParams,
         let pos = 0;
         for (let i = 0; i < indices.length + 1; i++) {
             let idx = indices[i] || params.length;
-            let arg = params.substr(pos, idx - pos );
+            let arg = params.substr(pos, idx - pos);
             args.push(arg.trim());
             pos = idx + 1;
         }

@@ -77,6 +77,36 @@ describe('Index', () => {
         });
     });
 
+    it('should support default values', (done) => {
+        driver
+            .given.css('--my_var: "color(color-4)"; .foo {color: "color(--my_var)";}')
+            .defaultSiteColors()
+            .styleParams({
+                numbers: {},
+                colors: {
+                    'my_var': {value: 'rgba(128,110,66,0.6193647540983607)'}
+                },
+                fonts: {}
+            })
+            .siteTextPresets({});
+
+        driver.when.init().then(() => {
+
+            driver.when.updateStyleParams().then(() => {
+                expect(getOverrideStyleCallArg(driver, 1)).to.equal(' --my_var: #717070; .foo { color: rgba(128,110,66,0.6193647540983607);}');
+                done();
+            }).catch(err => {
+                setTimeout(function () {
+                    throw err;
+                });
+            });
+        }).catch(err => {
+            setTimeout(function () {
+                throw err;
+            });
+        });
+    });
+
     it('has plugin support', done => {
         driver.given.css('.foo {bar: "increment(number(--baz))"px; --baz: 1;}')
             .plugin('increment', params => parseInt(params[0]) + 1);

@@ -146,7 +146,7 @@ describe('replacer', () => {
         let css = `.foo { rule1: "gaga(ccc)"; rule2: "color(bbb)"; rule3: "opacity(iii)"; rule4: #fff; }`;
 
         let cssResult = run(css);
-        assert.equal(cssResult, '.foo { rule1: undefined; rule2: undefined; rule3: "opacity(iii)"; rule4: #fff; }');
+        assert.equal(cssResult, '.foo { rule1: gaga(ccc); rule2: undefined; rule3: "opacity(iii)"; rule4: #fff; }');
     });
 
     describe('default param', () => {
