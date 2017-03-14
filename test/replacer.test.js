@@ -27,6 +27,30 @@ describe('replacer', () => {
         assert.equal(cssResult, '.foo { rule: bar; rule3: baz; rule4: #FF0000; rule5: #FF0000; }');
     });
 
+    xit('support default var values', () => {
+        const css = `
+        --cart_background: "color(color-3)";
+        
+        .foo {
+            background: "color(--cart_background)"
+        }`;
+
+        opts.colors = {
+            'color-3': 'red',
+            'cart_background': 'black'
+        };
+
+        const expectedCss = `
+        --cart_background: red;
+        
+        .foo {
+            background: black
+        }`;
+
+        let cssResult = run(css);
+        assert.equal(cssResult, expectedCss);
+    });
+
     it('opacity transformation', () => {
         let css = `.foo { rule1: "opacity(color-1, 0.5)"; }`;
 
