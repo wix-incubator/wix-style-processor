@@ -9,7 +9,6 @@ export default {
     },
 
     overrideStyles(css) {
-        debugger;
         _.each(document.querySelectorAll('style[data-computed=true]'), item => item.parentNode.removeChild(item));
         const style = document.createElement("style");
         style.setAttribute('data-computed', 'true');
