@@ -3,31 +3,34 @@ import Color from 'color';
 
 let WixColorUtils = {
     getFullColorStyles({colorStyles, siteColors}) {
-        let ret = {};
-
+        let returnValue = {};
         // Fix color styles due to '.' to '-' conversion
-        const fixedColorStyles = {};
-        _.each(colorStyles, (v, k) => fixedColorStyles[k.replace(/\./g, '-')] = v.value);
-        ret = Object.assign(ret, fixedColorStyles);
-        
+        let fixedColorStyles = {};
+
+        for (let key in colorStyles) {
+            fixedColorStyles[key.replace(/\./g, '-')] = colorStyles[key].value;
+        }
+
         // Helper functions
         // Basic definitions
-        ret['white'] = '#FFFFFF';
-        ret['black'] = '#000000';
-
+        returnValue['white'] = '#FFFFFF';
+        returnValue['black'] = '#000000';
         // Basic template colors
-        _.each(siteColors, ({reference, value}) => ret[reference] = (fixedColorStyles[reference] || {}).value || value);
+        _.each(siteColors,
+            ({reference, value}) => {
+                returnValue[reference] = value;
+            });
 
+        returnValue = Object.assign(returnValue, fixedColorStyles);
         // Fix for a bug in a very specific template
-        ret.background = (fixedColorStyles.background || {}).value || (ret['color-1'] === '#FFFFFF') && (ret['color-2'] === '#F4EFE1') ? ret['color-2'] : ret['color-1'];
-
-        return ret;
+        returnValue.background = (fixedColorStyles.background || {}).value || (returnValue['color-1'] === '#FFFFFF') && (returnValue['color-2'] === '#F4EFE1') ? returnValue['color-2'] : returnValue['color-1'];
+        return returnValue;
     },
 
     calcValueFromString({str, values}) {
         const functions = {
-            'color':(key) => {
-                if (_.startsWith(key,'"') && _.endsWith(key, '"')) {
+            'color': (key) => {
+                if (_.startsWith(key, '"') && _.endsWith(key, '"')) {
                     key = key.substr(1, key.length - 2);
                 }
 
@@ -49,19 +52,19 @@ let WixColorUtils = {
                 try {
                     // Try to parse the string as a color, return if successful.
                     return new Color(key).rgbString();
-                } catch(e) {
+                } catch (e) {
                     throw 'unparsed';
                 }
             },
-            'opacity':(params) => {
+            'opacity': (params) => {
                 const match = params.match(/^(.*),(.*)$/);
                 const value = fromDefaultString(match[1]);
                 const alpha = parseFloat(match[2]);
                 return (new Color(value)).clearer(1 - alpha).rgbString();
             },
-            'join':(params) => {
+            'join': (params) => {
 
-                if (_.startsWith(params, '[') && _.endsWith(params,']')) {
+                if (_.startsWith(params, '[') && _.endsWith(params, ']')) {
                     params = params.substr(1, params.length - 2);
                 }
 
@@ -76,9 +79,9 @@ let WixColorUtils = {
 
                 let ret = _.reduce(arr, (acc, color) => {
                     const c = new Color(fromDefaultString(color));
-                    acc.red(acc.red()     + c.red()   * c.alpha());
+                    acc.red(acc.red() + c.red() * c.alpha());
                     acc.green(acc.green() + c.green() * c.alpha());
-                    acc.blue(acc.blue()   + c.blue()  * c.alpha());
+                    acc.blue(acc.blue() + c.blue() * c.alpha());
                     acc.alpha(acc.alpha() + c.alpha());
                     return acc;
                 }, new Color('rgba(0,0,0,0)'));
