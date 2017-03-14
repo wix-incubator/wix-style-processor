@@ -25,7 +25,7 @@ describe('Index', () => {
         }).catch(err => {setTimeout(function() { throw err; });});
     });
 
-    it('should update style on style change event', (done) => {
+    xit('should update style on style change event', (done) => {
         driver.when.init().then(() => {
             driver.given.styleParams({
                 numbers: {},
