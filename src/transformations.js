@@ -62,7 +62,7 @@ function font(params, siteVars, evalCustomVar) {
     if (typeof(val) === 'object')
         val = fontUtils.toFontCssValue(val);
 
-    return val
+    return val;
 }
 
 export default {

@@ -33,6 +33,8 @@ const WixFontUtils = {
             ret['STRONG'] = parseCssFont('12px HelveticaNeueW01-65Medi');
         }
 
+        ret = Object.assign(ret, parsedFontStyles);
+
         _.each(ret, (font, key) => {
             if (isHebrew) {
                 font = JSON.parse(JSON.stringify(font));
@@ -46,7 +48,11 @@ const WixFontUtils = {
             }
 
             if (ret[key].lineHeight === 'normal') {
-                ret[key].lineHeight = '1.5em'; // Wix's normal line height is 1.5em...
+                ret[key].lineHeight = '1.4em'; // Wix's normal line height is 1.4em...
+            }
+
+            if (ret[key].size === 'normal') {
+                ret[key].size = '17px';
             }
         });
 

@@ -77,6 +77,48 @@ describe('Index', () => {
         });
     });
 
+    it('should support fonts from settings', (done) => {
+        driver
+            .given.css('.foo {font: "font(--my_var)";}')
+            .defaultSiteColors()
+            .styleParams({
+                numbers: {},
+                colors: {},
+                fonts: {
+                    "my_var": {
+                        "value": "font-family:'mr de haviland','cursive';",
+                        "index": 93,
+                        "cssFontFamily": "'mr de haviland','cursive'",
+                        "family": "mr de haviland",
+                        "fontParam": true,
+                        "size": 0,
+                        "style": {
+                            "bold": false,
+                            "italic": false,
+                            "underline": false
+                        }
+                    }
+                }
+            })
+            .siteTextPresets({});
+
+        driver.when.init().then(() => {
+
+            driver.when.updateStyleParams().then(() => {
+                expect(getOverrideStyleCallArg(driver, 1)).to.equal(`.foo { font: normal normal normal 17px/1.4em mr de haviland,cursive;}`);
+                done();
+            }).catch(err => {
+                setTimeout(function () {
+                    throw err;
+                });
+            });
+        }).catch(err => {
+            setTimeout(function () {
+                throw err;
+            });
+        });
+    });
+
     it('should support default values', (done) => {
         driver
             .given.css('--my_var: "color(color-4)"; .foo {color: "color(--my_var)";}')

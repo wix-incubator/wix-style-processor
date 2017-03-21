@@ -75,13 +75,13 @@ function replacer(replacerParams,
     }
 
     function recursiveEval(value) {
-        value = value.toString();
-        const hasTransform = value.match(transformRegex);
+        const valueAsString = value.toString();
+        const hasTransform = valueAsString.match(transformRegex);
 
         if (hasTransform) {
             const transformation = hasTransform[1];
             const params = hasTransform[2];
-            const isSingleMatch = singleTransformRegex.test(value);
+            const isSingleMatch = singleTransformRegex.test(valueAsString);
 
             let evaledParams = evalParameterList(params);
 
