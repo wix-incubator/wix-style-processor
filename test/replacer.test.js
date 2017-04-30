@@ -342,6 +342,16 @@ describe('replacer', () => {
         assert.equal(result, '.foo { $bar: baz;}');
     });
 
+    it('should work with pseudo selectors', () => {
+        const css = `.react-datepicker__day--highlighted:hover{ background-color: #32be3f;}`
+
+        //When
+        let result = run(css);
+
+        //Then
+        assert.equal(result.trim(), css)
+    });
+
     function run(css) {
         return replacer({css, ...opts}, pluginTransformations);
     }
