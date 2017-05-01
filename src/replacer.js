@@ -7,49 +7,7 @@ const innerQuotesRegex = /^"([^"]+)"/;
 const transformRegex = /^(color|opacity|join|number|font|increment|incrementer)\((.*)\)$/;
 const singleTransformRegex = /^(\w*)\(([^()]+)\)$/;
 const processParamsRegex = /,(?![^(]*\))/g;
-const pseudos = [
-    'active',
-    'any',
-    'checked',
-    'default',
-    'dir',
-    'disabled',
-    'empty',
-    'enabled',
-    'first',
-    'first-child',
-    'first-of-type',
-    'fullscreen',
-    'focus',
-    'hover',
-    'indeterminate',
-    'in-range',
-    'invalid',
-    'lang',
-    'last-child',
-    'last-of-type',
-    'left',
-    'link',
-    'not',
-    'nth-child',
-    'nth-last-child',
-    'nth-last-of-type',
-    'nth-of-type',
-    'only-child',
-    'only-of-type',
-    'optional',
-    'out-of-range',
-    'read-only',
-    'read-write',
-    'required',
-    'right',
-    'root',
-    'scope',
-    'target',
-    'valid',
-    'visited',
-];
-
+const declarationBlocksRegex = /{{1}([^{}]*)}{1}/g;
 
 function replacer(replacerParams,
                   plugins = {
@@ -73,15 +31,17 @@ function replacer(replacerParams,
     function replace() {
         scanDefaultVarDecls(css);
 
-        let replacedCss = css.replace(declarationRegex, (decl, key, val) => {
-            try {
-                return replaceDeclaration(key, val);
-            } catch (err) {
-                console.error('failed replacing declaration', err);
-            }
+        let replacedCss = css.replace(declarationBlocksRegex, (decl, declarationBlock) =>
+            '{' + declarationBlock.replace(declarationRegex, (decl, key, val) => {
+                try {
+                    return replaceDeclaration(key, val);
+                } catch (err) {
+                    console.error('failed replacing declaration', err);
+                }
 
-            return decl;
-        });
+                return decl;
+            }) + '}'
+        );
 
         return replacedCss;
     }
@@ -108,11 +68,6 @@ function replacer(replacerParams,
 
         if (innerMatch) {
             replacedVal = replaceInnerQuotes(replacedVal, innerMatch[1]);
-        }
-
-
-        if (pseudos.includes(val)) {
-            return ` ${replacedKey}:${replacedVal}`;
         }
 
         return ` ${replacedKey}: ${replacedVal}`;

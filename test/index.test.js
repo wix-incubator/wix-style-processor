@@ -121,7 +121,7 @@ describe('Index', () => {
 
     it('should support default values', (done) => {
         driver
-            .given.css('--my_var: "color(color-4)"; .foo {color: "color(--my_var)";}')
+            .given.css(':root{--my_var: "color(color-4)";} .foo {color: "color(--my_var)";}')
             .defaultSiteColors()
             .styleParams({
                 numbers: {},
@@ -135,7 +135,7 @@ describe('Index', () => {
         driver.when.init().then(() => {
 
             driver.when.updateStyleParams().then(() => {
-                expect(getOverrideStyleCallArg(driver, 1)).to.equal(' --my_var: #717070; .foo { color: rgba(128,110,66,0.6193647540983607);}');
+                expect(getOverrideStyleCallArg(driver, 1)).to.equal(':root{ --my_var: #717070;} .foo { color: rgba(128,110,66,0.6193647540983607);}');
                 done();
             }).catch(err => {
                 setTimeout(function () {
