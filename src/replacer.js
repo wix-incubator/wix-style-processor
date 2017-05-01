@@ -1,12 +1,55 @@
 import _ from 'lodash';
 import basicTransformations from './transformations';
 
-const declarationRegex = /\s*([^:;{]+)\s*:\s*([^;}{]+)\s*([;}])/g;
+const declarationRegex = /\s*([^:;{]+)\s*:\s*([^;}{]+)\s*/g;
 const defaultVarDeclarationRegex = /--([^:{)]+):\s*"?([^;{]+?)"?;/g;
 const innerQuotesRegex = /^"([^"]+)"/;
 const transformRegex = /^(color|opacity|join|number|font|increment|incrementer)\((.*)\)$/;
 const singleTransformRegex = /^(\w*)\(([^()]+)\)$/;
 const processParamsRegex = /,(?![^(]*\))/g;
+const pseudos = [
+    'active',
+    'any',
+    'checked',
+    'default',
+    'dir',
+    'disabled',
+    'empty',
+    'enabled',
+    'first',
+    'first-child',
+    'first-of-type',
+    'fullscreen',
+    'focus',
+    'hover',
+    'indeterminate',
+    'in-range',
+    'invalid',
+    'lang',
+    'last-child',
+    'last-of-type',
+    'left',
+    'link',
+    'not',
+    'nth-child',
+    'nth-last-child',
+    'nth-last-of-type',
+    'nth-of-type',
+    'only-child',
+    'only-of-type',
+    'optional',
+    'out-of-range',
+    'read-only',
+    'read-write',
+    'required',
+    'right',
+    'root',
+    'scope',
+    'target',
+    'valid',
+    'visited',
+];
+
 
 function replacer(replacerParams,
                   plugins = {
@@ -55,6 +98,7 @@ function replacer(replacerParams,
     }
 
     function replaceDeclaration(key, val) {
+
         let replacedKey = key;
         let replacedVal = val;
         let innerMatch = replacedVal.match(innerQuotesRegex);
@@ -66,7 +110,12 @@ function replacer(replacerParams,
             replacedVal = replaceInnerQuotes(replacedVal, innerMatch[1]);
         }
 
-        return ` ${replacedKey}: ${replacedVal};`;
+
+        if (pseudos.includes(val)) {
+            return ` ${replacedKey}:${replacedVal}`;
+        }
+
+        return ` ${replacedKey}: ${replacedVal}`;
     }
 
     function replaceInnerQuotes(val, innerVal) {
