@@ -352,6 +352,18 @@ describe('replacer', () => {
         assert.equal(result.trim(), css)
     });
 
+    it('should detect declarations with no space after the :', () => {
+        let css = `.foo { rule: bar; rule3:baz; rule4:"color(color-1)"; rule5:"color(color(color-2))"; }`;
+
+        opts.colors = {
+            'color-1': '#FF0000',
+            'color-2': 'color-1'
+        };
+
+        let cssResult = run(css);
+        assert.equal(cssResult, '.foo { rule: bar; rule3: baz; rule4: #FF0000; rule5: #FF0000; }');
+    });
+
     function run(css) {
         return replacer({css, ...opts}, pluginTransformations);
     }
