@@ -8,18 +8,23 @@ export default (wixService, domService, options) => ({
         const css = domService.extractStyles();
 
         return wixService.getStyleParams().spread((siteColors, siteTextPresets, styleParams) => {
+            const isStringHack = fontParam => fontParam.fontStyleParam === false;
+            const isValidFontParam = fontParam => fontParam.family !== undefined;
+
             const colorStyles = _.omitBy(styleParams.colors || {}, (v) => _.isEqual(v, {value: "rgba(1,2,3,1)"}) || _.isEqual(v, {rgba: 'rgba(1,2,3,1)'}));
-            const fontStyles = _.omitBy(styleParams.fonts || {}, (v) => !v);
+            const fontStyles = _.pickBy(styleParams.fonts, isValidFontParam);
 
             const numbers = styleParams.numbers || {};
             const colors = wixStylesColorUtils.getFullColorStyles({colorStyles, siteColors}) || {};
             const fonts = wixStylesFontUtils.getFullFontStyles({fontStyles, siteTextPresets}) || {};
+            const strings = _.pickBy(styleParams.fonts, isStringHack);
 
             let newCss = replacer({
                 css,
                 colors,
                 fonts,
-                numbers
+                numbers,
+                strings
             }, options.plugins);
 
             domService.overrideStyles(newCss);

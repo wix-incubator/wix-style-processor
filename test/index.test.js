@@ -119,6 +119,39 @@ describe('Index', () => {
         });
     });
 
+    it('should support font string hack from settings', (done) => {
+        driver
+            .given.css('.foo {width: "string(--my_var)";}')
+            .defaultSiteColors()
+            .styleParams({
+                numbers: {},
+                colors: {},
+                fonts: {
+                    "my_var": {
+                        "value": "100px",
+                        fontStyleParam: false
+                    }
+                }
+            })
+            .siteTextPresets({});
+
+        driver.when.init().then(() => {
+
+            driver.when.updateStyleParams().then(() => {
+                expect(getOverrideStyleCallArg(driver, 1)).to.equal(`.foo { width: 100px;}`);
+                done();
+            }).catch(err => {
+                setTimeout(function () {
+                    throw err;
+                });
+            });
+        }).catch(err => {
+            setTimeout(function () {
+                throw err;
+            });
+        });
+    });
+
     it('should support default values', (done) => {
         driver
             .given.css(':root{--my_var: "color(color-4)";} .foo {color: "color(--my_var)";}')

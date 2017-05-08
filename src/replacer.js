@@ -4,7 +4,7 @@ import basicTransformations from './transformations';
 const declarationRegex = /\s*([^:;{]+)\s*:\s*([^;}{]+)\s*/g;
 const defaultVarDeclarationRegex = /--([^:{)]+):\s*"?([^;{]+?)"?;/g;
 const innerQuotesRegex = /^"([^"]+)"/;
-const transformRegex = /^(color|opacity|darken|join|number|font|increment|incrementer)\((.*)\)$/;
+const transformRegex = /^(color|opacity|darken|string|join|number|font|increment|incrementer)\((.*)\)$/;
 const singleTransformRegex = /^(\w*)\(([^()]+)\)$/;
 const processParamsRegex = /,(?![^(]*\))/g;
 const declarationBlocksRegex = /{{1}([^{}]*)}{1}/g;
@@ -14,12 +14,13 @@ function replacer(replacerParams,
                       valueTransformers: {},
                       declarationTransformers: []
                   }) {
-    const {css, colors, fonts, numbers} = replacerParams;
+    const {css, colors, fonts, numbers, strings} = replacerParams;
 
     const customVarContainers = {
         color: colors,
         font: fonts,
-        number: numbers
+        number: numbers,
+        string: strings
     };
 
     const defaultVarDeclarations = {};

@@ -71,6 +71,10 @@ function font(params, siteVars, evalCustomVar) {
     return val;
 }
 
+function string(params, siteVars, evalCustomVar) {
+    return evalCustomVar('string', params[0]).value;
+}
+
 export default {
-    color, number, font, opacity, join, darken
+    color, number, font, opacity, join, darken, string
 };
