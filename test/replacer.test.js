@@ -62,6 +62,17 @@ describe('replacer', () => {
         assert.equal(cssResult, '.foo { rule1: rgba(255, 0, 0, 0.5); }');
     });
 
+    it('darken transformation', () => {
+        let css = `.foo { rule1: "darken(color-1, 0.5)"; }`;
+
+        opts.colors ={
+            'color-1': '#FF0000',
+        };
+
+        let cssResult = run(css);
+        assert.equal(cssResult, '.foo { rule1: rgb(128, 0, 0); }');
+    });
+
     it('composed opacity', () => {
         let css = `.foo { rule1: "opacity(color(color-1), 0.5)"; }`;
 

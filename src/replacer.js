@@ -4,7 +4,7 @@ import basicTransformations from './transformations';
 const declarationRegex = /\s*([^:;{]+)\s*:\s*([^;}{]+)\s*/g;
 const defaultVarDeclarationRegex = /--([^:{)]+):\s*"?([^;{]+?)"?;/g;
 const innerQuotesRegex = /^"([^"]+)"/;
-const transformRegex = /^(color|opacity|join|number|font|increment|incrementer)\((.*)\)$/;
+const transformRegex = /^(color|opacity|darken|join|number|font|increment|incrementer)\((.*)\)$/;
 const singleTransformRegex = /^(\w*)\(([^()]+)\)$/;
 const processParamsRegex = /,(?![^(]*\))/g;
 const declarationBlocksRegex = /{{1}([^{}]*)}{1}/g;

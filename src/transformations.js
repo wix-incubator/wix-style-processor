@@ -28,6 +28,12 @@ function opacity(params, siteVars, evalCustomVar) {
     return (new Color(colorVal)).clearer(1 - alpha).rgbString();
 }
 
+function darken(params, siteVars, evalCustomVar) {
+    let colorVal = color(params, siteVars, evalCustomVar);
+    let darkenValue = params[1];
+    return (new Color(colorVal)).darken(darkenValue).rgbString();
+}
+
 function join(params, siteVars, evalCustomVar) {
     let joinParams = _.map(params, (v, i) => i % 2 === 0 ?
                            color([v], siteVars, evalCustomVar) : v);
@@ -66,5 +72,5 @@ function font(params, siteVars, evalCustomVar) {
 }
 
 export default {
-    color, number, font, opacity, join
+    color, number, font, opacity, join, darken
 };
