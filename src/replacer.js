@@ -53,7 +53,6 @@ function replacer(replacerParams,
         while ((match = defaultVarDeclarationRegex.exec(css)) !== null) {
             let key = match[1];
             let val = match[2];
-
             defaultVarDeclarations[key] = val;
         }
     }

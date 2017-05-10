@@ -72,7 +72,12 @@ function font(params, siteVars, evalCustomVar) {
 }
 
 function string(params, siteVars, evalCustomVar) {
-    return evalCustomVar('string', params[0]).value;
+    if (params[0].indexOf('--') === -1) {
+        return params[0];
+    }
+
+    let result = evalCustomVar('string', params[0]);
+    return result.value || result;
 }
 
 export default {
