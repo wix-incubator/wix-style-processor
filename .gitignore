@@ -1,7 +1,5 @@
-/node_modules
-dist/
-*.swp
-.npmrc
-npm-debug.log
-*.watchmanconfig
-.idea
+dist
+node_modules
+*npm-debug.log
+target
+maven

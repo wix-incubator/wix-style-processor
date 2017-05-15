@@ -1,0 +1,9 @@
+{
+  "generator-wix-js": {
+    "promptValues": {
+      "authorName": "Eran Shabi",
+      "authorEmail": "erans@wix.com",
+      "groupId": "com.wixpress.common"
+    }
+  }
+}

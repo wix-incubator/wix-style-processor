@@ -1,5 +1,5 @@
-import _ from 'lodash';
-import Color from 'color';
+import * as _ from 'lodash';
+import * as Color from 'color';
 import fontUtils from './wixStylesFontUtils';
 
 function color(params, siteVars, evalCustomVar) {
@@ -16,7 +16,7 @@ function color(params, siteVars, evalCustomVar) {
         return predefined;
 
     try {
-        return new Color(value).rgbString();
+        return new Color(value).rgb().string();
     } catch (e) {
         return 'undefined';
     }
@@ -25,29 +25,29 @@ function color(params, siteVars, evalCustomVar) {
 function opacity(params, siteVars, evalCustomVar) {
     let colorVal = color(params, siteVars, evalCustomVar);
     let alpha = params[1];
-    return (new Color(colorVal)).clearer(1 - alpha).rgbString();
+    return (new Color(colorVal)).fade(1 - alpha).rgb().string();
 }
 
 function darken(params, siteVars, evalCustomVar) {
     let colorVal = color(params, siteVars, evalCustomVar);
     let darkenValue = params[1];
-    return (new Color(colorVal)).darken(darkenValue).rgbString();
+    return (new Color(colorVal)).darken(darkenValue).rgb().string();
 }
 
 function join(params, siteVars, evalCustomVar) {
     let joinParams = _.map(params, (v, i) => i % 2 === 0 ?
-                           color([v], siteVars, evalCustomVar) : v);
+        color([v], siteVars, evalCustomVar) : v);
 
-    let ret = _.reduce(joinParams, (acc, color) => {
-        const c = new Color(color);
-        acc.red(acc.red()     + c.red()   * c.alpha());
-        acc.green(acc.green() + c.green() * c.alpha());
-        acc.blue(acc.blue()   + c.blue()  * c.alpha());
-        acc.alpha(acc.alpha() + c.alpha());
-        return acc;
-    }, new Color('rgba(0,0,0,0)'));
+    let color1 = new Color(joinParams[0]);
+    let color2 = new Color(joinParams[2]);
 
-    return ret.rgbString();
+    const r = ((color1.red() / 255 + color2.red() / 255) * 255);
+    const g = ((color1.green() / 255 + color2.green() / 255) * 255);
+    const b = ((color1.blue() / 255 + color2.blue() / 255) * 255);
+    const a = ((color1.alpha() + color2.alpha()) / 2);
+
+    return new Color({r, g, b}).alpha(a).rgb().string();
+
 }
 
 function number(params, siteVars, evalCustomVar) {

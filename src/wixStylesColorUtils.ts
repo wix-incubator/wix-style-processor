@@ -1,11 +1,11 @@
-import _ from "lodash";
-import Color from 'color';
+import * as _ from 'lodash';
+import * as Color from 'color';
 
 let WixColorUtils = {
     getFullColorStyles({colorStyles, siteColors}) {
-        let returnValue = {};
+        let returnValue: any = {};
         // Fix color styles due to '.' to '-' conversion
-        let fixedColorStyles = {};
+        let fixedColorStyles: any = {};
 
         for (let key in colorStyles) {
             fixedColorStyles[key.replace(/\./g, '-')] = colorStyles[key].value;
@@ -23,7 +23,7 @@ let WixColorUtils = {
 
         returnValue = Object.assign(returnValue, fixedColorStyles);
         // Fix for a bug in a very specific template
-        returnValue.background = (fixedColorStyles.background || {}).value || (returnValue['color-1'] === '#FFFFFF') && (returnValue['color-2'] === '#F4EFE1') ? returnValue['color-2'] : returnValue['color-1'];
+        returnValue['background'] = (fixedColorStyles.background || {}).value || (returnValue['color-1'] === '#FFFFFF') && (returnValue['color-2'] === '#F4EFE1') ? returnValue['color-2'] : returnValue['color-1'];
         return returnValue;
     },
 
@@ -51,7 +51,7 @@ let WixColorUtils = {
 
                 try {
                     // Try to parse the string as a color, return if successful.
-                    return new Color(key).rgbString();
+                    return new Color(key).rgb().string();
                 } catch (e) {
                     throw 'unparsed';
                 }
@@ -60,7 +60,7 @@ let WixColorUtils = {
                 const match = params.match(/^(.*),(.*)$/);
                 const value = fromDefaultString(match[1]);
                 const alpha = parseFloat(match[2]);
-                return (new Color(value)).clearer(1 - alpha).rgbString();
+                return (new Color(value)).fade(1 - alpha).rgb().string();
             },
             'join': (params) => {
 
@@ -75,7 +75,7 @@ let WixColorUtils = {
                     const token = `_<_${m[1]}_>_`.replace(/,/g, '_|_');
                     params = params.replace(tokenRegex, token);
                 }
-                const arr = _.map(params.split(','), p => p.replace(/_<_/g, '(').replace(/_>_/g, ')').replace(/_\|_/g, ',').trim());
+                const arr = _.map(params.split(','), p => (<any>p).replace(/_<_/g, '(').replace(/_>_/g, ')').replace(/_\|_/g, ',').trim());
 
                 let ret = _.reduce(arr, (acc, color) => {
                     const c = new Color(fromDefaultString(color));
@@ -86,7 +86,7 @@ let WixColorUtils = {
                     return acc;
                 }, new Color('rgba(0,0,0,0)'));
 
-                return ret.rgbString();
+                return ret.rgb().string();
             }
         };
 

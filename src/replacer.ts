@@ -1,4 +1,4 @@
-import _ from 'lodash';
+import * as _ from 'lodash';
 import basicTransformations from './transformations';
 
 const declarationRegex = /\s*([^:;{]+)\s*:\s*([^;}{]+)\s*/g;
@@ -105,7 +105,7 @@ function replacer(replacerParams,
         return evaledParams;
     }
 
-    function singleEval(selectedTransformation, params) {
+    function singleEval(selectedTransformation, params = undefined) {
         let pluginTransformation = valuePlugins[selectedTransformation];
         let basicTransformation = basicTransformations[selectedTransformation];
         let transformation = pluginTransformation || basicTransformation;

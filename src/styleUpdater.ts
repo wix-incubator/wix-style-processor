@@ -1,7 +1,7 @@
 import wixStylesColorUtils from './wixStylesColorUtils';
 import wixStylesFontUtils from './wixStylesFontUtils';
 import replacer from './replacer';
-import _ from 'lodash';
+import * as _ from 'lodash';
 
 export default (wixService, domService, options) => ({
     update() {

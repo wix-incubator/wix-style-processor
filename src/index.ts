@@ -2,6 +2,8 @@ import StyleUpdater from './styleUpdater';
 import domService from './domService';
 import WixService from './wixService';
 
+declare var window: any;
+
 export default {
     plugins: {
         valueTransformers: {},
@@ -15,10 +17,10 @@ export default {
         }
     },
 
-    init(options) {
+    init(options, domServiceOverride = domService) {
         options = setDefaultOptions(options, this.plugins);
         const wixService = WixService(window.Wix);
-        const styleUpdater = StyleUpdater(wixService, domService, options);
+        const styleUpdater = StyleUpdater(wixService, domServiceOverride, options);
         wixService.listenToStyleParamsChange(() => styleUpdater.update());
         return styleUpdater.update();
     },

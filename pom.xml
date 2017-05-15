@@ -5,7 +5,7 @@
     <artifactId>wix-style-processor</artifactId>
     <packaging>pom</packaging>
     <name>wix-style-processor</name>
-    <description>An alternative Wix Styles TPA processor</description>
+    <description>wix-style-processor</description>
     <version>1.0.0-SNAPSHOT</version>
 
     <parent>
@@ -16,8 +16,8 @@
 
     <developers>
         <developer>
-            <name>Alon Nachshon</name>
-            <email>alonn@wix.com</email>
+            <name>Eran Shabi</name>
+            <email>erans@wix.com</email>
             <roles>
                 <role>owner</role>
             </roles>

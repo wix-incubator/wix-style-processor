@@ -1,5 +1,5 @@
 import {expect} from 'chai';
-import Driver from './mocks/driver';
+import Driver from './driver';
 
 describe('Index', () => {
     let driver;
@@ -162,6 +162,7 @@ describe('Index', () => {
         return driver.when.init().then(() => {
             expect(getOverrideStyleCallArg(driver)).to.equal('.foo { ZzZbarZzZ: #4#;}');
         });
+
     });
 
     it('should support double font reference', () => {
@@ -186,6 +187,6 @@ describe('Index', () => {
     });
 
     function getOverrideStyleCallArg(driver, callIdx = 0) {
-        return driver.get.domService().overrideStyles.getCall(callIdx).args[0];
+      return driver.get.domService().overrideStyles.getCall(callIdx).args[0];
     }
 });

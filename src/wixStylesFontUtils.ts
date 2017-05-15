@@ -1,8 +1,8 @@
-import _ from "lodash";
-import parseCssFont from 'parse-css-font';
+import * as _ from 'lodash';
+import * as parseCssFont from 'parse-css-font';
 
 const WixFontUtils = {
-    getFullFontStyles({fontStyles, siteTextPresets, isHebrew}) {
+    getFullFontStyles({fontStyles, siteTextPresets}) {
         let ret = {};
 
         // Fix color styles due to '.' to '-' conversion
@@ -25,25 +25,16 @@ const WixFontUtils = {
         _.each(parsedSiteTextPresets, (preset, key) => ret[key] = parsedFontStyles[key] || preset);
 
         // LIGHT/MEDIUM/STRONG
-        if (isHebrew) {
-            ret['LIGHT'] = ret['MEDIUM'] = ret['STRONG'] = parseCssFont('12px Arial');
-        } else {
             ret['LIGHT'] = parseCssFont('12px HelveticaNeueW01-45Ligh');
             ret['MEDIUM'] = parseCssFont('12px HelveticaNeueW01-55Roma');
             ret['STRONG'] = parseCssFont('12px HelveticaNeueW01-65Medi');
-        }
 
         ret = Object.assign(ret, parsedFontStyles);
 
         _.each(ret, (font, key) => {
-            if (isHebrew) {
-                font = JSON.parse(JSON.stringify(font));
-                font.family = ['Arial'];
-            }
-
             ret[key] = _.extend({}, font, {supports:{uppercase:true}});
 
-            if ((_.includes(font.family, 'snellroundhandw')) || (_.includes(font.family, 'niconne'))) {
+            if ((_.includes((<any>font).family, 'snellroundhandw')) || (_.includes((<any>font).family, 'niconne'))) {
                 ret[key].supports.uppercase = false;
             }
 

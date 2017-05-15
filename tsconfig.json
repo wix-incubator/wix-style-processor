@@ -1,0 +1,22 @@
+{
+  "compilerOptions": {
+    "outDir": "./dist/",
+    "sourceMap": true,
+    "noImplicitAny": false,
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "experimentalDecorators": true,
+    "target": "es5",
+    "lib": ["dom", "es2016"],
+    "types": ["mocha", "chai", "node", "protractor"],
+    "noEmitHelpers": true,
+    "importHelpers": true
+  },
+  "include": [
+    "./src/external-types.d.ts",
+    "./test/**/*.ts"
+  ],
+  "files": [
+    "./src/index.ts"
+  ]
+}

@@ -54,7 +54,7 @@ describe('replacer', () => {
     it('opacity transformation', () => {
         let css = `.foo { rule1: "opacity(color-1, 0.5)"; }`;
 
-        opts.colors ={
+        opts.colors = {
             'color-1': '#FF0000',
         };
 
@@ -65,7 +65,7 @@ describe('replacer', () => {
     it('darken transformation', () => {
         let css = `.foo { rule1: "darken(color-1, 0.5)"; }`;
 
-        opts.colors ={
+        opts.colors = {
             'color-1': '#FF0000',
         };
 
@@ -116,7 +116,7 @@ describe('replacer', () => {
         };
 
         let cssResult = run(css);
-        assert.equal(cssResult, '.foo { rule1: rgb(128, 128, 0); }');
+        assert.equal(cssResult, '.foo { rule1: rgba(255, 255, 0, 0.5); }');
     });
 
     it('param', () => {
@@ -220,7 +220,7 @@ describe('replacer', () => {
     it.skip('timing test', () => {
         let cssStr = '.decl {--foo: bar;}';
 
-        for (let i=0; i<28000; i++) {
+        for (let i = 0; i < 28000; i++) {
             let decl = 'a' + guid();
             cssStr += `.${decl} { background-color: "color(color-2)"; }`;
         }
@@ -298,7 +298,9 @@ describe('replacer', () => {
 
         pluginTransformations = {
             valueTransformers: {
-                increment: (...args) => {parameters = args;}
+                increment: (...args) => {
+                    parameters = args;
+                }
             }
         };
 
@@ -381,10 +383,11 @@ describe('replacer', () => {
 });
 
 function guid() {
-  function s4() {
-      return Math.floor((1 + Math.random()) * 0x10000)
-        .toString(16)
-        .substring(1);
-  }
-  return s4() + s4() + s4() + s4() + s4() + s4() + s4() + s4();
+    function s4() {
+        return Math.floor((1 + Math.random()) * 0x10000)
+            .toString(16)
+            .substring(1);
+    }
+
+    return s4() + s4() + s4() + s4() + s4() + s4() + s4() + s4();
 }
