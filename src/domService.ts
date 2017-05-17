@@ -1,15 +1,15 @@
-import * as _ from 'lodash';
+import {map, each} from 'lodash';
 
 export default {
     extractStyles() {
-        return _.map(
+        return map(
             document.querySelectorAll('style:not([wix-style])'),
             style => style.textContent.split('\n').join(' ')
         ).join(' ');
     },
 
     overrideStyles(css) {
-        _.each(document.querySelectorAll('style[data-computed=true]'), item => item.parentNode.removeChild(item));
+        each(document.querySelectorAll('style[data-computed=true]'), item => item.parentNode.removeChild(item));
         const style = document.createElement("style");
         style.setAttribute('data-computed', 'true');
         style.appendChild(document.createTextNode(css));

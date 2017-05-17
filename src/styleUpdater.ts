@@ -1,7 +1,7 @@
 import wixStylesColorUtils from './wixStylesColorUtils';
 import wixStylesFontUtils from './wixStylesFontUtils';
 import replacer from './replacer';
-import * as _ from 'lodash';
+import {omitBy, pickBy, isEqual} from 'lodash';
 
 export default (wixService, domService, options) => ({
     update() {
@@ -11,13 +11,13 @@ export default (wixService, domService, options) => ({
             const isStringHack = fontParam => fontParam.fontStyleParam === false;
             const isValidFontParam = fontParam => fontParam.family !== undefined;
 
-            const colorStyles = _.omitBy(styleParams.colors || {}, (v) => _.isEqual(v, {value: "rgba(1,2,3,1)"}) || _.isEqual(v, {rgba: 'rgba(1,2,3,1)'}));
-            const fontStyles = _.pickBy(styleParams.fonts, isValidFontParam);
+            const colorStyles = omitBy(styleParams.colors || {}, (v) => isEqual(v, {value: "rgba(1,2,3,1)"}) || isEqual(v, {rgba: 'rgba(1,2,3,1)'}));
+            const fontStyles = pickBy(styleParams.fonts, isValidFontParam);
 
             const numbers = styleParams.numbers || {};
             const colors = wixStylesColorUtils.getFullColorStyles({colorStyles, siteColors}) || {};
             const fonts = wixStylesFontUtils.getFullFontStyles({fontStyles, siteTextPresets}) || {};
-            const strings = _.pickBy(styleParams.fonts, isStringHack);
+            const strings = pickBy(styleParams.fonts, isStringHack);
 
             let newCss = replacer({
                 css,

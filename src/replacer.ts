@@ -1,4 +1,4 @@
-import * as _ from 'lodash';
+import {map, each, startsWith} from 'lodash';
 import basicTransformations from './transformations';
 
 const declarationRegex = /\s*([^:;{]+)\s*:\s*([^;}{]+)\s*/g;
@@ -101,7 +101,7 @@ function replacer(replacerParams,
 
     function evalParameterList(value) {
         let params = processParams(value);
-        let evaledParams = _.map(params, p => recursiveEval(p));
+        let evaledParams = map(params, p => recursiveEval(p));
         return evaledParams;
     }
 
@@ -124,7 +124,7 @@ function replacer(replacerParams,
     }
 
     function getCustomVar(value) {
-        return _.startsWith(value, '--') && value.substr(2, value.length - 2);
+        return startsWith(value, '--') && value.substr(2, value.length - 2);
     }
 
     function evalCustomVar(transform, customVar) {
@@ -159,7 +159,7 @@ function replacer(replacerParams,
     }
 
     function runDeclarationTransformers(key, value) {
-        _.each(declarationPlugins, plugin => {
+        each(declarationPlugins, plugin => {
             ({key, value} = plugin(key, value, replacerParams, evalCustomVar));
         });
 

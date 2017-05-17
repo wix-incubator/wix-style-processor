@@ -1,4 +1,4 @@
-import * as _ from 'lodash';
+import {each, extend, includes, omit, isNumber} from 'lodash';
 import * as parseCssFont from 'parse-css-font';
 
 const WixFontUtils = {
@@ -7,22 +7,22 @@ const WixFontUtils = {
 
         // Fix color styles due to '.' to '-' conversion
         const fixedFontStyles = {};
-        _.each(fontStyles, (v, k) => fixedFontStyles[k.replace(/\./g, '-')] = v);
+        each(fontStyles, (v, k) => fixedFontStyles[k.replace(/\./g, '-')] = v);
 
         const parsedSiteTextPresets = {};
-        _.each(siteTextPresets, (preset, key) => {
+        each(siteTextPresets, (preset, key) => {
             if (preset.displayName) {
-                parsedSiteTextPresets[key] = _.extend({}, parseCssFont(preset.value), {preset:key, editorKey:preset.editorKey, displayName:preset.displayName});
+                parsedSiteTextPresets[key] = extend({}, parseCssFont(preset.value), {preset:key, editorKey:preset.editorKey, displayName:preset.displayName});
             } else {
-                parsedSiteTextPresets[key] = _.extend({}, parseCssFont(preset.value), {preset:key, editorKey:preset.editorKey});
+                parsedSiteTextPresets[key] = extend({}, parseCssFont(preset.value), {preset:key, editorKey:preset.editorKey});
             }
         });
 
         const parsedFontStyles = {};
-        _.each(fixedFontStyles, (value, key) => parsedFontStyles[key] = parseWixStylesFont(value));
+        each(fixedFontStyles, (value, key) => parsedFontStyles[key] = parseWixStylesFont(value));
 
         // Basic template colors
-        _.each(parsedSiteTextPresets, (preset, key) => ret[key] = parsedFontStyles[key] || preset);
+        each(parsedSiteTextPresets, (preset, key) => ret[key] = parsedFontStyles[key] || preset);
 
         // LIGHT/MEDIUM/STRONG
             ret['LIGHT'] = parseCssFont('12px HelveticaNeueW01-45Ligh');
@@ -31,10 +31,10 @@ const WixFontUtils = {
 
         ret = Object.assign(ret, parsedFontStyles);
 
-        _.each(ret, (font, key) => {
-            ret[key] = _.extend({}, font, {supports:{uppercase:true}});
+        each(ret, (font, key) => {
+            ret[key] = extend({}, font, {supports:{uppercase:true}});
 
-            if ((_.includes((<any>font).family, 'snellroundhandw')) || (_.includes((<any>font).family, 'niconne'))) {
+            if ((includes((<any>font).family, 'snellroundhandw')) || (includes((<any>font).family, 'niconne'))) {
                 ret[key].supports.uppercase = false;
             }
 
@@ -52,7 +52,7 @@ const WixFontUtils = {
 
     calcValueFromString({str, values}) {
         const preset = (_default) => values[_default];
-        const font = (_default) => _.extend({}, values[_default.template], _.omit(_default, 'template'));
+        const font = (_default) => extend({}, values[_default.template], omit(_default, 'template'));
 
         let m = null;
 
@@ -66,8 +66,8 @@ const WixFontUtils = {
     },
 
     toFontCssValue(value) {
-        const size = _.isNumber(value.size) ? value.size + 'px' : value.size;
-        const lineHeight = _.isNumber(value.lineHeight) ? value.lineHeight + 'px' : value.lineHeight;
+        const size = isNumber(value.size) ? value.size + 'px' : value.size;
+        const lineHeight = isNumber(value.lineHeight) ? value.lineHeight + 'px' : value.lineHeight;
 
         return `${value.style} ${value.variant} ${value.weight} ${size}/${lineHeight} ${value.family.join(',')}`;
     }
@@ -85,9 +85,9 @@ function parseWixStylesFont(font) {
     }
 
     let size = font.size || 'normal';
-    if (_.isNumber(size)) size = size + 'px';
+    if (isNumber(size)) size = size + 'px';
     let lineHeight = font.lineHeight || 'normal';
-    if (_.isNumber(lineHeight)) lineHeight = lineHeight + 'px';
+    if (isNumber(lineHeight)) lineHeight = lineHeight + 'px';
 
     value += size + '/' + lineHeight +' ';
 

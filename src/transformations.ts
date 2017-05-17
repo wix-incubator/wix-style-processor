@@ -1,4 +1,4 @@
-import * as _ from 'lodash';
+import {map} from 'lodash';
 import * as Color from 'color';
 import fontUtils from './wixStylesFontUtils';
 
@@ -35,7 +35,7 @@ function darken(params, siteVars, evalCustomVar) {
 }
 
 function join(params, siteVars, evalCustomVar) {
-    let joinParams = _.map(params, (v, i) => i % 2 === 0 ?
+    let joinParams = map(params, (v, i) => i % 2 === 0 ?
         color([v], siteVars, evalCustomVar) : v);
 
     let color1 = new Color(joinParams[0]);
