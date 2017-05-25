@@ -143,8 +143,43 @@ describe('Index', () => {
         });
     });
 
+
+    it('should work with declarations with no semicolon at the end', () => {
+        driver
+            .given.css(`:root
+        {--cart_textFontStyle:"font(Body-M)";
+        --cartButton_textColor:"color(color-1)"}
+        .foo{font:"font(--cart_textFontStyle)";color:"color(--cartButton_textColor)"}`)
+            .defaultSiteColors()
+            .styleParams({
+                numbers: {},
+                colors: {
+                    'my_var': {value: 'rgba(128,110,66,0.6193647540983607)'}
+                },
+                fonts: {}
+            })
+            .siteTextPresets({
+                'Body-M': {
+                    editorKey: "font_8",
+                    fontFamily: "raleway",
+                    lineHeight: "1.4em",
+                    size: "17px",
+                    style: "normal",
+                    value: "font:normal normal normal 17px/1.4em raleway,sans-serif;",
+                    weight: "normal"
+                }
+            });
+
+        return driver.when.init().then(driver.when.updateStyleParams)
+            .then(() => {
+                expect(getOverrideStyleCallArg(driver, 1)).to.equal(`:root
+        { --cart_textFontStyle: normal normal normal 17px/1.4em raleway,sans-serif; --cartButton_textColor: #FFFFFF}
+        .foo{ font: normal normal normal 17px/1.4em raleway,sans-serif; color: #FFFFFF}`);
+            });
+    });
+
     it('has plugin support', () => {
-        driver.given.css('.foo {bar: "increment(number(--baz))"px; --baz: 1;}')
+        driver.given.css('.foo {bar: "increment(number(--baz))"px; --baz: "1";}')
         .plugin('increment', params => parseInt(params[0]) + 1);
 
         return driver.when.init().then(() => {

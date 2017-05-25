@@ -235,7 +235,7 @@ describe('replacer', () => {
     });
 
     it('number without quotes', () => {
-        const css = '.foo { --ccc: 21; margin-top: "number(--ccc)"; }';
+        const css = '.foo { --ccc: "21"; margin-top: "number(--ccc)"; }';
 
         let result = run(css);
 
@@ -292,7 +292,7 @@ describe('replacer', () => {
 
     it('pass correct parameters to value plugins', () => {
         //Given
-        const css = '.foo { bar: "increment(number(--baz))"; --baz: 3; }';
+        const css = '.foo { bar: "increment(number(--baz))"; --baz: "3"; }';
 
         let parameters;
 
@@ -310,7 +310,7 @@ describe('replacer', () => {
         //Then
         assert.deepEqual(parameters[0], ['3']);
         assert.deepEqual(parameters[1], {
-            css: '.foo { bar: "increment(number(--baz))"; --baz: 3; }',
+            css: '.foo { bar: "increment(number(--baz))"; --baz: "3"; }',
             colors: {},
             fonts: {},
             numbers: {}

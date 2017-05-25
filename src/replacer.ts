@@ -2,7 +2,7 @@ import {map, each, startsWith} from 'lodash';
 import basicTransformations from './transformations';
 
 const declarationRegex = /\s*([^:;{]+)\s*:\s*([^;}{]+)\s*/g;
-const defaultVarDeclarationRegex = /--([^:{)]+):\s*"?([^;{]+?)"?;.*/g;
+const defaultVarDeclarationRegex = /--([^:{)]+):\s*"([^;{]+?)";?/g;
 const innerQuotesRegex = /^"([^"]+)"/;
 const transformRegex = /^(color|opacity|darken|string|join|number|font|increment|incrementer)\((.*)\)$/;
 const singleTransformRegex = /^(\w*)\(([^()]+)\)$/;
@@ -70,6 +70,10 @@ function replacer(replacerParams,
             replacedVal = replaceInnerQuotes(replacedVal, innerMatch[1]);
         }
 
+        if (replacedVal[replacedVal.length - 1] === ';') {
+            replacedVal = replacedVal.slice(0, -1);
+        }
+
         return ` ${replacedKey}: ${replacedVal}`;
     }
 
@@ -132,7 +136,6 @@ function replacer(replacerParams,
         let valFromWix = customVarContainers[transform][customVar];
         let valFromDefault = defaultVarDeclarations[customVar];
         let val = valFromWix || valFromDefault;
-
         if (val) {
             let evaled = recursiveEval(val);
             return evaled;

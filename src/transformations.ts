@@ -4,7 +4,6 @@ import fontUtils from './wixStylesFontUtils';
 
 function color(params, siteVars, evalCustomVar) {
     let value = params[0];
-
     let colorCustomVar = evalCustomVar('color', value);
 
     if (colorCustomVar)
@@ -47,7 +46,6 @@ function join(params, siteVars, evalCustomVar) {
     const a = ((color1.alpha() + color2.alpha()) / 2);
 
     return new Color({r, g, b}).alpha(a).rgb().string();
-
 }
 
 function number(params, siteVars, evalCustomVar) {
