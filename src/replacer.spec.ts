@@ -1,4 +1,3 @@
-import _ from 'lodash';
 import replacer from '../src/replacer';
 import {assert} from 'chai';
 
@@ -194,7 +193,7 @@ describe('replacer', () => {
             };
 
             //When
-            let result = run(css, opts);
+            let result = run(css);
 
             //Then
             assert.equal(result, '.foo { --bar: quux; baz: quux;}');
@@ -210,7 +209,7 @@ describe('replacer', () => {
             };
 
             //When
-            let result = run(css, opts);
+            let result = run(css);
 
             //Then
             assert.equal(result, '.foo { --bar: quux; baz: 42;}');
@@ -230,7 +229,7 @@ describe('replacer', () => {
         };
 
         console.time('f');
-        let cssResult = run(cssStr, opts);
+        let cssResult = run(cssStr);
         console.timeEnd('f')
     });
 
@@ -375,6 +374,18 @@ describe('replacer', () => {
 
         let cssResult = run(css);
         assert.equal(cssResult, '.foo { rule: bar; rule3: baz; rule4: #FF0000; rule5: #FF0000 }');
+    });
+
+    it('should detect multi var on the same declaration', () => {
+        let css = `.foo { --border_width: "1px"; --border_color: "color(color-1)"; border: "color(--border_color)" "number(--border_width)" solid; }`;
+
+        opts.colors = {
+            'color-1': '#FF0000',
+            'color-2': 'color-1'
+        };
+
+        let cssResult = run(css);
+        assert.equal(cssResult, '.foo { --border_width: 1px; --border_color: #FF0000; border: #FF0000 1px solid; }');
     });
 
     function run(css) {

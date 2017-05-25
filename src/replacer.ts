@@ -3,7 +3,7 @@ import basicTransformations from './transformations';
 
 const declarationRegex = /\s*([^:;{]+)\s*:\s*([^;}{]+)\s*/g;
 const defaultVarDeclarationRegex = /--([^:{)]+):\s*"([^;{]+?)";?/g;
-const innerQuotesRegex = /^"([^"]+)"/;
+const innerQuotesRegex = /"([^"]+)"/g;
 const transformRegex = /^(color|opacity|darken|string|join|number|font|increment|incrementer)\((.*)\)$/;
 const singleTransformRegex = /^(\w*)\(([^()]+)\)$/;
 const processParamsRegex = /,(?![^(]*\))/g;
@@ -67,7 +67,7 @@ function replacer(replacerParams,
             replacedVal));
 
         if (innerMatch) {
-            replacedVal = replaceInnerQuotes(replacedVal, innerMatch[1]);
+            replacedVal = replaceInnerQuotes(replacedVal, innerMatch);
         }
 
         if (replacedVal[replacedVal.length - 1] === ';') {
@@ -77,9 +77,11 @@ function replacer(replacerParams,
         return ` ${replacedKey}: ${replacedVal}`;
     }
 
-    function replaceInnerQuotes(val, innerVal) {
-        let evaled = recursiveEval(innerVal);
-        return val.replace(innerQuotesRegex, evaled);
+    function replaceInnerQuotes(val, innerVals) {
+        return innerVals.reduce((result, innerVal) => {
+            let evaled = recursiveEval(innerVal.slice(1, -1));
+            return result.replace(innerVal, evaled);
+        }, val);
     }
 
     function recursiveEval(value) {
