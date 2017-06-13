@@ -3,7 +3,7 @@ import {map, each} from 'lodash';
 export default {
     extractStyles() {
         return map(
-            document.querySelectorAll('style:not([wix-style])'),
+            document.querySelectorAll('style:not([wix-style]):not([data-computed])'),
             style => style.textContent.split('\n').join(' ')
         ).join(' ');
     },
