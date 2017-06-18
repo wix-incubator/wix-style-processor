@@ -83,6 +83,17 @@ describe('replacer', () => {
         assert.equal(cssResult, '.foo { rule1: rgba(255, 0, 0, 0.5); }');
     });
 
+    it('without opacity', () => {
+        let css = `.foo { rule1: "withoutOpacity(color(color-1))"; }`;
+
+        opts.colors = {
+            'color-1': 'rgba(255, 0, 0, 0.1)'
+        };
+
+        let cssResult = run(css);
+        assert.equal(cssResult, '.foo { rule1: rgb(255, 0, 0); }');
+    });
+
     it('composed opacity with custom var', () => {
         let css = `.foo { rule1: "opacity(--foo, 0.5)"; }`;
 

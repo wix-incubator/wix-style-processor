@@ -27,6 +27,11 @@ function opacity(params, siteVars, evalCustomVar) {
     return (new Color(colorVal)).fade(1 - alpha).rgb().string();
 }
 
+function withoutOpacity(params, siteVars, evalCustomVar) {
+    let colorVal = color(params, siteVars, evalCustomVar);
+    return (new Color(colorVal)).alpha(1).rgb().string();
+}
+
 function darken(params, siteVars, evalCustomVar) {
     let colorVal = color(params, siteVars, evalCustomVar);
     let darkenValue = params[1];
@@ -79,5 +84,5 @@ function string(params, siteVars, evalCustomVar) {
 }
 
 export default {
-    color, number, font, opacity, join, darken, string
+    color, number, font, opacity, join, darken, string, withoutOpacity
 };
