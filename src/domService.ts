@@ -13,6 +13,10 @@ export default {
         const style = document.createElement("style");
         style.setAttribute('data-computed', 'true');
         style.appendChild(document.createTextNode(css));
-        (document.head || document.getElementsByTagName('head')[0]).insertBefore(style, document.querySelector('style[wix-style]'));
+        if (document.querySelector('style[wix-style]')) {
+            (document.head || document.getElementsByTagName('head')[0]).insertBefore(style, document.querySelector('style[wix-style]'));
+        } else {
+            (document.head || document.getElementsByTagName('head')[0]).appendChild(style);
+        }
     }
 };
