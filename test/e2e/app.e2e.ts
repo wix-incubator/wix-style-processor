@@ -13,8 +13,9 @@ describe('Style Processor Scenario', () => {
     browser.executeAsyncScript((excuteDone) => {
       window.styleProcessor.init({})
         .then(excuteDone);
-      excuteDone();
     });
+
+
     expect(await $$('style').count()).toBe(styleNum);
   });
 
@@ -23,7 +24,6 @@ describe('Style Processor Scenario', () => {
     browser.executeAsyncScript((excuteDone) => {
       window.styleProcessor.init({})
         .then(excuteDone);
-      excuteDone();
     });
 
     browser.executeAsyncScript((excuteDone) => {
