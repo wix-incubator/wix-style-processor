@@ -4,3 +4,4 @@ node_modules
 target
 maven
 test/e2e/screenshots
+.idea
