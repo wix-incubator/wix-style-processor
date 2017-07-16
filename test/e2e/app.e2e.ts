@@ -8,7 +8,7 @@ describe('Style Processor Scenario', () => {
         done();
     });
 
-    it('should not change the number of style tags', async () => {
+    xit('should not change the number of style tags', async () => {
         await $('[data-hook="text"]');
         const styleNum = await $$('style').count();
         browser.executeAsyncScript((excuteDone) => {
