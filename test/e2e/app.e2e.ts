@@ -15,7 +15,6 @@ describe('Style Processor Scenario', () => {
         .then(excuteDone);
     });
 
-
     expect(await $$('style').count()).toBe(styleNum);
   });
 
