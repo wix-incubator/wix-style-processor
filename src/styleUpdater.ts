@@ -28,10 +28,10 @@ export default (wixService, domService, options) => ({
                 }, options.plugins);
 
                 domService.overrideStyle(tagStyle, newCss);
-            }).catch(err => {
-                console.error("failed updating styles", err);
-                throw err;
             });
+        }).catch(err => {
+            console.error("failed updating styles", err);
+            throw err;
         });
     }
 });

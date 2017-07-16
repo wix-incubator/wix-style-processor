@@ -10,15 +10,10 @@ export default class Driver {
     private mocks = {
         Wix: new WixMock(),
         domService: {
-            overrideStyles: sinon.spy(),
-            extractStyles: () => this.css
+            overrideStyle: sinon.spy(),
+            getAllStyleTags: () => ([{textContent: this.css}])
         }
     };
-
-    // GLOBAL.window = {
-    //     Wix: (() => this.mocks.Wix)()
-    // };
-
 
     private when = {
         init: (options) => {

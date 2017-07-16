@@ -222,6 +222,6 @@ describe('Index', () => {
     });
 
     function getOverrideStyleCallArg(driver, callIdx = 0) {
-      return driver.get.domService().overrideStyles.getCall(callIdx).args[0];
+      return driver.get.domService().overrideStyle.getCall(callIdx).args[1];
     }
 });
