@@ -31,6 +31,9 @@ describe('Style Processor Scenario', () => {
       excuteDone();
     });
 
+
+    expect(await ($('[data-hook="text"]').getCssValue('color'))).toBe('rgba(0, 0, 0, 1)');
+
     expect(await $$('style').count()).toBe(styleNum);
   });
 });

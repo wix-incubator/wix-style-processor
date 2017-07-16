@@ -1968,7 +1968,7 @@
     "siteColors": [
       {
         "name": "color_1",
-        "value": "#FFFFFF"
+        "value": "#000000"
       },
       {
         "name": "color_2",
@@ -1988,7 +1988,7 @@
       },
       {
         "name": "color_11",
-        "value": "#FFFFFF"
+        "value": "#000000"
       },
       {
         "name": "color_12",

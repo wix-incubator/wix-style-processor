@@ -7,7 +7,7 @@ export default (wixService, domService, options) => ({
     update() {
         return wixService.getStyleParams().spread((siteColors, siteTextPresets, styleParams) => {
             domService.getAllStyleTags().forEach(tagStyle => {
-                const css = tagStyle.textContent;
+                const css = tagStyle.originalTemplate || tagStyle.textContent;
                 const isStringHack = fontParam => fontParam.fontStyleParam === false;
                 const isValidFontParam = fontParam => fontParam.family !== undefined;
 
