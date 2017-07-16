@@ -4,11 +4,11 @@ describe('Style Processor Scenario', () => {
             window.name = 'E2E';
             excuteDone();
         });
-        await browser.get('/');
         done();
     });
 
-    xit('should not change the number of style tags', async () => {
+    it('should not change the number of style tags', async () => {
+        await browser.get('/');
         await $('[data-hook="text"]');
         const styleNum = await $$('style').count();
         browser.executeAsyncScript((excuteDone) => {
@@ -21,6 +21,7 @@ describe('Style Processor Scenario', () => {
     });
 
     it('should update styles after change form sdk', async () => {
+        await browser.get('/');
         const styleNum = await $$('style').count();
         browser.executeAsyncScript((excuteDone) => {
             window.styleProcessor.init({})
