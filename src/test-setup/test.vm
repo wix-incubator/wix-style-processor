@@ -1,0 +1,12 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <p>Loram ipsome</p>
+    <script type="text/javascript" src="//static.parastorage.com/services/js-sdk/1.84.0/js/wix.min.js"></script>
+    <script src="${baseStaticUrl}app.bundle#if(!${debug}).min#{end}.js"></script>
+</body>
+</html>
