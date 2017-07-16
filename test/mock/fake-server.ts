@@ -18,7 +18,7 @@ export function start(port = 3000) {
 
     req.session.visitCount++;
 
-    res.send(renderVM('./src/test-setup/test.vm', {
+    res.send(renderVM('./test/test-setup/test.vm', {
       baseStaticUrl: '//localhost:3200/',
       debug: true
     }));

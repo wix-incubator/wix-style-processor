@@ -48,7 +48,7 @@
   },
   "yoshi": {
     "entry": {
-      "app": "./test-setup/app.ts"
+      "app": "../test/test-setup/app.ts"
     },
     "separateCss": false
   },
