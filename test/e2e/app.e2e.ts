@@ -9,7 +9,7 @@ describe('Style Processor Scenario', () => {
   });
 
   it('should not change the number of style tags', async () => {
-    const styleNum = $$('style').count();
+    const styleNum = await $$('style').count();
     browser.executeAsyncScript((excuteDone) => {
       window.styleProcessor.init({})
         .then(excuteDone);
@@ -19,7 +19,7 @@ describe('Style Processor Scenario', () => {
   });
 
   it('should update styles after change form sdk', async () => {
-    const styleNum = $$('style').count();
+    const styleNum = await $$('style').count();
     browser.executeAsyncScript((excuteDone) => {
       window.styleProcessor.init({})
         .then(excuteDone);
@@ -31,9 +31,7 @@ describe('Style Processor Scenario', () => {
       excuteDone();
     });
 
-
     expect(await ($('[data-hook="text"]').getCssValue('color'))).toBe('rgba(0, 0, 0, 1)');
-
     expect(await $$('style').count()).toBe(styleNum);
   });
 });
