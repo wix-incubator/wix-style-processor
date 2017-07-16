@@ -46,6 +46,12 @@
   version "0.0.27"
   resolved "https://registry.npmjs.org/@types/promises-a-plus/-/promises-a-plus-0.0.27.tgz#c64651134614c84b8f5d7114ce8901d36a609780"
 
+"@types/protractor@^4.0.0":
+  version "4.0.0"
+  resolved "https://registry.npmjs.org/@types/protractor/-/protractor-4.0.0.tgz#11915845b38d483f7060d74ec8e2eeee43573999"
+  dependencies:
+    protractor "*"
+
 "@types/q@^0.0.32":
   version "0.0.32"
   resolved "https://registry.npmjs.org/@types/q/-/q-0.0.32.tgz#bd284e57c84f1325da702babfc82a5328190c0c5"
@@ -2178,13 +2184,9 @@ di@^0.0.1:
   version "0.0.1"
   resolved "https://repo.dev.wixpress.com/artifactory/api/npm/npm-repos/di/-/di-0.0.1.tgz#806649326ceaa7caa3306d75d985ea2748ba913c"
 
-diff@3.2.0:
+diff@3.2.0, diff@^3.1.0, diff@^3.2.0:
   version "3.2.0"
   resolved "https://repo.dev.wixpress.com/artifactory/api/npm/npm-repos/diff/-/diff-3.2.0.tgz#c9ce393a4b7cbd0b058a725c93df299027868ff9"
-
-diff@^3.1.0, diff@^3.2.0:
-  version "3.3.0"
-  resolved "https://repo.dev.wixpress.com/artifactory/api/npm/npm-repos/diff/-/diff-3.3.0.tgz#056695150d7aa93237ca7e378ac3b1682b7963b9"
 
 diffie-hellman@^5.0.0:
   version "5.0.2"
@@ -4947,11 +4949,7 @@ lower-case@^1.1.1:
   version "1.1.4"
   resolved "https://repo.dev.wixpress.com/artifactory/api/npm/npm-repos/lower-case/-/lower-case-1.1.4.tgz#9a2cabd1b9e8e0ae993a4bf7d5875c39c42e8eac"
 
-lru-cache@2:
-  version "2.7.3"
-  resolved "https://repo.dev.wixpress.com/artifactory/api/npm/npm-repos/lru-cache/-/lru-cache-2.7.3.tgz#6d4524e8b955f95d4f5b58851ce21dd72fb4e952"
-
-lru-cache@2.2.x:
+lru-cache@2, lru-cache@2.2.x:
   version "2.2.4"
   resolved "https://repo.dev.wixpress.com/artifactory/api/npm/npm-repos/lru-cache/-/lru-cache-2.2.4.tgz#6c658619becf14031d0d0b594b16042ce4dc063d"
 
@@ -6284,7 +6282,7 @@ proto-list@~1.2.1:
   version "1.2.4"
   resolved "https://repo.dev.wixpress.com/artifactory/api/npm/npm-repos/proto-list/-/proto-list-1.2.4.tgz#212d5bfe1318306a420f6402b8e26ff39647a849"
 
-protractor@^5.0.0:
+protractor@*, protractor@^5.0.0:
   version "5.1.2"
   resolved "https://repo.dev.wixpress.com/artifactory/api/npm/npm-repos/protractor/-/protractor-5.1.2.tgz#9b221741709a4c62d5cd53c6aadd54a71137e95f"
   dependencies:
@@ -8256,16 +8254,9 @@ write@^0.2.1:
   dependencies:
     mkdirp "^0.5.1"
 
-ws@1.1.2:
+ws@1.1.2, ws@^1.0.1:
   version "1.1.2"
   resolved "https://repo.dev.wixpress.com/artifactory/api/npm/npm-repos/ws/-/ws-1.1.2.tgz#8a244fa052401e08c9886cf44a85189e1fd4067f"
-  dependencies:
-    options ">=0.0.5"
-    ultron "1.0.x"
-
-ws@^1.0.1:
-  version "1.1.4"
-  resolved "https://repo.dev.wixpress.com/artifactory/api/npm/npm-repos/ws/-/ws-1.1.4.tgz#57f40d036832e5f5055662a397c4de76ed66bf61"
   dependencies:
     options ">=0.0.5"
     ultron "1.0.x"
