@@ -1,4 +1,4 @@
-import {map, each} from 'lodash';
+import {each, map} from 'lodash';
 
 export default {
     extractStyles() {
@@ -7,7 +7,9 @@ export default {
             style => style.textContent.split('\n').join(' ')
         ).join(' ');
     },
-
+    getAllStyleTags() {
+        return document.querySelectorAll('style:not([wix-style])');
+    },
     overrideStyles(css) {
         each(document.querySelectorAll('style[data-computed=true]'), item => item.parentNode.removeChild(item));
         const style = document.createElement("style");
@@ -18,5 +20,9 @@ export default {
         } else {
             (document.head || document.getElementsByTagName('head')[0]).appendChild(style);
         }
+    },
+    overrideStyle(tag, css) {
+        tag.originalTemplate = tag.originalTemplate || tag.textContent;
+        tag.textContent = css;
     }
 };

@@ -8,13 +8,29 @@ describe('Style Processor Scenario', () => {
     done();
   });
 
-  it('should display title', async () => {
+  it('should not change the number of style tags', async () => {
     const styleNum = $$('style').count();
     browser.executeAsyncScript((excuteDone) => {
       window.styleProcessor.init({})
         .then(excuteDone);
       excuteDone();
     });
+    expect(await $$('style').count()).toBe(styleNum);
+  });
+
+  it('should update styles after change form sdk', async () => {
+    const styleNum = $$('style').count();
+    browser.executeAsyncScript((excuteDone) => {
+      window.styleProcessor.init({})
+        .then(excuteDone);
+      excuteDone();
+    });
+
+    browser.executeAsyncScript((excuteDone) => {
+      window.changeStyles();
+      excuteDone();
+    });
+
     expect(await $$('style').count()).toBe(styleNum);
   });
 });

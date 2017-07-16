@@ -8,4 +8,5 @@ declare module '*.json';
 interface Window {
   Wix: any;
   styleProcessor?: any;
+  changeStyles?: any;
 }
