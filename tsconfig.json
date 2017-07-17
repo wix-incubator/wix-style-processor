@@ -8,9 +8,7 @@
     "experimentalDecorators": true,
     "target": "es5",
     "lib": ["dom", "es2016"],
-    "types": ["mocha", "chai", "node", "protractor"],
-    "noEmitHelpers": true,
-    "importHelpers": true
+    "types": ["mocha", "chai", "node", "protractor"]
   },
   "include": [
     "./src/external-types.d.ts",

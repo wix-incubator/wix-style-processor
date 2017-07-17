@@ -228,6 +228,27 @@ describe('Index', () => {
         });
     });
 
+    it.only('should not calculate empty strings', () => {
+        driver.given.css('.font-test{join-rule:"join(opacity(color-1, 0.5), 1, opacity(color-2, 0.5), 1)"}')
+            .siteTextPresets({
+                'Body-M': {
+                    displayName: "Paragraph 2",
+                    editorKey: "font_8",
+                    fontFamily: "din-next-w01-light",
+                    lineHeight: "1.4em",
+                    size: "16px",
+                    style: "normal",
+                    value: "font:normal normal normal 16px/1.4em din-next-w01-light,din-next-w02-light,din-next-w10-light,sans-serif",
+                    weight: "normal"
+                }
+            });
+
+        return driver.when.init().then(() => {
+            expect(getOverrideStyleCallArg(driver))
+                .to.equal('.font-test:after{ content: " ";}');
+        });
+    });
+
     function getOverrideStyleCallArg(driver, callIdx = 0) {
       return driver.get.domService().overrideStyle.getCall(callIdx).args[1];
     }

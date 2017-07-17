@@ -3,6 +3,8 @@ import wixStylesFontUtils from './wixStylesFontUtils';
 import replacer from './replacer';
 import {isEqual, omitBy, pickBy} from 'lodash';
 import * as stylis from 'stylis';
+import {replacer2} from './replacer2';
+import {extractVarsPlugin} from './extractVarsPlugin';
 
 export default (wixService, domService, options) => ({
     update() {
@@ -21,16 +23,23 @@ export default (wixService, domService, options) => ({
                 const fonts = wixStylesFontUtils.getFullFontStyles({fontStyles, siteTextPresets}) || {};
                 const strings = pickBy(styleParams.fonts, isStringHack);
 
-                // const plugin = (context, content, selectors, parent, line, column, length) => {
-                //     if (context === 1) {
-                //         console.log(content);
-                //     }
-                // };
 
-                stylis.set({semicolon: false, compress: false, preserve: true });
-                css = css.replace(/"[\n|\s]*}/g, '";}');
+                stylis.set({semicolon: false, compress: false, preserve: true});
+                const vars = getVars(css, stylis);
 
-                css = stylis('', `${css}`);
+                stylis.use((context, declaration) => {
+                    if(context === 1) {
+                        return replacer2({
+                            declaration,
+                            colors,
+                            fonts,
+                            numbers,
+                            strings,
+                            vars
+                        }, options.plugins)
+                    }
+                });
+                css = stylis('', css);
 
                 let newCss = replacer({
                     css,
@@ -48,3 +57,15 @@ export default (wixService, domService, options) => ({
         });
     }
 });
+
+function getVars(css: string, stylis) {
+    const vars = {};
+    stylis.use((context, decleration) => {
+        if (context === 1) {
+            extractVarsPlugin(decleration, vars);
+        }
+    });
+    stylis('', `${css}`);
+    stylis.use(null);
+    return vars;
+}

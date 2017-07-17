@@ -30,7 +30,7 @@
     "lodash": "^4.17.4",
     "parse-css-font": "^2.0.2",
     "q": "^1.5.0",
-    "stylis": "^3.2.3"
+    "stylis": "^3.2.4"
   },
   "devDependencies": {
     "@types/chai": "^3.4.34",

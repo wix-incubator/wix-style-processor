@@ -10,10 +10,10 @@ const processParamsRegex = /,(?![^(]*\))/g;
 const declarationBlocksRegex = /{{1}([^{}]*)}{1}/g;
 
 function replacer(replacerParams,
-                  plugins = {
-                      valueTransformers: {},
-                      declarationTransformers: []
-                  }) {
+    plugins = {
+        valueTransformers: {},
+        declarationTransformers: []
+    }) {
     const {css, colors, fonts, numbers, strings} = replacerParams;
 
     const customVarContainers = {
@@ -65,7 +65,7 @@ function replacer(replacerParams,
 
         ({replacedKey, replacedVal} = runDeclarationTransformers(replacedKey,
             replacedVal));
-        console.log(innerMatch);
+
         if (innerMatch) {
             replacedVal = replaceInnerQuotes(replacedVal, innerMatch);
         }
