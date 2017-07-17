@@ -1,16 +1,4 @@
-import {$, $$, browser, ElementFinder, ExpectedConditions} from 'protractor';
-
-interface IAndElementFinder {
-  and: ElementFinder;
-}
-function waitForVisibilityOf(element: ElementFinder): IAndElementFinder {
-  browser.wait(ExpectedConditions.visibilityOf(element));
-  return {and: element};
-}
-
-function elementByDataHook(dataHook: string): ElementFinder {
-  return $(`[data-hook="${dataHook}"]`);
-}
+import {$, $$, browser, ExpectedConditions} from 'protractor';
 
 describe('Style Processor Scenario', () => {
   beforeEach((done) => {
@@ -31,7 +19,7 @@ describe('Style Processor Scenario', () => {
         .then(executeDone);
     });
 
-    expect(await (elementByDataHook('text').getCssValue('color'))).toBe('rgba(255, 255, 255, 1)');
+    expect(await ($('[data-hook="text"]').getCssValue('color'))).toBe('rgba(255, 255, 255, 1)');
     expect(await ($$('style').count())).toBe(styleNum);
   });
 
@@ -50,7 +38,7 @@ describe('Style Processor Scenario', () => {
       executeDone();
     });
 
-    expect(await (elementByDataHook('text').getCssValue('color'))).toBe('rgba(0, 0, 0, 1)');
+    expect(await ($('[data-hook="text"]').getCssValue('color'))).toBe('rgba(0, 0, 0, 1)');
     expect(await $$('style').count()).toBe(styleNum);
   });
 });
