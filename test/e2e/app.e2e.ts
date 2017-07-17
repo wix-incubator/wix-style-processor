@@ -4,7 +4,7 @@ interface IAndElementFinder {
   and: ElementFinder;
 }
 function waitForVisibilityOf(element: ElementFinder): IAndElementFinder {
-  browser.wait(ExpectedConditions.visibilityOf(element), 4000);
+  browser.wait(ExpectedConditions.visibilityOf(element));
   return {and: element};
 }
 
