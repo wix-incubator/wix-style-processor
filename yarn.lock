@@ -7392,6 +7392,10 @@ stylelint@^7.9.0:
     svg-tags "^1.0.0"
     table "^4.0.1"
 
+stylis@^3.2.3:
+  version "3.2.3"
+  resolved "https://repo.dev.wixpress.com/artifactory/api/npm/npm-repos/stylis/-/stylis-3.2.3.tgz#fed751d792af3f48a247769f55aca05c1a100a09"
+
 sugarss@^0.2.0:
   version "0.2.0"
   resolved "https://repo.dev.wixpress.com/artifactory/api/npm/npm-repos/sugarss/-/sugarss-0.2.0.tgz#ac34237563327c6ff897b64742bf6aec190ad39e"

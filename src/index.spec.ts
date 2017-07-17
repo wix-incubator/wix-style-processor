@@ -20,7 +20,7 @@ describe('Index', () => {
 
     it('should update on init', () => {
         return driver.when.init().then(() => {
-            expect(getOverrideStyleCallArg(driver)).to.equal('.foo { --bar: #717070; color: #717070}');
+            expect(getOverrideStyleCallArg(driver)).to.equal('.foo{ --bar: #717070; color: #717070;}');
         });
     });
 
@@ -28,7 +28,7 @@ describe('Index', () => {
         return driver.when.init()
         .then(driver.when.updateStyleParams)
         .then(() => {
-            expect(getOverrideStyleCallArg(driver, 1)).to.equal('.foo { --bar: #717070; color: #717070}');
+            expect(getOverrideStyleCallArg(driver, 1)).to.equal('.foo{ --bar: #717070; color: #717070;}');
         });
     });
 
@@ -48,7 +48,7 @@ describe('Index', () => {
         return driver.when.init()
         .then(driver.when.updateStyleParams)
         .then(() => {
-            expect(getOverrideStyleCallArg(driver, 1)).to.equal('.foo { color: red;}');
+            expect(getOverrideStyleCallArg(driver, 1)).to.equal('.foo{ color: red;}');
         });
     });
 
@@ -80,7 +80,7 @@ describe('Index', () => {
         return driver.when.init()
         .then(driver.when.updateStyleParams)
         .then(() => {
-            expect(getOverrideStyleCallArg(driver, 1)).to.equal(`.foo { font: normal normal normal 17px/1.4em mr de haviland,cursive;}`);
+            expect(getOverrideStyleCallArg(driver, 1)).to.equal(`.foo{ font: normal normal normal 17px/1.4em mr de haviland,cursive;}`);
         });
     });
 
@@ -103,7 +103,7 @@ describe('Index', () => {
         return driver.when.init()
         .then(driver.when.updateStyleParams)
         .then(() => {
-            expect(getOverrideStyleCallArg(driver, 1)).to.equal(`.foo { width: 100px;}`);
+            expect(getOverrideStyleCallArg(driver, 1)).to.equal(`.foo{ width: 100px;}`);
         });
     });
 
@@ -120,7 +120,7 @@ describe('Index', () => {
 
         return driver.when.init().then(driver.when.updateStyleParams)
         .then(() => {
-            expect(getOverrideStyleCallArg(driver, 1)).to.equal(`.foo { --my_var: 0px; width: 0px;}`);
+            expect(getOverrideStyleCallArg(driver, 1)).to.equal(`.foo{ --my_var: 0px; width: 0px;}`);
         });
     });
 
@@ -139,7 +139,7 @@ describe('Index', () => {
 
         return driver.when.init().then(driver.when.updateStyleParams)
         .then(() => {
-            expect(getOverrideStyleCallArg(driver, 1)).to.equal(':root{ --my_var: #717070;} .foo { color: rgba(128,110,66,0.6193647540983607);}');
+            expect(getOverrideStyleCallArg(driver, 1)).to.equal(':root{ --my_var: #717070;}.foo{ color: rgba(128,110,66,0.6193647540983607);}');
         });
     });
 
@@ -172,7 +172,7 @@ describe('Index', () => {
 
         return driver.when.init().then(driver.when.updateStyleParams)
             .then(() => {
-                expect(getOverrideStyleCallArg(driver, 1)).to.equal(`:root { --cart_textFontStyle: normal normal normal 17px/1.4em raleway,sans-serif; --cartButton_textColor: #FFFFFF} .foo{ font: normal normal normal 17px/1.4em raleway,sans-serif; color: #FFFFFF}`);
+                expect(getOverrideStyleCallArg(driver, 1)).to.equal(`:root{ --cart_textFontStyle: normal normal normal 17px/1.4em raleway,sans-serif; --cartButton_textColor: #FFFFFF;}.foo{ font: normal normal normal 17px/1.4em raleway,sans-serif; color: #FFFFFF;}`);
             });
     });
 
@@ -193,7 +193,7 @@ describe('Index', () => {
         }));
 
         return driver.when.init().then(() => {
-            expect(getOverrideStyleCallArg(driver)).to.equal('.foo { ZzZbarZzZ: #4#;}');
+            expect(getOverrideStyleCallArg(driver)).to.equal('.foo{ ZzZbarZzZ: #4#;}');
         });
 
     });

@@ -2,12 +2,14 @@ import wixStylesColorUtils from './wixStylesColorUtils';
 import wixStylesFontUtils from './wixStylesFontUtils';
 import replacer from './replacer';
 import {isEqual, omitBy, pickBy} from 'lodash';
+import * as stylis from 'stylis';
 
 export default (wixService, domService, options) => ({
     update() {
         return wixService.getStyleParams().spread((siteColors, siteTextPresets, styleParams) => {
             domService.getAllStyleTags().forEach(tagStyle => {
-                const css = (tagStyle.originalTemplate || tagStyle.textContent).split('\n').join(' ');
+
+                let css = (tagStyle.originalTemplate || tagStyle.textContent);//.split('\n').join(' ');
                 const isStringHack = fontParam => fontParam.fontStyleParam === false;
                 const isValidFontParam = fontParam => fontParam.family !== undefined;
 
@@ -18,6 +20,17 @@ export default (wixService, domService, options) => ({
                 const colors = wixStylesColorUtils.getFullColorStyles({colorStyles, siteColors}) || {};
                 const fonts = wixStylesFontUtils.getFullFontStyles({fontStyles, siteTextPresets}) || {};
                 const strings = pickBy(styleParams.fonts, isStringHack);
+
+                // const plugin = (context, content, selectors, parent, line, column, length) => {
+                //     if (context === 1) {
+                //         console.log(content);
+                //     }
+                // };
+
+                stylis.set({semicolon: false, compress: false, preserve: true });
+                css = css.replace(/"[\n|\s]*}/g, '";}');
+
+                css = stylis('', `${css}`);
 
                 let newCss = replacer({
                     css,
