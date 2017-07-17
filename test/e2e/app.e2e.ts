@@ -13,16 +13,17 @@ function elementByDataHook(dataHook: string): ElementFinder {
 }
 
 describe('Style Processor Scenario', () => {
-  beforeEach(async () => {
+  beforeEach(() => {
     browser.executeAsyncScript((executeDone) => {
       window.name = 'E2E';
       executeDone();
     });
-    await browser.get('/');
   });
 
   it('should not change the number of style tags', async () => {
+    await browser.get('/');
     waitForVisibilityOf(elementByDataHook('text'));
+
     const styleNum = await $$('style').count();
     browser.executeAsyncScript((executeDone) => {
       window.styleProcessor.init({})
@@ -34,6 +35,9 @@ describe('Style Processor Scenario', () => {
   });
 
   it('should update styles after change form sdk', async () => {
+    await browser.get('/');
+    waitForVisibilityOf(elementByDataHook('text'));
+
     const styleNum = await $$('style').count();
     browser.executeAsyncScript((executeDone) => {
       window.styleProcessor.init({})
