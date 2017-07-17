@@ -146,10 +146,10 @@ describe('Index', () => {
 
     it('should work with declarations with no semicolon at the end', () => {
         driver
-            .given.css(`:root
-        {--cart_textFontStyle:"font(Body-M)";
-        --cartButton_textColor:"color(color-1)"}
-        .foo{font:"font(--cart_textFontStyle)";color:"color(--cartButton_textColor)"}`)
+            .given.css(`:root {
+--cart_textFontStyle:"font(Body-M)";
+--cartButton_textColor:"color(color-1)"}
+.foo{font:"font(--cart_textFontStyle)";color:"color(--cartButton_textColor)"}`)
             .defaultSiteColors()
             .styleParams({
                 numbers: {},
@@ -172,9 +172,7 @@ describe('Index', () => {
 
         return driver.when.init().then(driver.when.updateStyleParams)
             .then(() => {
-                expect(getOverrideStyleCallArg(driver, 1)).to.equal(`:root
-        { --cart_textFontStyle: normal normal normal 17px/1.4em raleway,sans-serif; --cartButton_textColor: #FFFFFF}
-        .foo{ font: normal normal normal 17px/1.4em raleway,sans-serif; color: #FFFFFF}`);
+                expect(getOverrideStyleCallArg(driver, 1)).to.equal(`:root { --cart_textFontStyle: normal normal normal 17px/1.4em raleway,sans-serif; --cartButton_textColor: #FFFFFF} .foo{ font: normal normal normal 17px/1.4em raleway,sans-serif; color: #FFFFFF}`);
             });
     });
 
@@ -218,6 +216,15 @@ describe('Index', () => {
         return driver.when.init().then(() => {
             expect(getOverrideStyleCallArg(driver))
             .to.equal('.font-test{ --some-font: normal normal normal 16px/1.4em din-next-w01-light,din-next-w02-light,din-next-w10-light,sans-serif; font: normal normal normal 16px/1.4em din-next-w01-light,din-next-w02-light,din-next-w10-light,sans-serif;}');
+        });
+    });
+
+    it('should not calculate empty strings', () => {
+        driver.given.css('.font-test:after{content: " ";}');
+
+        return driver.when.init().then(() => {
+            expect(getOverrideStyleCallArg(driver))
+            .to.equal('.font-test:after{ content: " ";}');
         });
     });
 

@@ -3,7 +3,7 @@ import basicTransformations from './transformations';
 
 const declarationRegex = /\s*([^:;{]+)\s*:\s*([^;}{]+)\s*/g;
 const defaultVarDeclarationRegex = /--([^:{)]+):\s*"([^;{]+?)";?/g;
-const innerQuotesRegex = /"([^"]+)"/g;
+const innerQuotesRegex = /"(color|opacity|darken|string|join|number|font|increment|incrementer|withoutOpacity)\((.*)\)"/g;
 const transformRegex = /^(color|opacity|darken|string|join|number|font|increment|incrementer|withoutOpacity)\((.*)\)$/;
 const singleTransformRegex = /^(\w*)\(([^()]+)\)$/;
 const processParamsRegex = /,(?![^(]*\))/g;
@@ -65,7 +65,7 @@ function replacer(replacerParams,
 
         ({replacedKey, replacedVal} = runDeclarationTransformers(replacedKey,
             replacedVal));
-
+        console.log(innerMatch);
         if (innerMatch) {
             replacedVal = replaceInnerQuotes(replacedVal, innerMatch);
         }
