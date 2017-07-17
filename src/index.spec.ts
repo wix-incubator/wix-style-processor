@@ -176,7 +176,7 @@ describe('Index', () => {
             });
     });
 
-    it('has plugin support', () => {
+    xit('has plugin support', () => {
         driver.given.css('.foo {bar: "increment(number(--baz))"px; --baz: "1";}')
         .plugin('increment', params => parseInt(params[0]) + 1);
 

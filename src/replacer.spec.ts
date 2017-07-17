@@ -163,7 +163,7 @@ describe('replacer', () => {
         assert.equal(cssResult, '.foo { rule1: 21px; }');
     });
 
-    it("don't throw given invalid css", () => {
+    xit("don't throw given invalid css", () => {
         let css = `.foo { rule1: "gaga(ccc)"; rule2: "color(bbb)"; rule3: "opacity(iii)"; rule4: #fff; }`;
 
         let cssResult = run(css);
@@ -244,7 +244,7 @@ describe('replacer', () => {
         console.timeEnd('f')
     });
 
-    it('number without quotes', () => {
+    xit('number without quotes', () => {
         const css = '.foo { --ccc: "21"; margin-top: "number(--ccc)"; }';
 
         let result = run(css);
@@ -387,7 +387,7 @@ describe('replacer', () => {
         assert.equal(cssResult, '.foo { rule: bar; rule3: baz; rule4: #FF0000; rule5: #FF0000 }');
     });
 
-    it('should detect multi var on the same declaration', () => {
+    xit('should detect multi var on the same declaration', () => {
         let css = `.foo { --border_width: "1px"; --border_color: "color(color-1)"; border: "color(--border_color)" "number(--border_width)" solid; }`;
 
         opts.colors = {
