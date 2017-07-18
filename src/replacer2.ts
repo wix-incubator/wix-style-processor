@@ -1,37 +1,41 @@
 import * as Color from 'color';
 import fontUtils from './wixStylesFontUtils';
-import {getFunctionSignature, isCssVar, isSupportedFunction} from './utils';
+import {concatKeyValue, getFunctionSignature, isCssVar, isSupportedFunction} from './utils';
 
 const paramsRegex = /,(?![^(]*\))/g;
+const customSyntaxRegex = /"\w+\([^"]*\)"/g;
 const hexColorRegex = /^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/;
 
 let values;
 
 export function replacer2({
-                              declaration,
-                              colors,
-                              fonts,
-                              numbers,
-                              strings,
-                              vars
-                          }, plugins) {
+    declaration,
+    colors,
+    fonts,
+    numbers,
+    strings,
+    vars
+}, plugins) {
     let [key, value] = declaration.split(':');
+    key = key.trim();
+    value = value.trim();
     values = arguments[0];
-
-    const concatKeyValue = (keyValue) => {
-        return keyValue.key + ':' + keyValue.value;
-    };
 
     if (plugins.declarationTransformers.length > 0) {
         plugins.declarationTransformers.forEach(plugin => {
-            declaration = concatKeyValue(plugin(declaration.split(':')[0].trim(), declaration.split(':')[1].trim()));
+            declaration = concatKeyValue(plugin(key, value));
         });
         return declaration;
     }
-    if (isSupportedFunction(value)) {
-        const newValue = executeFunction(value);
-        return key + ': ' + newValue;
-    }
+
+    let newValue = value.replace(customSyntaxRegex, (part) => {
+        if (isSupportedFunction(part)) {
+            return executeFunction(part);
+        }
+        return part;
+    });
+
+    return key + ': ' + newValue;
 }
 
 const plugins = {
@@ -96,7 +100,6 @@ const plugins = {
         return (new Color(colorVal)).darken(darkenValue).rgb().string();
     },
     number: (value) => {
-        console.log(value);
         return +value;
     }
 };
@@ -104,7 +107,6 @@ const plugins = {
 function executeFunction(value) {
     let functionSignature;
     if (functionSignature = getFunctionSignature(value)) {
-        functionSignature
         return plugins[functionSignature.funcName](...functionSignature.args.split(paramsRegex).map(executeFunction));
     } else {
         return getVarOrPrimitiveValue(value);

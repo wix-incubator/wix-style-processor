@@ -60,17 +60,17 @@ describe('Index', () => {
                 numbers: {},
                 colors: {},
                 fonts: {
-                    "my_var": {
-                        "value": "font-family:'mr de haviland','cursive';",
-                        "index": 93,
-                        "cssFontFamily": "'mr de haviland','cursive'",
-                        "family": "mr de haviland",
-                        "fontParam": true,
-                        "size": 0,
-                        "style": {
-                            "bold": false,
-                            "italic": false,
-                            "underline": false
+                    'my_var': {
+                        'value': 'font-family:\'mr de haviland\',\'cursive\';',
+                        'index': 93,
+                        'cssFontFamily': '\'mr de haviland\',\'cursive\'',
+                        'family': 'mr de haviland',
+                        'fontParam': true,
+                        'size': 0,
+                        'style': {
+                            'bold': false,
+                            'italic': false,
+                            'underline': false
                         }
                     }
                 }
@@ -80,7 +80,8 @@ describe('Index', () => {
         return driver.when.init()
             .then(driver.when.updateStyleParams)
             .then(() => {
-                expect(getOverrideStyleCallArg(driver, 1)).to.equal(`.foo{font: normal normal normal 17px/1.4em mr de haviland,cursive;}`);
+                expect(getOverrideStyleCallArg(driver, 1)).to
+                    .equal(`.foo{font: normal normal normal 17px/1.4em mr de haviland,cursive;}`);
             });
     });
 
@@ -92,8 +93,8 @@ describe('Index', () => {
                 numbers: {},
                 colors: {},
                 fonts: {
-                    "my_var": {
-                        "value": "100px",
+                    'my_var': {
+                        'value': '100px',
                         fontStyleParam: false
                     }
                 }
@@ -139,7 +140,8 @@ describe('Index', () => {
 
         return driver.when.init().then(driver.when.updateStyleParams)
             .then(() => {
-                expect(getOverrideStyleCallArg(driver, 1)).to.equal(':root{--my_var3: #717070;}.foo{color: rgba(128, 110, 66, 0.6193647540983607);}');
+                expect(getOverrideStyleCallArg(driver, 1)).to
+                    .equal(':root{--my_var3: #717070;}.foo{color: rgba(128, 110, 66, 0.6193647540983607);}');
             });
     });
 
@@ -160,19 +162,20 @@ describe('Index', () => {
             })
             .siteTextPresets({
                 'Body-M': {
-                    editorKey: "font_8",
-                    fontFamily: "raleway",
-                    lineHeight: "1.4em",
-                    size: "17px",
-                    style: "normal",
-                    value: "font:normal normal normal 17px/1.4em raleway,sans-serif;",
-                    weight: "normal"
+                    editorKey: 'font_8',
+                    fontFamily: 'raleway',
+                    lineHeight: '1.4em',
+                    size: '17px',
+                    style: 'normal',
+                    value: 'font:normal normal normal 17px/1.4em raleway,sans-serif;',
+                    weight: 'normal'
                 }
             });
 
         return driver.when.init().then(driver.when.updateStyleParams)
             .then(() => {
-                expect(getOverrideStyleCallArg(driver, 1)).to.equal(`:root{--cart_textFontStyle: normal normal normal 17px/1.4em raleway,sans-serif;--cartButton_textColor: #FFFFFF;}.foo{font: normal normal normal 17px/1.4em raleway,sans-serif;color: #FFFFFF;}`);
+                expect(getOverrideStyleCallArg(driver, 1)).to
+                    .equal(`:root{--cart_textFontStyle: normal normal normal 17px/1.4em raleway,sans-serif;--cartButton_textColor: #FFFFFF;}.foo{font: normal normal normal 17px/1.4em raleway,sans-serif;color: #FFFFFF;}`);
             });
     });
 
@@ -201,20 +204,21 @@ describe('Index', () => {
         driver.given.css('.font-test{--some-font: "font(Body-M)"; font: "font(--some-font)";}')
             .siteTextPresets({
                 'Body-M': {
-                    displayName: "Paragraph 2",
-                    editorKey: "font_8",
-                    fontFamily: "din-next-w01-light",
-                    lineHeight: "1.4em",
-                    size: "16px",
-                    style: "normal",
-                    value: "font:normal normal normal 16px/1.4em din-next-w01-light,din-next-w02-light,din-next-w10-light,sans-serif",
-                    weight: "normal"
+                    displayName: 'Paragraph 2',
+                    editorKey: 'font_8',
+                    fontFamily: 'din-next-w01-light',
+                    lineHeight: '1.4em',
+                    size: '16px',
+                    style: 'normal',
+                    value: 'font:normal normal normal 16px/1.4em din-next-w01-light,din-next-w02-light,din-next-w10-light,sans-serif',
+                    weight: 'normal'
                 }
             });
 
         return driver.when.init().then(() => {
             expect(getOverrideStyleCallArg(driver))
-                .to.equal('.font-test{--some-font: normal normal normal 16px/1.4em din-next-w01-light,din-next-w02-light,din-next-w10-light,sans-serif;font: normal normal normal 16px/1.4em din-next-w01-light,din-next-w02-light,din-next-w10-light,sans-serif;}');
+                .to
+                .equal('.font-test{--some-font: normal normal normal 16px/1.4em din-next-w01-light,din-next-w02-light,din-next-w10-light,sans-serif;font: normal normal normal 16px/1.4em din-next-w01-light,din-next-w02-light,din-next-w10-light,sans-serif;}');
         });
     });
 
@@ -310,19 +314,22 @@ describe('Index', () => {
         });
     });
 
-    it.only('should support number', () => {
-        let css = `.foo { rule1: "number(--foo)"px; }`;
+    it('should support number', () => {
+        let css = `.foo { border: "number(--foo)"px solid "color(--bar)"; }`;
 
         driver.given.css(css)
             .styleParams({
                 numbers: {
                     foo: 42
+                },
+                colors: {
+                    bar: {value: '#FF0000'}
                 }
             });
 
         return driver.when.init().then(() => {
             expect(getOverrideStyleCallArg(driver))
-                .to.equal(`.foo { rule1: 42px; }`);
+                .to.equal(`.foo{border: 42px solid #FF0000;}`);
         });
     });
 

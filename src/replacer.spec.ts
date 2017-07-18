@@ -14,18 +14,6 @@ describe('replacer', () => {
         pluginTransformations = {valueTransformers: {}, declarationTransformers: []};
     });
 
-
-    it('number', () => {
-        let css = `.foo { rule1: "number(--foo)"px; }`;
-
-        opts.numbers = {
-            'foo': '42'
-        };
-
-        let cssResult = run(css);
-        assert.equal(cssResult, '.foo { rule1: 42px; }');
-    });
-
     it('font', () => {
         let css = `.foo { rule1: "font(--foo)"px; }`;
 
