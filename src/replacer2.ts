@@ -7,7 +7,6 @@ const funcsRegex = new RegExp(funcsRegexStr);
 const hexColorRegex = /^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/;
 
 let values;
-let key1;
 
 export function replacer2({
                               declaration,
@@ -18,36 +17,31 @@ export function replacer2({
                               vars
                           }, plugins) {
     let [key, value] = declaration.split(':');
+    values = undefined;
     values = arguments[0];
-    key1 = key;
-    //if (key.indexOf('--') === 0)
+
+    const concatKeyValue = (keyValue) => {
+        return keyValue.key + ':' + keyValue.value;
+    };
+
     if (plugins.declarationTransformers.length > 0) {
         plugins.declarationTransformers.forEach(plugin => {
             declaration = concatKeyValue(plugin(declaration.split(':')[0].trim(), declaration.split(':')[1].trim()));
         });
-
-        function concatKeyValue(keyValue) {
-            return keyValue.key + ':' + keyValue.value;
-        }
-
-        console.log(declaration);
         return declaration;
     }
     if (isSupportedFunction(value)) {
         const newValue = executeFunction(value);
-        // if (typeof newValue === 'object') {
-        //     newValue = JSON.parse(newValue);
-        // }
+        values = undefined;
         return key + ': ' + newValue;
     }
 }
 
 const plugins = {
-    join: (...args) => {
+    join: (color1, strength1, color2, strength2) => {
 
-        console.log(args);
-        let color1 = new Color(args[0]);
-        let color2 = new Color(args[2]);
+        color1 = new Color(color1);
+        color2 = new Color(color2);
 
         //todo: use strength
         //let color1strength = args[1];
