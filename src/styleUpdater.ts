@@ -25,10 +25,7 @@ export default (wixService, domService, options) => ({
 
 
                 stylis.set({semicolon: false, compress: false, preserve: true});
-                const vars = getVars(css, stylis, {colors,
-                    fonts,
-                    numbers,
-                    strings});
+                const vars = getVars(css, stylis);
 
                 stylis.use((context, declaration) => {
                     if(context === 1) {
@@ -53,11 +50,11 @@ export default (wixService, domService, options) => ({
     }
 });
 
-function getVars(css: string, stylis, parsedStyleParams) {
+function getVars(css: string, stylis) {
     const vars = {};
     stylis.use((context, decleration) => {
         if (context === 1) {
-            extractVarsPlugin(decleration, vars, parsedStyleParams);
+            extractVarsPlugin(decleration, vars);
         }
     });
     stylis('', `${css}`);
