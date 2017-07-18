@@ -1,3 +1,4 @@
+import {isCssVar} from './utils';
 export function extractVarsPlugin(declaration, accumulate) {
     let [key, value] = declaration.split(':');
     key = key.trim();
@@ -5,8 +6,4 @@ export function extractVarsPlugin(declaration, accumulate) {
     if (isCssVar(key)) {
         accumulate[key] = value.trim();
     }
-}
-
-function isCssVar(key) {
-    return key.indexOf('--') === 0;
 }

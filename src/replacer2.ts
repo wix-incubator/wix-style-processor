@@ -1,9 +1,8 @@
 import * as Color from 'color';
 import fontUtils from './wixStylesFontUtils';
+import {getFunctionSignature, isCssVar, isSupportedFunction} from './utils';
 
-const funcsRegexStr = '(' + ['color', 'opacity', 'darken', 'string', 'join', 'number', 'font', 'increment', 'incrementer', 'withoutOpacity'].join('|') + ')\\((.*)\\)';
 const paramsRegex = /,(?![^(]*\))/g;
-const funcsRegex = new RegExp(funcsRegexStr);
 const hexColorRegex = /^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/;
 
 let values;
@@ -93,42 +92,40 @@ const plugins = {
     }
 };
 
-function getValue(value) {
-    if (value.indexOf('--') === 0) {
-        let varValue = values.vars[value];
-        if (isSupportedFunction(varValue)) {
-            var varValueAfterExcution = executeFunction(varValue);
-            return varValueAfterExcution;
-        }
+function executeFunction(value) {
+    let functionSignature;
+    if (functionSignature = getFunctionSignature(value)) {
+        return plugins[functionSignature.funcName](...functionSignature.args.split(paramsRegex).map(executeFunction));
+    } else {
+        return getVarOrPrimitiveValue(value);
+    }
+}
 
-        if (values.vars[value]) {
-            return values.vars[value];
-        } else {
-            //no var declared, maybe is has value in style params (from settings)
-            let varNameInSettings = value.substring(2, value.length);
-            if (values.strings[varNameInSettings] && values.strings[varNameInSettings].value) {
-                return values.strings[varNameInSettings].value;
-            } else if (values.colors[varNameInSettings]) {
-                return values.colors[varNameInSettings];
-            } else if (values.fonts[varNameInSettings]) {
-                return values.fonts[varNameInSettings];
-            }
+
+function getVarOrPrimitiveValue(value) {
+    if (isCssVar(value)) {
+        if (getVarValueFromSettingsOrDefault(value)) {
+            value = getVarValueFromSettingsOrDefault(value);
+        }
+        if (isSupportedFunction(value)) {
+            value = executeFunction(value);
         }
     }
 
-    //not a var
     return value;
 }
 
-function executeFunction(value) {
-    let groups;
-    if (groups = funcsRegex.exec(value)) {
-        return plugins[groups[1]](...groups[2].split(paramsRegex).map(executeFunction));
-    } else {
-        return getValue(value);
+function getVarValueFromSettingsOrDefault(varName) {
+    let varValue = values.vars[varName];
+    //no var declared, maybe is has value in style params (from settings)
+    let varNameInSettings = varName.substring(2, varName.length);
+    if (values.strings[varNameInSettings] && values.strings[varNameInSettings].value) {
+        return values.strings[varNameInSettings].value;
+    } else if (values.colors[varNameInSettings]) {
+        return values.colors[varNameInSettings];
+    } else if (values.fonts[varNameInSettings]) {
+        return values.fonts[varNameInSettings];
     }
-}
-
-function isSupportedFunction(value) {
-    return funcsRegex.test(value);
+    //not a var
+    return varValue;
 }
