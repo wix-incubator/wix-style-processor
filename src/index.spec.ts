@@ -333,6 +333,50 @@ describe('Index', () => {
         });
     });
 
+    it('does not modify static params', () => {
+        let css = `.foo { padding: 10px 11px 12px 13px; margin-right: 20px; color: blue; }`;
+
+        driver.given.css(css);
+
+        return driver.when.init().then(() => {
+            expect(getOverrideStyleCallArg(driver))
+                .to.equal(`.foo{padding: 10px 11px 12px 13px;margin-right: 20px;color: blue;}`);
+        });
+    });
+
+    it('does not modify regular css vars', () => {
+        let css = `.foo { --bar: var(42); --baz: var(21); padding: --baz;}`;
+
+        driver.given.css(css);
+
+        return driver.when.init().then(() => {
+            expect(getOverrideStyleCallArg(driver))
+                .to.equal(`.foo{--bar: var(42);--baz: var(21);padding: --baz;}`);
+        });
+    });
+
+    it('should work with pseudo selectors', () => {
+        let css = `.datepicker__day--highlighted:hover{ background-color: #32be3f;}`;
+
+        driver.given.css(css);
+
+        return driver.when.init().then(() => {
+            expect(getOverrideStyleCallArg(driver))
+                .to.equal(`.datepicker__day--highlighted:hover{background-color: #32be3f;}`);
+        });
+    });
+
+    it('should detect declarations with no space after the :', () => {
+        let css = `.foo { rule: bar; rule3:baz; rule4:"color(color-9)"; rule5:"color(color(color-9))" }`;
+
+        driver.given.css(css);
+
+        return driver.when.init().then(() => {
+            expect(getOverrideStyleCallArg(driver))
+                .to.equal(`.foo{rule: bar;rule3: baz;rule4: #FF0000;rule5: #FF0000;}`);
+        });
+    });
+
     function getOverrideStyleCallArg(driver, callIdx = 0) {
         return driver.get.domService().overrideStyle.getCall(callIdx).args[1];
     }

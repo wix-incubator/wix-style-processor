@@ -22,7 +22,7 @@ export default class Driver {
     };
 
     private when = {
-        init: (options) => {
+        init: (options = {}) => {
             return index.init(options, this.mocks.domService);
         },
         updateStyleParams: () => {
