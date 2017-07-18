@@ -30,7 +30,6 @@ export function replacer2({
     }
     if (isSupportedFunction(value)) {
         const newValue = executeFunction(value);
-        values = undefined;
         return key + ': ' + newValue;
     }
 }
@@ -87,14 +86,25 @@ const plugins = {
     opacity: (color, opacity) => {
         return (new Color(color)).fade(1 - opacity).rgb().string();
     },
+    withoutOpacity: (color) => {
+        return (new Color(color)).alpha(1).rgb().string();
+    },
     string: (value) => {
         return values.vars[value] || value;
+    },
+    darken: (colorVal, darkenValue) => {
+        return (new Color(colorVal)).darken(darkenValue).rgb().string();
+    },
+    number: (value) => {
+        console.log(value);
+        return +value;
     }
 };
 
 function executeFunction(value) {
     let functionSignature;
     if (functionSignature = getFunctionSignature(value)) {
+        functionSignature
         return plugins[functionSignature.funcName](...functionSignature.args.split(paramsRegex).map(executeFunction));
     } else {
         return getVarOrPrimitiveValue(value);
@@ -125,6 +135,8 @@ function getVarValueFromSettingsOrDefault(varName) {
         return values.colors[varNameInSettings];
     } else if (values.fonts[varNameInSettings]) {
         return values.fonts[varNameInSettings];
+    } else if (values.numbers[varNameInSettings]) {
+        return values.numbers[varNameInSettings];
     }
     //not a var
     return varValue;

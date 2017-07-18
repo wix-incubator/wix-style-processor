@@ -64,9 +64,9 @@ export default class Driver {
                 'name': 'color_18',
                 'value': '#FF5E8B',
                 'reference': 'color-8'
-            }, {'name': 'color_19', 'value': '#FF0048', 'reference': 'color-9'}, {
+            }, {'name': 'color_19', 'value': '#FF0000', 'reference': 'color-9'}, {
                 'name': 'color_20',
-                'value': '#BB0035',
+                'value': '#00FF00',
                 'reference': 'color-10'
             }, {'name': 'color_21', 'value': '#FFC7FF', 'reference': 'color-11'}, {
                 'name': 'color_22',
