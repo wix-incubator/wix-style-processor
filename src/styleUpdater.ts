@@ -25,7 +25,7 @@ export default (wixService, domService, options) => ({
 
 
                 stylis.set({semicolon: false, compress: false, preserve: true});
-                const vars = getVars(css, stylis);
+                const vars = getVars(css, stylis, styleParams);
 
                 stylis.use((context, declaration) => {
                     if(context === 1) {
@@ -41,13 +41,14 @@ export default (wixService, domService, options) => ({
                 });
                 css = stylis('', css);
 
-                let newCss = replacer({
-                    css,
-                    colors,
-                    fonts,
-                    numbers,
-                    strings
-                }, options.plugins);
+                let newCss = css;
+                //     replacer({
+                //     css,
+                //     colors,
+                //     fonts,
+                //     numbers,
+                //     strings
+                // }, options.plugins);
 
                 domService.overrideStyle(tagStyle, newCss);
             });
@@ -58,11 +59,11 @@ export default (wixService, domService, options) => ({
     }
 });
 
-function getVars(css: string, stylis) {
+function getVars(css: string, stylis, styleParams) {
     const vars = {};
     stylis.use((context, decleration) => {
         if (context === 1) {
-            extractVarsPlugin(decleration, vars);
+            extractVarsPlugin(decleration, vars, styleParams);
         }
     });
     stylis('', `${css}`);
