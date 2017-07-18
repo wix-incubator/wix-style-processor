@@ -20,7 +20,7 @@ describe('Index', () => {
 
     it('should update on init', () => {
         return driver.when.init().then(() => {
-            expect(getOverrideStyleCallArg(driver)).to.equal('.foo{ --bar: #717070; color: #717070;}');
+            expect(getOverrideStyleCallArg(driver)).to.equal('.foo{--bar: #717070;color: #717070;}');
         });
     });
 
@@ -28,7 +28,7 @@ describe('Index', () => {
         return driver.when.init()
         .then(driver.when.updateStyleParams)
         .then(() => {
-            expect(getOverrideStyleCallArg(driver, 1)).to.equal('.foo{ --bar: #717070; color: #717070;}');
+            expect(getOverrideStyleCallArg(driver, 1)).to.equal('.foo{--bar: #717070;color: #717070;}');
         });
     });
 
@@ -48,7 +48,7 @@ describe('Index', () => {
         return driver.when.init()
         .then(driver.when.updateStyleParams)
         .then(() => {
-            expect(getOverrideStyleCallArg(driver, 1)).to.equal('.foo{ color: red;}');
+            expect(getOverrideStyleCallArg(driver, 1)).to.equal('.foo{color: rgb(255, 0, 0);}');
         });
     });
 
@@ -80,7 +80,7 @@ describe('Index', () => {
         return driver.when.init()
         .then(driver.when.updateStyleParams)
         .then(() => {
-            expect(getOverrideStyleCallArg(driver, 1)).to.equal(`.foo{ font: normal normal normal 17px/1.4em mr de haviland,cursive;}`);
+            expect(getOverrideStyleCallArg(driver, 1)).to.equal(`.foo{font: normal normal normal 17px/1.4em mr de haviland,cursive;}`);
         });
     });
 
@@ -103,7 +103,7 @@ describe('Index', () => {
         return driver.when.init()
         .then(driver.when.updateStyleParams)
         .then(() => {
-            expect(getOverrideStyleCallArg(driver, 1)).to.equal(`.foo{ width: 100px;}`);
+            expect(getOverrideStyleCallArg(driver, 1)).to.equal(`.foo{width: 100px;}`);
         });
     });
 
@@ -120,7 +120,7 @@ describe('Index', () => {
 
         return driver.when.init().then(driver.when.updateStyleParams)
         .then(() => {
-            expect(getOverrideStyleCallArg(driver, 1)).to.equal(`.foo{ --my_var: 0px; width: 0px;}`);
+            expect(getOverrideStyleCallArg(driver, 1)).to.equal(`.foo{--my_var: 0px;width: 0px;}`);
         });
     });
 
@@ -139,7 +139,7 @@ describe('Index', () => {
 
         return driver.when.init().then(driver.when.updateStyleParams)
         .then(() => {
-            expect(getOverrideStyleCallArg(driver, 1)).to.equal(':root{ --my_var: #717070;}.foo{ color: rgba(128,110,66,0.6193647540983607);}');
+            expect(getOverrideStyleCallArg(driver, 1)).to.equal(':root{--my_var: #717070;}.foo{color: rgba(128, 110, 66, 0.6193647540983607);}');
         });
     });
 
@@ -172,7 +172,7 @@ describe('Index', () => {
 
         return driver.when.init().then(driver.when.updateStyleParams)
             .then(() => {
-                expect(getOverrideStyleCallArg(driver, 1)).to.equal(`:root{ --cart_textFontStyle: normal normal normal 17px/1.4em raleway,sans-serif; --cartButton_textColor: #FFFFFF;}.foo{ font: normal normal normal 17px/1.4em raleway,sans-serif; color: #FFFFFF;}`);
+                expect(getOverrideStyleCallArg(driver, 1)).to.equal(`:root{--cart_textFontStyle: normal normal normal 17px/1.4em raleway,sans-serif;--cartButton_textColor: #FFFFFF;}.foo{font: normal normal normal 17px/1.4em raleway,sans-serif;color: #FFFFFF;}`);
             });
     });
 
@@ -215,7 +215,7 @@ describe('Index', () => {
 
         return driver.when.init().then(() => {
             expect(getOverrideStyleCallArg(driver))
-            .to.equal('.font-test{ --some-font: normal normal normal 16px/1.4em din-next-w01-light,din-next-w02-light,din-next-w10-light,sans-serif; font: normal normal normal 16px/1.4em din-next-w01-light,din-next-w02-light,din-next-w10-light,sans-serif;}');
+            .to.equal('.font-test{--some-font: normal normal normal 16px/1.4em din-next-w01-light,din-next-w02-light,din-next-w10-light,sans-serif;font: normal normal normal 16px/1.4em din-next-w01-light,din-next-w02-light,din-next-w10-light,sans-serif;}');
         });
     });
 
@@ -224,12 +224,12 @@ describe('Index', () => {
 
         return driver.when.init().then(() => {
             expect(getOverrideStyleCallArg(driver))
-            .to.equal('.font-test:after{ content: " ";}');
+            .to.equal('.font-test:after{content: " ";}');
         });
     });
 
-    it.only('should not calculate empty strings', () => {
-        driver.given.css('.font-test{join-rule:"join(opacity(color-1, 0.5), 1, opacity(color-2, 0.5), 1)"}')
+    it('should calculate nested functions', () => {
+        driver.given.css('.font-test{color:"join(opacity(color(color-1), 0.5), 1, opacity(color(color-2), 0.5), 1)"}')
             .siteTextPresets({
                 'Body-M': {
                     displayName: "Paragraph 2",
@@ -245,7 +245,7 @@ describe('Index', () => {
 
         return driver.when.init().then(() => {
             expect(getOverrideStyleCallArg(driver))
-                .to.equal('.font-test:after{ content: " ";}');
+                .to.equal('.font-test{color: rgba(255, 255, 255, 0.5);}');
         });
     });
 
