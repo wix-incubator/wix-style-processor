@@ -195,7 +195,6 @@ describe('Index', () => {
         return driver.when.init().then(() => {
             expect(getOverrideStyleCallArg(driver)).to.equal('.foo{ZzZbarZzZ:#4#;}');
         });
-
     });
 
     it('should support double font reference', () => {

@@ -17,7 +17,6 @@ export function replacer2({
                               vars
                           }, plugins) {
     let [key, value] = declaration.split(':');
-    values = undefined;
     values = arguments[0];
 
     const concatKeyValue = (keyValue) => {

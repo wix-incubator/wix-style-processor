@@ -1,8 +1,7 @@
 import wixStylesColorUtils from './wixStylesColorUtils';
 import wixStylesFontUtils from './wixStylesFontUtils';
-import replacer from './replacer';
 import {isEqual, omitBy, pickBy} from 'lodash';
-import * as stylis from 'stylis';
+import * as Stylis from 'stylis';
 import {replacer2} from './replacer2';
 import {extractVarsPlugin} from './extractVarsPlugin';
 
@@ -11,7 +10,7 @@ export default (wixService, domService, options) => ({
         return wixService.getStyleParams().spread((siteColors, siteTextPresets, styleParams) => {
             domService.getAllStyleTags().forEach(tagStyle => {
 
-                let css = (tagStyle.originalTemplate || tagStyle.textContent);//.split('\n').join(' ');
+                let css = (tagStyle.originalTemplate || tagStyle.textContent);
                 const isStringHack = fontParam => fontParam.fontStyleParam === false;
                 const isValidFontParam = fontParam => fontParam.family !== undefined;
 
@@ -23,8 +22,8 @@ export default (wixService, domService, options) => ({
                 const fonts = wixStylesFontUtils.getFullFontStyles({fontStyles, siteTextPresets}) || {};
                 const strings = pickBy(styleParams.fonts, isStringHack);
 
+                let stylis = new Stylis({semicolon: false, compress: false, preserve: true});
 
-                stylis.set({semicolon: false, compress: false, preserve: true});
                 const vars = getVars(css, stylis);
 
                 stylis.use((context, declaration) => {
@@ -39,9 +38,9 @@ export default (wixService, domService, options) => ({
                         }, options.plugins)
                     }
                 });
-                css = stylis('', css);
+                const newCss = stylis('', css);
 
-                domService.overrideStyle(tagStyle, css);
+                domService.overrideStyle(tagStyle, newCss);
             });
         }).catch(err => {
             console.error('failed updating styles', err);
@@ -57,7 +56,7 @@ function getVars(css: string, stylis) {
             extractVarsPlugin(decleration, vars);
         }
     });
-    stylis('', `${css}`);
+    stylis('', css);
     stylis.use(null);
     return vars;
 }
