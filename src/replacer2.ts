@@ -21,6 +21,18 @@ export function replacer2({
     values = arguments[0];
     key1 = key;
     //if (key.indexOf('--') === 0)
+    if (plugins.declarationTransformers.length > 0) {
+        plugins.declarationTransformers.forEach(plugin => {
+            declaration = concatKeyValue(plugin(declaration.split(':')[0].trim(), declaration.split(':')[1].trim()));
+        });
+
+        function concatKeyValue(keyValue) {
+            return keyValue.key + ':' + keyValue.value;
+        }
+
+        console.log(declaration);
+        return declaration;
+    }
     if (isSupportedFunction(value)) {
         const newValue = executeFunction(value);
         // if (typeof newValue === 'object') {

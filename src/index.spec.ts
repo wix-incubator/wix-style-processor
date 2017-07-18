@@ -126,12 +126,12 @@ describe('Index', () => {
 
     it('should support default values', () => {
         driver
-        .given.css(':root{--my_var: "color(color-4)";} .foo {color: "color(--my_var)";}')
+        .given.css(':root{--my_var3: "color(color-4)";} .foo {color: "color(--my_var3)";}')
         .defaultSiteColors()
         .styleParams({
             numbers: {},
             colors: {
-                'my_var': {value: 'rgba(128,110,66,0.6193647540983607)'}
+                'my_var3': {value: 'rgba(128,110,66,0.6193647540983607)'}
             },
             fonts: {}
         })
@@ -139,7 +139,7 @@ describe('Index', () => {
 
         return driver.when.init().then(driver.when.updateStyleParams)
         .then(() => {
-            expect(getOverrideStyleCallArg(driver, 1)).to.equal(':root{--my_var: #717070;}.foo{color: rgba(128, 110, 66, 0.6193647540983607);}');
+            expect(getOverrideStyleCallArg(driver, 1)).to.equal(':root{--my_var3: #717070;}.foo{color: rgba(128, 110, 66, 0.6193647540983607);}');
         });
     });
 
@@ -154,7 +154,7 @@ describe('Index', () => {
             .styleParams({
                 numbers: {},
                 colors: {
-                    'my_var': {value: 'rgba(128,110,66,0.6193647540983607)'}
+                    'my_var2': {value: 'rgba(128,110,66,0.6193647540983607)'}
                 },
                 fonts: {}
             })
@@ -193,7 +193,7 @@ describe('Index', () => {
         }));
 
         return driver.when.init().then(() => {
-            expect(getOverrideStyleCallArg(driver)).to.equal('.foo{ ZzZbarZzZ: #4#;}');
+            expect(getOverrideStyleCallArg(driver)).to.equal('.foo{ZzZbarZzZ:#4#;}');
         });
 
     });
