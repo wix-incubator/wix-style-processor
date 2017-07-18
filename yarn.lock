@@ -2206,13 +2206,9 @@ di@^0.0.1:
   version "0.0.1"
   resolved "https://repo.dev.wixpress.com/artifactory/api/npm/npm-repos/di/-/di-0.0.1.tgz#806649326ceaa7caa3306d75d985ea2748ba913c"
 
-diff@3.2.0:
+diff@3.2.0, diff@^3.1.0, diff@^3.2.0:
   version "3.2.0"
   resolved "https://repo.dev.wixpress.com/artifactory/api/npm/npm-repos/diff/-/diff-3.2.0.tgz#c9ce393a4b7cbd0b058a725c93df299027868ff9"
-
-diff@^3.1.0, diff@^3.2.0:
-  version "3.3.0"
-  resolved "https://repo.dev.wixpress.com/artifactory/api/npm/npm-repos/diff/-/diff-3.3.0.tgz#056695150d7aa93237ca7e378ac3b1682b7963b9"
 
 diffie-hellman@^5.0.0:
   version "5.0.2"
@@ -4985,11 +4981,7 @@ lower-case@^1.1.1:
   version "1.1.4"
   resolved "https://repo.dev.wixpress.com/artifactory/api/npm/npm-repos/lower-case/-/lower-case-1.1.4.tgz#9a2cabd1b9e8e0ae993a4bf7d5875c39c42e8eac"
 
-lru-cache@2:
-  version "2.7.3"
-  resolved "https://repo.dev.wixpress.com/artifactory/api/npm/npm-repos/lru-cache/-/lru-cache-2.7.3.tgz#6d4524e8b955f95d4f5b58851ce21dd72fb4e952"
-
-lru-cache@2.2.x:
+lru-cache@2, lru-cache@2.2.x:
   version "2.2.4"
   resolved "https://repo.dev.wixpress.com/artifactory/api/npm/npm-repos/lru-cache/-/lru-cache-2.2.4.tgz#6c658619becf14031d0d0b594b16042ce4dc063d"
 

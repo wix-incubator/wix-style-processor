@@ -13,6 +13,7 @@ $ npm i -S wix-style-processor
 ```css
 .my-selector {
     --my-font: "font(Body-M)";                                              /* define a custom variable with a default value */
+    --my-font2: "font({theme: 'Body-M', size: '10px', lineHeight: '2em', weight: 'bold', style:'italic'})"     /* will use Body-M as base font and override the given attributes */
     --default-width: "number(42)";                                          /* define a numeric custom var */
 
     font: "font(--my-font)";                                                /* assign a dynamic font value from a custom var */
@@ -20,6 +21,9 @@ $ npm i -S wix-style-processor
     color: "color(color-8)";                                                /* assign a color from the site's palette */
     background-color: "join(opacity(color-1, 0.5), opacity(color-8, 0.5))"; /* blends 2 colors */
     color: "opacity(color-8, 0.3)";                                         /* add opacity to a site palette color */
+    color: "withoutOpacity(opacity(color-8, 0.3))";                         /* will remove the opacity of site palette color */
+    color: "darken(color-8, 0.3)";                                          /* make a darken version of site palette color */
+    font: "font(--my-font2)";                                               /* will use the overridden default unless it was defined in settings  */
 }
 ```
 

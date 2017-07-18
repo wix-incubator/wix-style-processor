@@ -1,8 +1,8 @@
 import * as Color from 'color';
 import fontUtils from './wixStylesFontUtils';
-import {concatKeyValue, getFunctionSignature, isCssVar, isSupportedFunction} from './utils';
+import {concatKeyValue, getFunctionSignature, isCssVar, isJsonLike, isSupportedFunction, parseJson} from './utils';
 
-const paramsRegex = /,(?![^(]*\))/g;
+const paramsRegex = /,(?![^(]*(?:\)|}))/g;
 const customSyntaxRegex = /"\w+\([^"]*\)"/g;
 const hexColorRegex = /^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/;
 
@@ -16,9 +16,10 @@ export function replacer2({
     strings,
     vars
 }, plugins) {
-    let [key, value] = declaration.split(':');
+    let [key, ...value] = declaration.split(':');
     key = key.trim();
-    value = value.trim();
+    value = value.join(':').trim();
+
     values = arguments[0];
 
     if (plugins.declarationTransformers.length > 0) {
@@ -72,6 +73,9 @@ const plugins = {
         let fontValue;
         if (typeof font === 'object') {
             fontValue = font;
+        } else if (isJsonLike(font)) {
+            const {theme, ...overrides} = parseJson(font);
+            fontValue = Object.assign({}, values.fonts[theme], overrides);
         } else if (values.fonts[font]) {
             fontValue = values.fonts[font];
         }

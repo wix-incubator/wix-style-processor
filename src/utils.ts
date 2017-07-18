@@ -1,4 +1,4 @@
-const funcsRegexStr = '(' + ['color', 'opacity', 'darken', 'string', 'join', 'number', 'font', 'increment', 'incrementer', 'withoutOpacity'].join('|') + ')\\((.*)\\)';
+const funcsRegexStr = '(' + ['color', 'opacity', 'darken', 'string', 'join', 'number', 'font', 'withoutOpacity'].join('|') + ')\\((.*)\\)';
 const funcsRegex = new RegExp(funcsRegexStr);
 
 export function isSupportedFunction(value: any) {
@@ -23,4 +23,18 @@ export function isCssVar(key: string) {
 
 export function concatKeyValue(keyValue: { key: string, value: string }) {
     return keyValue.key + ':' + keyValue.value;
+}
+
+export function isJsonLike(value: string) {
+    return value[0] === '{' && value.slice(-1) === '}';
+}
+
+export function parseJson(value: string): { theme: string, size?: string, lineHeight?: string, style?: string, weight: string } {
+    return <any>value.slice(1, -1)
+        .split(',')
+        .reduce((json, current) => {
+            const [key, value] = current.split(':');
+            json[key.trim()] = value.trim().slice(1, -1);
+            return json;
+        }, {});
 }

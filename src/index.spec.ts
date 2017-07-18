@@ -377,6 +377,67 @@ describe('Index', () => {
         });
     });
 
+    it('should support font theme override', () => {
+        let css = `.foo{ font: "font({theme: 'Body-M', size: '10px', lineHeight: '2em', weight: 'bold', style:'italic'})"}`;
+
+        driver.given.css(css)
+            .siteTextPresets({
+                'Body-M': {
+                    editorKey: 'font_8',
+                    fontFamily: 'raleway',
+                    lineHeight: '1.4em',
+                    size: '17px',
+                    style: 'normal',
+                    value: 'font:normal normal normal 17px/1.4em raleway,sans-serif;',
+                    weight: 'normal'
+                }
+            });
+
+        return driver.when.init().then(() => {
+            expect(getOverrideStyleCallArg(driver))
+                .to.equal(`.foo{font: italic normal bold 10px/2em raleway,sans-serif;}`);
+        });
+    });
+
+    it('should support font override with var from settings', () => {
+        let css = `.foo{ --bodyText: "font({theme: 'Body-M', size: '10px', lineHeight: '2em', weight: 'bold', style:'italic'})"; font: "font(--bodyText)"}`;
+
+        driver.given.css(css)
+            .siteTextPresets({
+                'Body-M': {
+                    editorKey: 'font_8',
+                    fontFamily: 'raleway',
+                    lineHeight: '1.4em',
+                    size: '17px',
+                    style: 'normal',
+                    value: 'font:normal normal normal 17px/1.4em raleway,sans-serif;',
+                    weight: 'normal'
+                }
+            })
+            .styleParams({
+                fonts: {
+                    bodyText: {
+                        'value': 'font-family:\'mr de haviland\',\'cursive\';',
+                        'index': 93,
+                        'cssFontFamily': '\'mr de haviland\',\'cursive\'',
+                        'family': 'mr de haviland',
+                        'fontParam': true,
+                        'size': 0,
+                        'style': {
+                            'bold': false,
+                            'italic': false,
+                            'underline': false
+                        }
+                    }
+                }
+            });
+
+        return driver.when.init().then(() => {
+            expect(getOverrideStyleCallArg(driver))
+                .to.equal(`.foo{--bodyText: italic normal bold 10px/2em raleway,sans-serif;font: normal normal normal 17px/1.4em mr de haviland,cursive;}`);
+        });
+    });
+
     function getOverrideStyleCallArg(driver, callIdx = 0) {
         return driver.get.domService().overrideStyle.getCall(callIdx).args[1];
     }
