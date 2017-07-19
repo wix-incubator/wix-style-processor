@@ -3,14 +3,14 @@ import wixStylesFontUtils from './wixStylesFontUtils';
 import {isEqual, omitBy, pickBy} from 'lodash';
 import * as Stylis from 'stylis';
 import {processor} from './processor';
-import {extractVarsPlugin} from './extractVarsPlugin';
+import {VarsResolver} from './varsResolver';
 
 export default (wixService, domService, options) => ({
     update() {
         return wixService.getStyleParams().then(([siteColors, siteTextPresets, styleParams]) => {
-            domService.getAllStyleTags().forEach(tagStyle => {
+            domService.getAllStyleTags().forEach(fillVars => {
 
-                let css = (tagStyle.originalTemplate || tagStyle.textContent);
+                let css = (fillVars.originalTemplate || fillVars.textContent);
                 css = css.replace(/}\[/g, '} [');
                 const isStringHack = fontParam => fontParam.fontStyleParam === false;
                 const isValidFontParam = fontParam => fontParam.family !== undefined;
@@ -25,23 +25,26 @@ export default (wixService, domService, options) => ({
 
                 let stylis = new Stylis({semicolon: false, compress: false, preserve: true});
 
-                const vars = getVars(css, stylis);
+                const vars = new VarsResolver({
+                    colors,
+                    fonts,
+                    numbers,
+                    strings,
+                });
+
+                extractVars(css, vars.extractVar.bind(vars), stylis);
 
                 stylis.use((context, declaration) => {
                     if(context === 1) {
                         return processor({
                             declaration,
-                            colors,
-                            fonts,
-                            numbers,
-                            strings,
                             vars
                         }, options.plugins)
                     }
                 });
                 const newCss = stylis('', css);
 
-                domService.overrideStyle(tagStyle, newCss);
+                domService.overrideStyle(fillVars, newCss);
             });
         }).catch(err => {
             console.error('failed updating styles', err);
@@ -50,14 +53,12 @@ export default (wixService, domService, options) => ({
     }
 });
 
-function getVars(css: string, stylis) {
-    const vars = {};
+function extractVars(css: string, extractVarsFn, stylis) {
     stylis.use((context, decleration) => {
         if (context === 1) {
-            extractVarsPlugin(decleration, vars);
+            extractVarsFn(decleration);
         }
     });
     stylis('', css);
     stylis.use(null);
-    return vars;
 }
