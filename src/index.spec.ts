@@ -196,7 +196,7 @@ describe('Index', () => {
             }));
 
         return driver.when.init().then(() => {
-            expect(getOverrideStyleCallArg(driver)).to.equal('.foo{ZzZbarZzZ:#4#;}');
+            expect(getOverrideStyleCallArg(driver)).to.equal('.foo{ZzZbarZzZ: #4#;}');
         });
     });
 

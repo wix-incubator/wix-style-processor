@@ -26,7 +26,10 @@ export function replacer2({
         plugins.declarationTransformers.forEach(plugin => {
             declaration = concatKeyValue(plugin(key, value));
         });
-        return declaration;
+
+        [key, ...value] = declaration.split(':');
+        key = key.trim();
+        value = value.join(':').trim();
     }
 
     let newValue = value.replace(customSyntaxRegex, (part) => {
