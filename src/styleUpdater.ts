@@ -2,7 +2,7 @@ import wixStylesColorUtils from './wixStylesColorUtils';
 import wixStylesFontUtils from './wixStylesFontUtils';
 import {isEqual, omitBy, pickBy} from 'lodash';
 import * as Stylis from 'stylis';
-import {replacer2} from './replacer2';
+import {processor} from './processor';
 import {extractVarsPlugin} from './extractVarsPlugin';
 
 export default (wixService, domService, options) => ({
@@ -28,7 +28,7 @@ export default (wixService, domService, options) => ({
 
                 stylis.use((context, declaration) => {
                     if(context === 1) {
-                        return replacer2({
+                        return processor({
                             declaration,
                             colors,
                             fonts,

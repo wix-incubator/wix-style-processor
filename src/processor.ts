@@ -8,7 +8,7 @@ const hexColorRegex = /^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/;
 
 let values;
 
-export function replacer2({
+export function processor({
     declaration,
     colors,
     fonts,
