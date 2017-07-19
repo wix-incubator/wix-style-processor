@@ -438,6 +438,18 @@ describe('Index', () => {
         });
     });
 
+    it('should support double var reference', () => {
+        let css = `.foo { --var1: "number(42)"; --var2: "number(--var1)"; rule4:"number(--var2)"; }`;
+
+        driver.given.css(css)
+            .styleParams({numbers: {var1: 1}});
+
+        return driver.when.init().then(() => {
+            expect(getOverrideStyleCallArg(driver))
+                .to.equal(`.foo{--var1: 42;--var2: 1;rule4: 1;}`);
+        });
+    });
+
     function getOverrideStyleCallArg(driver, callIdx = 0) {
         return driver.get.domService().overrideStyle.getCall(callIdx).args[1];
     }
