@@ -1,8 +1,6 @@
-import * as Q from 'q';
-
 export default Wix => ({
     getStyleParams() {
-        return Q.all([
+        return Promise.all([
             getSiteColors(Wix),
             getSiteTextPresets(Wix),
             getStyleParams(Wix)
@@ -19,22 +17,13 @@ export default Wix => ({
 });
 
 function getSiteColors(Wix) {
-    const deferred = Q.defer();
-    Wix.Styles.getSiteColors((res) => res ? deferred.resolve(res) :
-                                            deferred.reject(''));
-    return deferred.promise;
+    return new Promise((resolve, reject) => Wix.Styles.getSiteColors((res) => res ? resolve(res) : reject('')));
 }
 
 function getSiteTextPresets(Wix) {
-    const deferred = Q.defer();
-    Wix.Styles.getSiteTextPresets((res) => res ? deferred.resolve(res) :
-                                                 deferred.reject(''));
-    return deferred.promise;
+    return new Promise((resolve, reject) => Wix.Styles.getSiteTextPresets((res) => res ? resolve(res) : reject('')));
 }
 
 function getStyleParams(Wix) {
-    const deferred = Q.defer();
-    Wix.Styles.getStyleParams((res) => res ? deferred.resolve(res) :
-                                             deferred.reject(''));
-    return deferred.promise;
+    return new Promise((resolve, reject) => Wix.Styles.getStyleParams((res) => res ? resolve(res) : reject('')));
 }

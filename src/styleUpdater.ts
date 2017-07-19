@@ -7,7 +7,7 @@ import {extractVarsPlugin} from './extractVarsPlugin';
 
 export default (wixService, domService, options) => ({
     update() {
-        return wixService.getStyleParams().spread((siteColors, siteTextPresets, styleParams) => {
+        return wixService.getStyleParams().then(([siteColors, siteTextPresets, styleParams]) => {
             domService.getAllStyleTags().forEach(tagStyle => {
 
                 let css = (tagStyle.originalTemplate || tagStyle.textContent);
