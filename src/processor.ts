@@ -22,8 +22,8 @@ export function processor({
 
     values = arguments[0];
 
-    if (plugins.declarationTransformers.length > 0) {
-        plugins.declarationTransformers.forEach(plugin => {
+    if (plugins.declarationReplacers.length > 0) {
+        plugins.declarationReplacers.forEach(plugin => {
             declaration = concatKeyValue(plugin(key, value));
         });
 
