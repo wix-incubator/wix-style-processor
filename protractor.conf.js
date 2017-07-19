@@ -1,4 +1,3 @@
-require('ts-node/register');
 const fakeServer = require('./test/mock/fake-server');
 
 module.exports = {
