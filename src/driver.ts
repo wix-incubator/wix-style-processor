@@ -111,8 +111,8 @@ export default class Driver {
             index.plugin(...args);
             return this.given;
         },
-        declarationPlugin: (...args) => {
-            index.declarationPlugin(...args);
+        declarationReplacerPlugin: (...args) => {
+            index.declarationReplacerPlugin(...args);
             return this.given;
         }
     };

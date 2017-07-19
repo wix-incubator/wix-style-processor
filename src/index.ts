@@ -4,14 +4,14 @@ import WixService from './wixService';
 
 export default {
     plugins: {
-        valueTransformers: {},
-        declarationTransformers: []
+        cssFunctions: {},
+        declarationReplacers: []
     },
 
     resetPlugins() {
         this.plugins = {
-            valueTransformers: {},
-            declarationTransformers: []
+            cssFunctions: {},
+            declarationReplacers: []
         }
     },
 
@@ -32,8 +32,8 @@ export default {
         return this;
     },
 
-    declarationPlugin(fun) {
-        this.plugins.declarationTransformers.push(fun);
+    declarationReplacerPlugin(fun) {
+        this.plugins.declarationReplacers.push(fun);
         return this;
     }
 }

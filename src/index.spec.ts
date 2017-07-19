@@ -190,7 +190,7 @@ describe('Index', () => {
 
     it('has declaration plugin support', () => {
         driver.given.css('.foo {bar: 4;}')
-            .declarationPlugin((key, val) => ({
+            .declarationReplacerPlugin((key, val) => ({
                 key: 'ZzZ' + key + 'ZzZ',
                 value: '#' + val + '#'
             }));
