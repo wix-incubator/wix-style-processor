@@ -1,40 +1,20 @@
 import StyleUpdater from './styleUpdater';
 import domService from './domService';
 import WixService from './wixService';
+import {Plugins} from './plugins';
+import {defaultPlugins} from './defaultPlugins';
 
 export default {
-    plugins: {
-        cssFunctions: {},
-        declarationReplacers: []
-    },
-
-    resetPlugins() {
-        this.plugins = {
-            cssFunctions: {},
-            declarationReplacers: []
-        }
-    },
+    plugins: new Plugins(),
 
     init(options, domServiceOverride = domService) {
+        Object.keys(defaultPlugins).forEach((funcName) => this.plugins.addCssFunction(funcName, defaultPlugins[funcName]));
+
         options = setDefaultOptions(options, this.plugins);
         const wixService = WixService(window.Wix);
         const styleUpdater = StyleUpdater(wixService, domServiceOverride, options);
         wixService.listenToStyleParamsChange(() => styleUpdater.update());
         return styleUpdater.update();
-    },
-
-    plugin(...args) {
-        return this.valuePlugin(...args);
-    },
-
-    valuePlugin(name, fun) {
-        this.plugins.valueTransformers[name] = fun;
-        return this;
-    },
-
-    declarationReplacerPlugin(fun) {
-        this.plugins.declarationReplacers.push(fun);
-        return this;
     }
 }
 

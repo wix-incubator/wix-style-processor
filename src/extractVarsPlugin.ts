@@ -1,9 +1,9 @@
-import {isCssVar} from './utils';
+import {isCssVar, splitDeclaration} from './utils';
+
 export function extractVarsPlugin(declaration, accumulate) {
-    let [key, value] = declaration.split(':');
-    key = key.trim();
+    let {key, value} = splitDeclaration(declaration);
 
     if (isCssVar(key)) {
-        accumulate[key] = value.trim();
+        accumulate[key] = value;
     }
 }

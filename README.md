@@ -45,7 +45,7 @@ Plugins are invoked during the processing phase of the CSS declarations, and the
 
 There are 2 kinds of plugins, which will be detailed below.
 
-### 1. Value transformation plugins
+### 1. CSS Custom functions plugins
 These plugins define functions that transform the value-side of the CSS declaration.
 
 ##### Usage
@@ -55,12 +55,14 @@ Plugin definition (JS):
 ```javascript
 import styleProcessor from 'wix-style-processor';
 
-styleProcessor.valuePlugin(
+styleProcessor.plugins.addCssFunction(
     'increment', //Plugin name
-    (params, siteParams) => parseInt(params[0]) + 1 //Transformation function
+    (param1, param2 ,..., siteParams?) => parseInt(params[0]) + 1 //Transformation function
 );
 
-//"params" is an array of the transformation's evaluated params
+//"param1" is the first param that the custom function got in css
+//"param2" is the second param that the custom function got in css
+...
 //"siteParams" is an object containing the user or template defined colors, fonts and numbers.
 ```
 
@@ -82,8 +84,8 @@ The CSS above will be replaced to:
 }
 ```
 
-#### Declaration transformation plugins
-These plugins allow you to transform the entire key / value of the CSS declaration.
+#### Declaration Replacer plugins
+These plugins allow you to replace the entire key / value of the CSS declaration.
 Since they're invoked upon each and every declaration, there's no need to name them.
 
 ##### Example
@@ -93,9 +95,9 @@ Plugin definition (JS):
 ```javascript
     import styleProcessor from 'wix-style-processor';
 
-    styleProcessor.declarationPlugin((key, value, siteParams) => ({
-        key: 'ZzZ' + key + 'ZzZ',
-        value: '#' + value + '#'
+    styleProcessor.plugins.addDeclarationReplacer((key, value, siteParams) => ({
+        key: 'ZzZ-' + key + '-ZzZ',
+        value: '#-' + value + '-#'
     }));
 
     //key is a string containing the declaration's attribute
@@ -114,12 +116,12 @@ The CSS above will be replaced to:
 
 ```css
 .foo {
-    ZzZbarZzZ: #4#;
+    ZzZ-bar-ZzZ: #-4-#;
 }
 ```
 
 # [RTL/LTR plugin](https://github.com/wix/wsp-plugin-rtl)
-If you need dynamic LTR/RTL replacements in your CSS, you can use this plugin.
+It is a `DeclarationReplacer plugin` that allows you to change dynamically LTR/RTL replacements in your CSS, you can use this plugin.
 
 # Important
 This module only parses inline CSS.
