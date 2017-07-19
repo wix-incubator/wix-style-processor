@@ -8,7 +8,7 @@ export default class Driver {
     private css: any;
 
     constructor() {
-        index.resetPlugins();
+        index.plugins.resetPlugins();
         global.window = {};
         global.window.Wix = this.mocks.Wix;
     }
@@ -107,12 +107,12 @@ export default class Driver {
             this.mocks.Wix.given.styleParams(styleParams);
             return this.given;
         },
-        plugin: (...args) => {
-            index.plugin(...args);
+        declarationReplacerPlugin: (plugin: Function) => {
+            index.plugins.addDeclarationReplacer(plugin);
             return this.given;
         },
-        declarationReplacerPlugin: (...args) => {
-            index.declarationReplacerPlugin(...args);
+        cssFunctionPlugin: (funcName: string, func: Function) => {
+            index.plugins.addCssFunction(funcName, func);
             return this.given;
         }
     };

@@ -179,27 +179,6 @@ describe('Index', () => {
             });
     });
 
-    xit('has plugin support', () => {
-        driver.given.css('.foo {bar: "increment(number(--baz))"px; --baz: "1";}')
-            .plugin('increment', params => parseInt(params[0]) + 1);
-
-        return driver.when.init().then(() => {
-            expect(getOverrideStyleCallArg(driver)).to.equal('.foo { bar: 2px; --baz: 1;}');
-        });
-    });
-
-    it('has declaration plugin support', () => {
-        driver.given.css('.foo {bar: 4;}')
-            .declarationReplacerPlugin((key, val) => ({
-                key: 'ZzZ' + key + 'ZzZ',
-                value: '#' + val + '#'
-            }));
-
-        return driver.when.init().then(() => {
-            expect(getOverrideStyleCallArg(driver)).to.equal('.foo{ZzZbarZzZ: #4#;}');
-        });
-    });
-
     it('should support double font reference', () => {
         driver.given.css('.font-test{--some-font: "font(Body-M)"; font: "font(--some-font)";}')
             .siteTextPresets({
@@ -438,6 +417,28 @@ describe('Index', () => {
         });
     });
 
+    it('should support font override with var', () => {
+        let css = `.foo{ --bodyText: "font({theme: 'Body-M', size: '10px', lineHeight: '2em', weight: 'bold', style:'italic'})"; font: "font(--bodyText)"}`;
+
+        driver.given.css(css)
+            .siteTextPresets({
+                'Body-M': {
+                    editorKey: 'font_8',
+                    fontFamily: 'raleway',
+                    lineHeight: '1.4em',
+                    size: '17px',
+                    style: 'normal',
+                    value: 'font:normal normal normal 17px/1.4em raleway,sans-serif;',
+                    weight: 'normal'
+                }
+            });
+
+        return driver.when.init().then(() => {
+            expect(getOverrideStyleCallArg(driver))
+                .to.equal(`.foo{--bodyText: italic normal bold 10px/2em raleway,sans-serif;font: italic normal bold 10px/2em raleway,sans-serif;}`);
+        });
+    });
+
     it('should support double var reference', () => {
         let css = `.foo { --var1: "number(42)"; --var2: "number(--var1)"; rule4:"number(--var2)"; }`;
 
@@ -447,6 +448,30 @@ describe('Index', () => {
         return driver.when.init().then(() => {
             expect(getOverrideStyleCallArg(driver))
                 .to.equal(`.foo{--var1: 42;--var2: 1;rule4: 1;}`);
+        });
+    });
+
+    it('has declaration plugin support', () => {
+        driver.given.css('.foo {bar: 4;}')
+            .declarationReplacerPlugin((key, val) => ({
+                key: 'ZzZ' + key + 'ZzZ',
+                value: '#' + val + '#'
+            }));
+
+        return driver.when.init().then(() => {
+            expect(getOverrideStyleCallArg(driver)).to.equal('.foo{ZzZbarZzZ: #4#;}');
+        });
+    });
+
+    it('should support external css functions', () => {
+        let css = `.foo { --var1: "increment(1)"; border-radius: "number(--var1)"px }`;
+
+        driver.given.css(css)
+            .cssFunctionPlugin('increment', (value) => 1 + +value);
+
+        return driver.when.init().then(() => {
+            expect(getOverrideStyleCallArg(driver))
+                .to.equal(`.foo{--var1: 2;border-radius: 2px;}`);
         });
     });
 
