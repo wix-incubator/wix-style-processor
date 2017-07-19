@@ -7439,8 +7439,8 @@ stylelint@~7.13.0:
     table "^4.0.1"
 
 stylis@^3.2.4:
-  version "3.2.4"
-  resolved "https://repo.dev.wixpress.com/artifactory/api/npm/npm-repos/stylis/-/stylis-3.2.4.tgz#32523f4c6089c581c051f64881c1aa30c40479d9"
+  version "3.2.5"
+  resolved "https://repo.dev.wixpress.com/artifactory/api/npm/npm-repos/stylis/-/stylis-3.2.5.tgz#132087969b2c9e2c71504eaed24d3f1987bb5d0f"
 
 sugarss@^0.2.0:
   version "0.2.0"
