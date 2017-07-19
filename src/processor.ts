@@ -1,21 +1,14 @@
 import {isCssVar, splitDeclaration} from './utils';
+import {VarsResolver} from './varsResolver';
 
 const paramsRegex = /,(?![^(]*(?:\)|}))/g;
 const customSyntaxRegex = /"\w+\([^"]*\)"/g;
 
-let values;
-
 export function processor({
     declaration,
-    colors,
-    fonts,
-    numbers,
-    strings,
     vars
 }, plugins) {
     let {key, value} = splitDeclaration(declaration);
-
-    values = {colors, fonts, numbers, strings, vars};
 
     if (plugins.declarationReplacers.length > 0) {
         plugins.declarationReplacers.forEach(plugin => {
@@ -27,7 +20,7 @@ export function processor({
 
     let newValue = value.replace(customSyntaxRegex, (part) => {
         if (plugins.isSupportedFunction(part)) {
-            return executeFunction(part, plugins);
+            return executeFunction(part, plugins, vars);
         }
         return part;
     });
@@ -35,40 +28,24 @@ export function processor({
     return key + ': ' + newValue;
 }
 
-function executeFunction(value, plugins) {
+function executeFunction(value, plugins, vars: VarsResolver) {
     let functionSignature;
 
     if (functionSignature = plugins.getFunctionSignature(value)) {
-        return plugins.cssFunctions[functionSignature.funcName](...functionSignature.args.split(paramsRegex).map((v) => executeFunction(v, plugins)))(values);
+        return plugins.cssFunctions[functionSignature.funcName](...functionSignature.args.split(paramsRegex)
+            .map((v) => executeFunction(v, plugins, vars)))(vars.tpaParams);
     } else {
-        return getVarOrPrimitiveValue(value, plugins);
+        return getVarOrPrimitiveValue(value, plugins, vars);
     }
 }
 
-function getVarOrPrimitiveValue(value, plugins) {
-    if (isCssVar(value)) {
-        value = getVarValueFromSettingsOrDefault(value);
-        if (plugins.isSupportedFunction(value)) {
-            value = executeFunction(value, plugins);
+function getVarOrPrimitiveValue(varName, plugins, vars) {
+    if (isCssVar(varName)) {
+        varName = vars.getValue(varName);
+        if (plugins.isSupportedFunction(varName)) {
+            varName = executeFunction(varName, plugins, vars);
         }
     }
 
-    return value;
-}
-
-function getVarValueFromSettingsOrDefault(varName) {
-    let varValue = values.vars[varName];
-    //no var declared, maybe is has value in style params (from settings)
-    let varNameInSettings = varName.substring(2, varName.length);
-    if (values.strings[varNameInSettings] && values.strings[varNameInSettings].value) {
-        return values.strings[varNameInSettings].value;
-    } else if (values.colors[varNameInSettings]) {
-        return values.colors[varNameInSettings];
-    } else if (values.fonts[varNameInSettings]) {
-        return values.fonts[varNameInSettings];
-    } else if (values.numbers[varNameInSettings]) {
-        return values.numbers[varNameInSettings];
-    }
-    //not a var
-    return varValue;
+    return varName;
 }
