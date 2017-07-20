@@ -5,12 +5,12 @@ import * as Stylis from 'stylis';
 import {processor} from './processor';
 import {VarsResolver} from './varsResolver';
 
-export default (wixService, domService, options) => ({
-    update() {
-        return wixService.getStyleParams().then(([siteColors, siteTextPresets, styleParams]) => {
-            domService.getAllStyleTags().forEach(fillVars => {
+export default (wixService, domService, options) => {
+    const cacheMap = {};
 
-                let css = (fillVars.originalTemplate || fillVars.textContent);
+    return {
+        update(isRerender = false) {
+            return wixService.getStyleParams().then(([siteColors, siteTextPresets, styleParams]) => {
                 const isStringHack = fontParam => fontParam.fontStyleParam === false;
                 const isValidFontParam = fontParam => fontParam.family !== undefined;
 
@@ -22,35 +22,44 @@ export default (wixService, domService, options) => ({
                 const fonts = wixStylesFontUtils.getFullFontStyles({fontStyles, siteTextPresets}) || {};
                 const strings = pickBy(styleParams.fonts, isStringHack);
 
-                let stylis = new Stylis({semicolon: false, compress: false, preserve: true});
+                if (options.isCssVarsSupported && isRerender) {
 
-                const vars = new VarsResolver({
-                    colors,
-                    fonts,
-                    numbers,
-                    strings,
-                });
+                } else {
+                    domService.getAllStyleTags().forEach(tagStyle => {
+                        let css = (tagStyle.originalTemplate || tagStyle.textContent);
+                        css = css.replace(/}\[/g, '} [');
+                        const stylis = new Stylis({semicolon: false, compress: false, preserve: true});
 
-                extractVars(css, vars.extractVar.bind(vars), stylis);
+                        const vars = new VarsResolver({
+                            colors,
+                            fonts,
+                            numbers,
+                            strings
+                        });
 
-                stylis.use((context, declaration) => {
-                    if(context === 1) {
-                        return processor({
-                            declaration,
-                            vars
-                        }, options.plugins)
-                    }
-                });
-                const newCss = stylis('', css);
+                        extractVars(css, vars.extractVar.bind(vars), stylis);
 
-                domService.overrideStyle(fillVars, newCss);
+                        stylis.use((context, declaration) => {
+                            if (context === 1) {
+                                return processor({
+                                    declaration,
+                                    vars,
+                                    cacheMap
+                                }, options)
+                            }
+                        });
+                        const newCss = stylis('', css);
+
+                        domService.overrideStyle(tagStyle, newCss);
+                    });
+                }
+            }).catch(err => {
+                console.error('failed updating styles', err);
+                throw err;
             });
-        }).catch(err => {
-            console.error('failed updating styles', err);
-            throw err;
-        });
-    }
-});
+        }
+    };
+};
 
 function extractVars(css: string, extractVarsFn, stylis) {
     stylis.use((context, decleration) => {

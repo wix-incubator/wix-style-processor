@@ -2,13 +2,14 @@ export default class WixMock {
     private siteColors: any;
     private siteTextPresets: any;
     private styleParams: any;
+    private viewMode: string = 'standalone';
 
     constructor() {
 
     }
 
-    private queue = [];
-    private Styles = {
+    private callbackQ = [];
+    public Styles = {
         getSiteColors: (cb) => {
             cb(this.siteColors);
         },
@@ -20,7 +21,11 @@ export default class WixMock {
         }
     };
 
-    private Events = {
+    public Utils = {
+        getViewMode: () => this.viewMode
+    };
+
+    public Events = {
         STYLE_PARAMS_CHANGE: 'style_params_change'
     };
 
@@ -33,19 +38,23 @@ export default class WixMock {
         },
         styleParams: (styleParams) => {
             this.styleParams = styleParams;
+        },
+        viewMode: (mode: string) => {
+            this.viewMode = mode;
+            return this;
         }
     };
 
     public when = {
         updateStyleParams: () => {
-            const cb = this.queue.shift();
+            const cb = this.callbackQ.shift();
             if (cb) {
                 return cb();
             }
         }
     };
 
-    addEventListener(eventName, cb) {
-        this.queue.push(cb);
+    public addEventListener(eventName, cb) {
+        this.callbackQ.push(cb);
     }
 }
