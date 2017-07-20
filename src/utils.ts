@@ -11,7 +11,7 @@ export function splitDeclaration(decl: string): {key: string, value: string} {
 }
 
 export function isJsonLike(value: string) {
-    return value[0] === '{' && value.slice(-1) === '}';
+    return typeof value === 'string' && value[0] === '{' && value.slice(-1) === '}';
 }
 
 export function parseJson(value: string): { theme: string, size?: string, lineHeight?: string, style?: string, weight: string } {
