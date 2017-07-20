@@ -490,6 +490,16 @@ describe('Index', () => {
         });
     });
 
+    it('should not fail on undefined var for font', () => {
+        let css = `.foo { --var1: "font(--var)" }`;
+
+        driver.given.css(css);
+        return driver.when.init().then(() => {
+            expect(getOverrideStyleCallArg(driver))
+                .to.equal(`.foo{--var1: undefined;}`);
+        });
+    });
+
     function getOverrideStyleCallArg(driver, callIdx = 0) {
         return driver.get.domService().overrideStyle.getCall(callIdx).args[1];
     }
