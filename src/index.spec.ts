@@ -11,10 +11,10 @@ describe('Index', () => {
             .given.css('.foo { --bar: "color(color-4)"; color: "color(--bar)"}')
             .given.defaultSiteColors()
             .given.styleParams({
-                numbers: {},
-                colors: {},
-                fonts: {}
-            })
+            numbers: {},
+            colors: {},
+            fonts: {}
+        })
             .given.siteTextPresets({});
     });
 
@@ -33,176 +33,166 @@ describe('Index', () => {
     });
 
     it('should support colors from settings', () => {
+        const css = '.foo {color: "color(--my_var)";}';
         driver
-            .given.css('.foo {color: "color(--my_var)";}')
-            .given.defaultSiteColors()
+            .given.css(css)
             .given.styleParams({
-                numbers: {},
-                colors: {
-                    'my_var': {value: 'red'}
-                },
-                fonts: {}
-            })
-            .given.siteTextPresets({});
+            colors: {
+                'my_var': {value: 'red'}
+            }
+        });
 
         return driver.when.init()
-            .then(driver.when.updateStyleParams)
             .then(() => {
-                expect(getOverrideStyleCallArg(driver, 1)).to.equal('.foo{color: rgb(255, 0, 0);}');
+                expect(getOverrideStyleCallArg(driver)).to.equal('.foo{color: rgb(255, 0, 0);}');
             });
     });
 
     it('should support fonts from settings', () => {
+        const css = '.foo {font: "font(--my_var)";}';
         driver
-            .given.css('.foo {font: "font(--my_var)";}')
-            .given.defaultSiteColors()
+            .given.css(css)
             .given.styleParams({
-                numbers: {},
-                colors: {},
-                fonts: {
-                    'my_var': {
-                        'value': 'font-family:\'mr de haviland\',\'cursive\';',
-                        'index': 93,
-                        'cssFontFamily': '\'mr de haviland\',\'cursive\'',
-                        'family': 'mr de haviland',
-                        'fontParam': true,
-                        'size': 0,
-                        'style': {
-                            'bold': false,
-                            'italic': false,
-                            'underline': false
-                        }
+            fonts: {
+                'my_var': {
+                    'value': 'font-family:\'mr de haviland\',\'cursive\';',
+                    'index': 93,
+                    'cssFontFamily': '\'mr de haviland\',\'cursive\'',
+                    'family': 'mr de haviland',
+                    'fontParam': true,
+                    'size': 0,
+                    'style': {
+                        'bold': false,
+                        'italic': false,
+                        'underline': false
                     }
                 }
-            })
-            .given.siteTextPresets({});
+            }
+        });
 
         return driver.when.init()
-            .then(driver.when.updateStyleParams)
             .then(() => {
-                expect(getOverrideStyleCallArg(driver, 1)).to
+                expect(getOverrideStyleCallArg(driver)).to
                     .equal(`.foo{font: normal normal normal 17px/1.4em mr de haviland,cursive;}`);
             });
     });
 
     it('should support font string hack from settings', () => {
+        const css = '.foo {width: "string(--my_var)";}';
+
         driver
-            .given.css('.foo {width: "string(--my_var)";}')
-            .given.defaultSiteColors()
+            .given.css(css)
             .given.styleParams({
-                numbers: {},
-                colors: {},
-                fonts: {
-                    'my_var': {
-                        'value': '100px',
-                        fontStyleParam: false
-                    }
+            fonts: {
+                'my_var': {
+                    'value': '100px',
+                    fontStyleParam: false
                 }
-            })
-            .given.siteTextPresets({});
+            }
+        });
 
         return driver.when.init()
-            .then(driver.when.updateStyleParams)
             .then(() => {
-                expect(getOverrideStyleCallArg(driver, 1)).to.equal(`.foo{width: 100px;}`);
+                expect(getOverrideStyleCallArg(driver)).to.equal(`.foo{width: 100px;}`);
             });
     });
 
     it('should support string default value', () => {
+        const css = '.foo {--my_var: "string(0px)"; width: "string(--my_var)";}';
         driver
-            .given.css('.foo {--my_var: "string(0px)"; width: "string(--my_var)";}')
-            .given.defaultSiteColors()
+            .given.css(css)
             .given.styleParams({
-                numbers: {},
-                colors: {},
-                fonts: {}
-            })
+            numbers: {},
+            colors: {},
+            fonts: {}
+        })
             .given.siteTextPresets({});
 
-        return driver.when.init().then(driver.when.updateStyleParams)
+        return driver.when.init()
             .then(() => {
-                expect(getOverrideStyleCallArg(driver, 1)).to.equal(`.foo{--my_var: 0px;width: 0px;}`);
+                expect(getOverrideStyleCallArg(driver, 0)).to.equal(`.foo{--my_var: 0px;width: 0px;}`);
             });
     });
 
     it('should support default values', () => {
+        const css = ':root{--my_var3: "color(color-4)";} .foo {color: "color(--my_var3)";}';
         driver
-            .given.css(':root{--my_var3: "color(color-4)";} .foo {color: "color(--my_var3)";}')
-            .given.defaultSiteColors()
+            .given.css(css)
             .given.styleParams({
-                numbers: {},
-                colors: {
-                    'my_var3': {value: 'rgba(128,110,66,0.6193647540983607)'}
-                },
-                fonts: {}
-            })
+            numbers: {},
+            colors: {
+                'my_var3': {value: 'rgba(128,110,66,0.6193647540983607)'}
+            },
+            fonts: {}
+        })
             .given.siteTextPresets({});
 
-        return driver.when.init().then(driver.when.updateStyleParams)
+        return driver.when.init()
             .then(() => {
-                expect(getOverrideStyleCallArg(driver, 1)).to
+                expect(getOverrideStyleCallArg(driver)).to
                     .equal(':root{--my_var3: #717070;}.foo{color: rgba(128, 110, 66, 0.6193647540983607);}');
             });
     });
 
-
     it('should work with declarations with no semicolon at the end', () => {
-        driver
-            .given.css(`:root {
+        const css = `:root {
 --cart_textFontStyle:"font(Body-M)";
 --cartButton_textColor:"color(color-1)"}
-.foo{font:"font(--cart_textFontStyle)";color:"color(--cartButton_textColor)"}`)
-            .given.defaultSiteColors()
-            .given.styleParams({
-                numbers: {},
-                colors: {
-                    'my_var2': {value: 'rgba(128,110,66,0.6193647540983607)'}
-                },
-                fonts: {}
-            })
-            .given.siteTextPresets({
-                'Body-M': {
-                    editorKey: 'font_8',
-                    fontFamily: 'raleway',
-                    lineHeight: '1.4em',
-                    size: '17px',
-                    style: 'normal',
-                    value: 'font:normal normal normal 17px/1.4em raleway,sans-serif;',
-                    weight: 'normal'
-                }
-            });
+.foo{font:"font(--cart_textFontStyle)";color:"color(--cartButton_textColor)"}`;
 
-        return driver.when.init().then(driver.when.updateStyleParams)
+        driver
+            .given.css(css)
+            .given.styleParams({
+            colors: {
+                'my_var2': {value: 'rgba(128,110,66,0.6193647540983607)'}
+            }
+        })
+            .given.siteTextPresets({
+            'Body-M': {
+                editorKey: 'font_8',
+                fontFamily: 'raleway',
+                lineHeight: '1.4em',
+                size: '17px',
+                style: 'normal',
+                value: 'font:normal normal normal 17px/1.4em raleway,sans-serif;',
+                weight: 'normal'
+            }
+        });
+
+        return driver.when.init()
             .then(() => {
-                expect(getOverrideStyleCallArg(driver, 1)).to
+                expect(getOverrideStyleCallArg(driver)).to
                     .equal(`:root{--cart_textFontStyle: normal normal normal 17px/1.4em raleway,sans-serif;--cartButton_textColor: #FFFFFF;}.foo{font: normal normal normal 17px/1.4em raleway,sans-serif;color: #FFFFFF;}`);
             });
     });
 
     it('should support double font reference', () => {
-        driver.given.css('.font-test{--some-font: "font(Body-M)"; font: "font(--some-font)";}')
+        const css = '.font-test{--some-font: "font(Body-M)"; font: "font(--some-font)";}';
+        driver.given.css(css)
             .given.siteTextPresets({
-                'Body-M': {
-                    displayName: 'Paragraph 2',
-                    editorKey: 'font_8',
-                    fontFamily: 'din-next-w01-light',
-                    lineHeight: '1.4em',
-                    size: '16px',
-                    style: 'normal',
-                    value: 'font:normal normal normal 16px/1.4em din-next-w01-light,din-next-w02-light,din-next-w10-light,sans-serif',
-                    weight: 'normal'
-                }
-            });
-
-        return driver.when.init().then(() => {
-            expect(getOverrideStyleCallArg(driver))
-                .to
-                .equal('.font-test{--some-font: normal normal normal 16px/1.4em din-next-w01-light,din-next-w02-light,din-next-w10-light,sans-serif;font: normal normal normal 16px/1.4em din-next-w01-light,din-next-w02-light,din-next-w10-light,sans-serif;}');
+            'Body-M': {
+                displayName: 'Paragraph 2',
+                editorKey: 'font_8',
+                fontFamily: 'din-next-w01-light',
+                lineHeight: '1.4em',
+                size: '16px',
+                style: 'normal',
+                value: 'font:normal normal normal 16px/1.4em din-next-w01-light,din-next-w02-light,din-next-w10-light,sans-serif',
+                weight: 'normal'
+            }
         });
+
+        return driver.when.init()
+            .then(() => {
+                expect(getOverrideStyleCallArg(driver))
+                    .to
+                    .equal('.font-test{--some-font: normal normal normal 16px/1.4em din-next-w01-light,din-next-w02-light,din-next-w10-light,sans-serif;font: normal normal normal 16px/1.4em din-next-w01-light,din-next-w02-light,din-next-w10-light,sans-serif;}');
+            });
     });
 
     it('should not calculate empty strings', () => {
-        driver.given.css('.font-test:after{content: " ";}');
+        const css = '.font-test:after{content: " ";}';
+        driver.given.css(css);
 
         return driver.when.init().then(() => {
             expect(getOverrideStyleCallArg(driver))
@@ -211,7 +201,8 @@ describe('Index', () => {
     });
 
     it('should calculate nested functions', () => {
-        driver.given.css('.font-test{--var: "color(color-2)"; color:"join(opacity(color(color-1), 0.5), 1, opacity(--var, 0.5), 1)"}');
+        const css = '.font-test{--var: "color(color-2)"; color:"join(opacity(color(color-1), 0.5), 1, opacity(--var, 0.5), 1)"}';
+        driver.given.css(css);
 
         return driver.when.init().then(() => {
             expect(getOverrideStyleCallArg(driver))
@@ -220,7 +211,8 @@ describe('Index', () => {
     });
 
     it('opacity with default value', () => {
-        driver.given.css('.foo { rule1: "opacity(--lala, 0.5)"; --lala: "color(color-9)"}');
+        const css = '.foo { rule1: "opacity(--lala, 0.5)"; --lala: "color(color-9)"}';
+        driver.given.css(css);
 
         return driver.when.init().then(() => {
             expect(getOverrideStyleCallArg(driver))
@@ -266,10 +258,10 @@ describe('Index', () => {
 
         driver.given.css(css)
             .given.styleParams({
-                colors: {
-                    foo: {value: '#FFFF00'}
-                }
-            });
+            colors: {
+                foo: {value: '#FFFF00'}
+            }
+        });
 
         return driver.when.init().then(() => {
             expect(getOverrideStyleCallArg(driver))
@@ -282,10 +274,10 @@ describe('Index', () => {
 
         driver.given.css(css)
             .given.styleParams({
-                colors: {
-                    foo: {value: '#FF0000'}
-                }
-            });
+            colors: {
+                foo: {value: '#FF0000'}
+            }
+        });
 
         return driver.when.init().then(() => {
             expect(getOverrideStyleCallArg(driver))
@@ -298,13 +290,13 @@ describe('Index', () => {
 
         driver.given.css(css)
             .given.styleParams({
-                numbers: {
-                    foo: 42
-                },
-                colors: {
-                    bar: {value: '#FF0000'}
-                }
-            });
+            numbers: {
+                foo: 42
+            },
+            colors: {
+                bar: {value: '#FF0000'}
+            }
+        });
 
         return driver.when.init().then(() => {
             expect(getOverrideStyleCallArg(driver))
@@ -361,16 +353,16 @@ describe('Index', () => {
 
         driver.given.css(css)
             .given.siteTextPresets({
-                'Body-M': {
-                    editorKey: 'font_8',
-                    fontFamily: 'raleway',
-                    lineHeight: '1.4em',
-                    size: '17px',
-                    style: 'normal',
-                    value: 'font:normal normal normal 17px/1.4em raleway,sans-serif;',
-                    weight: 'normal'
-                }
-            });
+            'Body-M': {
+                editorKey: 'font_8',
+                fontFamily: 'raleway',
+                lineHeight: '1.4em',
+                size: '17px',
+                style: 'normal',
+                value: 'font:normal normal normal 17px/1.4em raleway,sans-serif;',
+                weight: 'normal'
+            }
+        });
 
         return driver.when.init().then(() => {
             expect(getOverrideStyleCallArg(driver))
@@ -383,37 +375,38 @@ describe('Index', () => {
 
         driver.given.css(css)
             .given.siteTextPresets({
-                'Body-M': {
-                    editorKey: 'font_8',
-                    fontFamily: 'raleway',
-                    lineHeight: '1.4em',
-                    size: '17px',
-                    style: 'normal',
-                    value: 'font:normal normal normal 17px/1.4em raleway,sans-serif;',
-                    weight: 'normal'
-                }
-            })
+            'Body-M': {
+                editorKey: 'font_8',
+                fontFamily: 'raleway',
+                lineHeight: '1.4em',
+                size: '17px',
+                style: 'normal',
+                value: 'font:normal normal normal 17px/1.4em raleway,sans-serif;',
+                weight: 'normal'
+            }
+        })
             .given.styleParams({
-                fonts: {
-                    bodyText: {
-                        'value': 'font-family:\'mr de haviland\',\'cursive\';',
-                        'index': 93,
-                        'cssFontFamily': '\'mr de haviland\',\'cursive\'',
-                        'family': 'mr de haviland',
-                        'fontParam': true,
-                        'size': 0,
-                        'style': {
-                            'bold': false,
-                            'italic': false,
-                            'underline': false
-                        }
+            fonts: {
+                bodyText: {
+                    'value': 'font-family:\'mr de haviland\',\'cursive\';',
+                    'index': 93,
+                    'cssFontFamily': '\'mr de haviland\',\'cursive\'',
+                    'family': 'mr de haviland',
+                    'fontParam': true,
+                    'size': 0,
+                    'style': {
+                        'bold': false,
+                        'italic': false,
+                        'underline': false
                     }
                 }
-            });
+            }
+        });
 
         return driver.when.init().then(() => {
             expect(getOverrideStyleCallArg(driver))
-                .to.equal(`.foo{--bodyText: italic normal bold 10px/2em raleway,sans-serif;font: normal normal normal 17px/1.4em mr de haviland,cursive;}`);
+                .to
+                .equal(`.foo{--bodyText: italic normal bold 10px/2em raleway,sans-serif;font: normal normal normal 17px/1.4em mr de haviland,cursive;}`);
         });
     });
 
@@ -422,20 +415,21 @@ describe('Index', () => {
 
         driver.given.css(css)
             .given.siteTextPresets({
-                'Body-M': {
-                    editorKey: 'font_8',
-                    fontFamily: 'raleway',
-                    lineHeight: '1.4em',
-                    size: '17px',
-                    style: 'normal',
-                    value: 'font:normal normal normal 17px/1.4em raleway,sans-serif;',
-                    weight: 'normal'
-                }
-            });
+            'Body-M': {
+                editorKey: 'font_8',
+                fontFamily: 'raleway',
+                lineHeight: '1.4em',
+                size: '17px',
+                style: 'normal',
+                value: 'font:normal normal normal 17px/1.4em raleway,sans-serif;',
+                weight: 'normal'
+            }
+        });
 
         return driver.when.init().then(() => {
             expect(getOverrideStyleCallArg(driver))
-                .to.equal(`.foo{--bodyText: italic normal bold 10px/2em raleway,sans-serif;font: italic normal bold 10px/2em raleway,sans-serif;}`);
+                .to
+                .equal(`.foo{--bodyText: italic normal bold 10px/2em raleway,sans-serif;font: italic normal bold 10px/2em raleway,sans-serif;}`);
         });
     });
 
@@ -452,11 +446,13 @@ describe('Index', () => {
     });
 
     it('has declaration plugin support', () => {
-        driver.given.css('.foo {bar: 4;}')
+        const css = '.foo {bar: 4;}';
+
+        driver.given.css(css)
             .given.declarationReplacerPlugin((key, val) => ({
-                key: 'ZzZ' + key + 'ZzZ',
-                value: '#' + val + '#'
-            }));
+            key: 'ZzZ' + key + 'ZzZ',
+            value: '#' + val + '#'
+        }));
 
         return driver.when.init().then(() => {
             expect(getOverrideStyleCallArg(driver)).to.equal('.foo{ZzZbarZzZ: #4#;}');
