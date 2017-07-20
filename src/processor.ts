@@ -1,5 +1,6 @@
 import {isCssVar, splitDeclaration} from './utils';
 import {VarsResolver} from './varsResolver';
+import {hash} from './hash';
 
 const paramsRegex = /,(?![^(]*(?:\)|}))/g;
 const customSyntaxRegex = /"\w+\([^"]*\)"/g;
@@ -21,7 +22,7 @@ export function processor({
 
     let newValue = value.replace(customSyntaxRegex, (part) => {
         if (plugins.isSupportedFunction(part)) {
-            return executeFunction(part, plugins, vars);
+            return isCssVarsSupported ? generateCssVar(part) : executeFunction(part, plugins, vars)(vars.tpaParams);
         }
         return part;
     });
@@ -33,8 +34,10 @@ function executeFunction(value, plugins, vars: VarsResolver) {
     let functionSignature;
 
     if (functionSignature = plugins.getFunctionSignature(value)) {
-        return plugins.cssFunctions[functionSignature.funcName](...functionSignature.args.split(paramsRegex)
-            .map((v) => executeFunction(v.trim(), plugins, vars)))(vars.tpaParams);
+        const evaluationFunc = plugins.cssFunctions[functionSignature.funcName](...functionSignature.args.split(paramsRegex)
+            .map((v) => executeFunction(v.trim(), plugins, vars)(vars.tpaParams)));
+
+        return evaluationFunc;
     } else {
         return getVarOrPrimitiveValue(value, plugins, vars);
     }
@@ -44,9 +47,13 @@ function getVarOrPrimitiveValue(varName, plugins, vars) {
     if (isCssVar(varName)) {
         varName = vars.getValue(varName);
         if (plugins.isSupportedFunction(varName)) {
-            varName = executeFunction(varName, plugins, vars);
+            return executeFunction(varName, plugins, vars);
         }
     }
 
-    return varName;
+    return () => varName;
+}
+
+function generateCssVar(part) {
+    return `var(--${hash(part)})`;
 }
