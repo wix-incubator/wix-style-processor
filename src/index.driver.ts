@@ -22,6 +22,7 @@ export class IndexDriver {
         Wix: new WixMock(),
         domService: {
             overrideStyle: sinon.spy(),
+            updateCssVars: sinon.spy(),
             getAllStyleTags: () => ([{textContent: this.css}])
         }
     };
@@ -105,6 +106,10 @@ export class IndexDriver {
 
             return this;
         },
+        siteColor: (colorPreset: string, colorValue: string) => {
+            this.mocks.Wix.given.siteColor(colorPreset, colorValue);
+            return this;
+        },
         siteTextPresets: (siteTextPresets) => {
             this.mocks.Wix.given.siteTextPresets(siteTextPresets);
             return this;
@@ -133,6 +138,9 @@ export class IndexDriver {
     };
 
     public get = {
-        domService: () => this.mocks.domService
+        updateCssVarsCallArg: (callIdx = 0) => this.mocks.domService.updateCssVars.getCall(callIdx).args[0],
+        overrideStyleCallArg: (callIdx = 0) => {
+            return this.mocks.domService.overrideStyle.getCall(callIdx).args[1];
+        }
     };
 }

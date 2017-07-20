@@ -2089,69 +2089,28 @@
     ],
     "style": {
       "colors": {
-        "gallery_loadMoreButtonbackgroundColor": {
-          "themeName": "color_18",
-          "value": "rgba(44,108,225,0)"
-        },
-        "gallery_loadMoreButtonborderColor": {
-          "themeName": "color_18",
-          "value": "#2C6CE1"
-        },
-        "gallery_loadMoreButtontextColor": {
-          "themeName": "color_18",
-          "value": "#2C6CE1"
-        },
-        "gallery_outOfStockTextColor": {
-          "themeName": "color_23",
-          "value": "#B446FE"
-        },
-        "gallery_priceColor": {
-          "value": "rgb(99,99,99)"
-        },
-        "gallery_ribbonBackground": {
-          "value": "rgba(155,203,108,1)"
-        },
-        "gallery_sortingFiltersTextColor": {
-          "themeName": "color_18",
-          "value": "#2C6CE1"
-        },
-        "quickView_buttonbackgroundColor": {
+        "buttonBackgroundColor": {
           "themeName": "color_18",
           "value": "rgba(44,108,225,1)"
         },
-        "quickView_buttonborderColor": {
-          "themeName": "color_18",
-          "value": "#2C6CE1"
+        "buttonBorderColor": {
+          "themeName": "color_12",
+          "value": "#c6d9fb"
         },
-        "quickView_buttontextColor": {
+        "buttonTextColor": {
           "themeName": "color_11",
           "value": "#FFFFFF"
         },
-        "quickView_thumbnailBorder": {
-          "themeName": "color_18",
-          "value": "rgba(44,108,225,1)"
-        },
-        "gallery_background": {
+        "bgColor": {
           "themeName": "color_1",
-          "value": "rgba(255,255,255,0.31)"
-        },
-        "gallery_sortingFiltersColorBackground": {
-          "themeName": "color_1",
-          "value": "rgba(255,255,255,0.97)"
-        },
-        "undefined": {
-          "themeName": "color_21",
-          "value": "#E6C1FF"
+          "value": "#83A8F0"
         }
       },
       "numbers": {
-        "full_width_margin": 52,
-        "galleryColumns": 4,
-        "galleryImageRatio": 6,
-        "galleryMargin": 50,
-        "galleryRows": 12,
-        "gallery_imageMode": 2,
-        "gallery_productMargin": 30
+        "paragraphWidth": 85,
+        "headerMargin": 20,
+        "buttonBorderSize": 5,
+        "buttonCornersRadius": 20
       },
       "booleans": {
         "full_width": true,
@@ -2170,35 +2129,7 @@
           "value": "center",
           "fontStyleParam": false
         },
-        "gallery_borderWidth": {
-          "value": "0",
-          "fontStyleParam": false
-        },
-        "gallery_hoverType": {
-          "value": "none",
-          "fontStyleParam": false
-        },
-        "gallery_layoutId": {
-          "value": "classic",
-          "fontStyleParam": false
-        },
-        "gallery_loadMoreButtonborderSize": {
-          "value": "1px",
-          "fontStyleParam": false
-        },
-        "gallery_loadMoreButtonbuttonWidth": {
-          "value": "12.14139344262295%",
-          "fontStyleParam": false
-        },
-        "gallery_loadMoreButtoncornersRadius": {
-          "value": "20px",
-          "fontStyleParam": false
-        },
-        "gallery_loadMoreButtonselectedSkin": {
-          "value": "button-skin-5",
-          "fontStyleParam": false
-        },
-        "gallery_loadMoreButtontextFont": {
+        "buttonTextFont": {
           "size": 16,
           "style": {
             "bold": false,
@@ -2211,71 +2142,7 @@
           "fontStyleParam": true,
           "value": "font:normal normal normal 16px/1.4em futura-lt-w01-book,sans-serif;"
         },
-        "gallery_priceFontStyle": {
-          "size": 14,
-          "style": {
-            "bold": false,
-            "italic": false,
-            "underline": false
-          },
-          "family": "futura-lt-w01-light",
-          "cssFontFamily": "'futura-lt-w01-light','sans-serif'",
-          "preset": "Body-S",
-          "fontStyleParam": true,
-          "value": "font:normal normal normal 14px/1.4em futura-lt-w01-light,sans-serif;"
-        },
-        "gallery_titleFontStyle": {
-          "size": 16,
-          "style": {
-            "bold": false,
-            "italic": false,
-            "underline": false
-          },
-          "family": "futura-lt-w01-book",
-          "cssFontFamily": "'futura-lt-w01-book','sans-serif'",
-          "preset": "Body-M",
-          "fontStyleParam": true,
-          "value": "font:normal normal normal 16px/1.4em futura-lt-w01-book,sans-serif;"
-        },
-        "quickView_buttonborderSize": {
-          "value": "0px",
-          "fontStyleParam": false
-        },
-        "quickView_buttoncornersRadius": {
-          "value": "20px",
-          "fontStyleParam": false
-        },
-        "quickView_buttonselectedSkin": {
-          "value": "button-skin-2",
-          "fontStyleParam": false
-        },
-        "quickView_buttontextFont": {
-          "size": 16,
-          "style": {
-            "bold": false,
-            "italic": false,
-            "underline": false
-          },
-          "family": "futura-lt-w01-book",
-          "cssFontFamily": "'futura-lt-w01-book','sans-serif'",
-          "preset": "Body-M",
-          "fontStyleParam": true,
-          "value": "font:normal normal normal 16px/1.4em futura-lt-w01-book,sans-serif;"
-        },
-        "quickView_priceFontStyle": {
-          "size": 18,
-          "style": {
-            "bold": false,
-            "italic": false,
-            "underline": false
-          },
-          "family": "futura-lt-w01-book",
-          "cssFontFamily": "'futura-lt-w01-book','sans-serif'",
-          "preset": "Custom",
-          "fontStyleParam": true,
-          "value": "font:normal normal normal 18px/22px futura-lt-w01-book,sans-serif;"
-        },
-        "quickView_titleFontStyle": {
+        "titleFontStyle": {
           "size": 30,
           "style": {
             "bold": false,
