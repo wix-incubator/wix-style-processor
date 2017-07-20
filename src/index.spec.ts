@@ -11,10 +11,10 @@ describe('Index', () => {
             .given.css('.foo { --bar: "color(color-4)"; color: "color(--bar)"}')
             .given.defaultSiteColors()
             .given.styleParams({
-            numbers: {},
-            colors: {},
-            fonts: {}
-        })
+                numbers: {},
+                colors: {},
+                fonts: {}
+            })
             .given.siteTextPresets({});
     });
 
@@ -22,14 +22,6 @@ describe('Index', () => {
         return driver.when.init().then(() => {
             expect(getOverrideStyleCallArg(driver)).to.equal('.foo{--bar: #717070;color: #717070;}');
         });
-    });
-
-    it('should update style on style change event', () => {
-        return driver.when.init()
-            .then(driver.when.updateStyleParams)
-            .then(() => {
-                expect(getOverrideStyleCallArg(driver, 1)).to.equal('.foo{--bar: #717070;color: #717070;}');
-            });
     });
 
     it('should support colors from settings', () => {
@@ -221,7 +213,7 @@ describe('Index', () => {
     });
 
     it('color transformation', () => {
-        let css = `.foo { rule: bar; rule3: baz; rule4: "color(color-1)"; rule5: "color(color(color(color-2)))"; }`;
+        const css = `.foo { rule: bar; rule3: baz; rule4: "color(color-1)"; rule5: "color(color(color(color-2)))"; }`;
 
         driver.given.css(css);
 
@@ -232,7 +224,7 @@ describe('Index', () => {
     });
 
     it('darken transformation', () => {
-        let css = `.foo { rule1: "darken(color(color-9), 0.5)"; }`;
+        const css = `.foo { rule1: "darken(color(color-9), 0.5)"; }`;
 
         driver.given.css(css);
 
@@ -243,7 +235,7 @@ describe('Index', () => {
     });
 
     it('without opacity', () => {
-        let css = `.foo { rule1: "withoutOpacity(opacity(color(color-9), 0.1))"; }`;
+        const css = `.foo { rule1: "withoutOpacity(opacity(color(color-9), 0.1))"; }`;
 
         driver.given.css(css);
 
@@ -254,7 +246,7 @@ describe('Index', () => {
     });
 
     it('composed opacity with custom var', () => {
-        let css = `.foo { rule1: "opacity(--foo, 0.5)"; }`;
+        const css = `.foo { rule1: "opacity(--foo, 0.5)"; }`;
 
         driver.given.css(css)
             .given.styleParams({
@@ -270,7 +262,7 @@ describe('Index', () => {
     });
 
     it('join', () => {
-        let css = `.foo { rule1: "join(--foo, 1, color(color-10), 1)"; }`;
+        const css = `.foo { rule1: "join(--foo, 1, color(color-10), 1)"; }`;
 
         driver.given.css(css)
             .given.styleParams({
@@ -286,7 +278,7 @@ describe('Index', () => {
     });
 
     it('should support number', () => {
-        let css = `.foo { border: "number(--foo)" solid "color(--bar)"; }`;
+        const css = `.foo { border: "number(--foo)"px solid "color(--bar)"; }`;
 
         driver.given.css(css)
             .given.styleParams({
@@ -324,7 +316,7 @@ describe('Index', () => {
     });
 
     it('does not modify static params', () => {
-        let css = `.foo { padding: 10px 11px 12px 13px; margin-right: 20px; color: blue; }`;
+        const css = `.foo { padding: 10px 11px 12px 13px; margin-right: 20px; color: blue; }`;
 
         driver.given.css(css);
 
@@ -335,7 +327,7 @@ describe('Index', () => {
     });
 
     it('does not modify regular css vars', () => {
-        let css = `.foo { --bar: var(42); --baz: var(21); padding: --baz;}`;
+        const css = `.foo { --bar: var(42); --baz: var(21); padding: --baz;}`;
 
         driver.given.css(css);
 
@@ -346,7 +338,7 @@ describe('Index', () => {
     });
 
     it('should work with pseudo selectors', () => {
-        let css = `.datepicker__day--highlighted:hover{ background-color: #32be3f;}`;
+        const css = `.datepicker__day--highlighted:hover{ background-color: #32be3f;}`;
 
         driver.given.css(css);
 
@@ -357,7 +349,7 @@ describe('Index', () => {
     });
 
     it('should detect declarations with no space after the :', () => {
-        let css = `.foo { rule: bar; rule3:baz; rule4:"color(color-9)"; rule5:"color(color(color-9))" }`;
+        const css = `.foo { rule: bar; rule3:baz; rule4:"color(color-9)"; rule5:"color(color(color-9))" }`;
 
         driver.given.css(css);
 
@@ -368,7 +360,7 @@ describe('Index', () => {
     });
 
     it('should support font theme override', () => {
-        let css = `.foo{ font: "font({theme: 'Body-M', size: '10px', lineHeight: '2em', weight: 'bold', style:'italic'})"}`;
+        const css = `.foo{ font: "font({theme: 'Body-M', size: '10px', lineHeight: '2em', weight: 'bold', style:'italic'})"}`;
 
         driver.given.css(css)
             .given.siteTextPresets({
@@ -390,7 +382,7 @@ describe('Index', () => {
     });
 
     it('should support font override with var from settings', () => {
-        let css = `.foo{ --bodyText: "font({theme: 'Body-M', size: '10px', lineHeight: '2em', weight: 'bold', style:'italic'})"; font: "font(--bodyText)"}`;
+        const css = `.foo{ --bodyText: "font({theme: 'Body-M', size: '10px', lineHeight: '2em', weight: 'bold', style:'italic'})"; font: "font(--bodyText)"}`;
 
         driver.given.css(css)
             .given.siteTextPresets({
@@ -430,7 +422,7 @@ describe('Index', () => {
     });
 
     it('should support font override with var', () => {
-        let css = `.foo{ --bodyText: "font({theme: 'Body-M', size: '10px', lineHeight: '2em', weight: 'bold', style:'italic'})"; font: "font(--bodyText)"}`;
+        const css = `.foo{ --bodyText: "font({theme: 'Body-M', size: '10px', lineHeight: '2em', weight: 'bold', style:'italic'})"; font: "font(--bodyText)"}`;
 
         driver.given.css(css)
             .given.siteTextPresets({
@@ -453,7 +445,7 @@ describe('Index', () => {
     });
 
     it('should support double var reference', () => {
-        let css = `.foo { --var1: "number(42)"; --var2: "number(--var1)"; rule4:"number(--var2)"; }`;
+        const css = `.foo { --var1: "number(42)"; --var2: "number(--var1)"; rule4:"number(--var2)"; }`;
 
         driver.given.css(css)
             .given.styleParams({numbers: {var1: 1}});
@@ -465,7 +457,7 @@ describe('Index', () => {
     });
 
     it('has declaration plugin support', () => {
-        const css = '.foo {bar: 4;}';
+        const css = `.foo {bar: 4;}`;
 
         driver.given.css(css)
             .given.declarationReplacerPlugin((key, val) => ({
@@ -487,6 +479,43 @@ describe('Index', () => {
         return driver.when.init().then(() => {
             expect(getOverrideStyleCallArg(driver))
                 .to.equal(`.foo{--var1: 2;border-radius: 2px;}`);
+        });
+    });
+
+    describe('In Editor', () => {
+        beforeEach(() => {
+            driver.given.inEditorMode();
+        });
+
+        it('should update style on style change event', () => {
+            const css = `.foo { --bar: "color(color-4)"; color: "color(--bar)"}`;
+
+            driver.given.css(css);
+
+            return driver.when.init()
+                .then(() => {
+                    driver.given.styleParams({
+                        colors: {
+                            bar: {value: '#ffffff'}
+                        }
+                    })
+                })
+                .then(driver.when.updateStyleParams)
+                .then(() => {
+                    expect(getOverrideStyleCallArg(driver, 1)).to.equal('.foo{--bar: #717070;color: #ffffff;}');
+                });
+        });
+
+        describe('Enhanced mode', () => {
+            beforeEach(() => {
+                driver.given.cssVarsSupported(true)
+                    .given.css(`.foo {color: "color(color-1)"; border: "number(1)"px solid "opacity(color(color-9), 0.5)"}`);
+            });
+
+            it('should change custom syntax to native vars', () => {
+                driver.when.init()
+                    .then(() => expect(getOverrideStyleCallArg(driver)).to.equal('.foo{color: var(--xxx);border: 1px solid rgba(255, 0, 0, 0.5);}'))
+            });
         });
     });
 

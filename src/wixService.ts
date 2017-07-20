@@ -13,6 +13,10 @@ export default Wix => ({
 
     listenToSettingsUpdated(cb) {
         Wix.addEventListener(Wix.Events.SETTINGS_UPDATED, cb);
+    },
+
+    isEditorMode(): boolean {
+        return Wix.Utils.getViewMode() === 'editor'
     }
 });
 

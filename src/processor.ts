@@ -6,8 +6,9 @@ const customSyntaxRegex = /"\w+\([^"]*\)"/g;
 
 export function processor({
     declaration,
-    vars
-}, plugins) {
+    vars,
+    cacheMap
+}, {plugins, isCssVarsSupported}) {
     let {key, value} = splitDeclaration(declaration);
 
     if (plugins.declarationReplacers.length > 0) {

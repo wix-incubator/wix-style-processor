@@ -6,11 +6,16 @@ declare var window;
 
 export class IndexDriver {
     private css: any;
+    private isCssVarsSupported: boolean = false;
 
     constructor() {
         index.plugins.resetPlugins();
-        global.window = {};
-        global.window.Wix = this.mocks.Wix;
+        global.window = {
+            Wix: this.mocks.Wix,
+            CSS: {
+                supports: () => this.isCssVarsSupported
+            }
+        };
     }
 
     private mocks = {
@@ -114,6 +119,15 @@ export class IndexDriver {
         },
         cssFunctionPlugin: (funcName: string, func: Function) => {
             index.plugins.addCssFunction(funcName, func);
+            return this;
+        },
+        inEditorMode: () => {
+            this.mocks.Wix.given.viewMode('editor');
+
+            return this;
+        },
+        cssVarsSupported: (flag) => {
+            this.isCssVarsSupported = flag;
             return this;
         }
     };

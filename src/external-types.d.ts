@@ -4,6 +4,7 @@ declare module '*.json';
 
 interface Window {
     Wix: any;
+    CSS: {supports: Function}
     styleProcessor?: any;
     changeStyles?: any;
 }
