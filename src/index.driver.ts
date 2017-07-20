@@ -4,7 +4,7 @@ import * as sinon from 'sinon';
 
 declare var window;
 
-export default class Driver {
+export class IndexDriver {
     private css: any;
 
     constructor() {

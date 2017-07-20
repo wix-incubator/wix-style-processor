@@ -1,11 +1,11 @@
 import {expect} from 'chai';
-import Driver from './driver';
+import {IndexDriver} from './index.driver';
 
 describe('Index', () => {
     let driver;
 
     beforeEach(() => {
-        driver = new Driver();
+        driver = new IndexDriver();
 
         driver
             .given.css('.foo { --bar: "color(color-4)"; color: "color(--bar)"}')
