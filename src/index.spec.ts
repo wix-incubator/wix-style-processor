@@ -9,13 +9,13 @@ describe('Index', () => {
 
         driver
             .given.css('.foo { --bar: "color(color-4)"; color: "color(--bar)"}')
-            .defaultSiteColors()
-            .styleParams({
+            .given.defaultSiteColors()
+            .given.styleParams({
                 numbers: {},
                 colors: {},
                 fonts: {}
             })
-            .siteTextPresets({});
+            .given.siteTextPresets({});
     });
 
     it('should update on init', () => {
@@ -35,15 +35,15 @@ describe('Index', () => {
     it('should support colors from settings', () => {
         driver
             .given.css('.foo {color: "color(--my_var)";}')
-            .defaultSiteColors()
-            .styleParams({
+            .given.defaultSiteColors()
+            .given.styleParams({
                 numbers: {},
                 colors: {
                     'my_var': {value: 'red'}
                 },
                 fonts: {}
             })
-            .siteTextPresets({});
+            .given.siteTextPresets({});
 
         return driver.when.init()
             .then(driver.when.updateStyleParams)
@@ -55,8 +55,8 @@ describe('Index', () => {
     it('should support fonts from settings', () => {
         driver
             .given.css('.foo {font: "font(--my_var)";}')
-            .defaultSiteColors()
-            .styleParams({
+            .given.defaultSiteColors()
+            .given.styleParams({
                 numbers: {},
                 colors: {},
                 fonts: {
@@ -75,7 +75,7 @@ describe('Index', () => {
                     }
                 }
             })
-            .siteTextPresets({});
+            .given.siteTextPresets({});
 
         return driver.when.init()
             .then(driver.when.updateStyleParams)
@@ -88,8 +88,8 @@ describe('Index', () => {
     it('should support font string hack from settings', () => {
         driver
             .given.css('.foo {width: "string(--my_var)";}')
-            .defaultSiteColors()
-            .styleParams({
+            .given.defaultSiteColors()
+            .given.styleParams({
                 numbers: {},
                 colors: {},
                 fonts: {
@@ -99,7 +99,7 @@ describe('Index', () => {
                     }
                 }
             })
-            .siteTextPresets({});
+            .given.siteTextPresets({});
 
         return driver.when.init()
             .then(driver.when.updateStyleParams)
@@ -111,13 +111,13 @@ describe('Index', () => {
     it('should support string default value', () => {
         driver
             .given.css('.foo {--my_var: "string(0px)"; width: "string(--my_var)";}')
-            .defaultSiteColors()
-            .styleParams({
+            .given.defaultSiteColors()
+            .given.styleParams({
                 numbers: {},
                 colors: {},
                 fonts: {}
             })
-            .siteTextPresets({});
+            .given.siteTextPresets({});
 
         return driver.when.init().then(driver.when.updateStyleParams)
             .then(() => {
@@ -128,15 +128,15 @@ describe('Index', () => {
     it('should support default values', () => {
         driver
             .given.css(':root{--my_var3: "color(color-4)";} .foo {color: "color(--my_var3)";}')
-            .defaultSiteColors()
-            .styleParams({
+            .given.defaultSiteColors()
+            .given.styleParams({
                 numbers: {},
                 colors: {
                     'my_var3': {value: 'rgba(128,110,66,0.6193647540983607)'}
                 },
                 fonts: {}
             })
-            .siteTextPresets({});
+            .given.siteTextPresets({});
 
         return driver.when.init().then(driver.when.updateStyleParams)
             .then(() => {
@@ -152,15 +152,15 @@ describe('Index', () => {
 --cart_textFontStyle:"font(Body-M)";
 --cartButton_textColor:"color(color-1)"}
 .foo{font:"font(--cart_textFontStyle)";color:"color(--cartButton_textColor)"}`)
-            .defaultSiteColors()
-            .styleParams({
+            .given.defaultSiteColors()
+            .given.styleParams({
                 numbers: {},
                 colors: {
                     'my_var2': {value: 'rgba(128,110,66,0.6193647540983607)'}
                 },
                 fonts: {}
             })
-            .siteTextPresets({
+            .given.siteTextPresets({
                 'Body-M': {
                     editorKey: 'font_8',
                     fontFamily: 'raleway',
@@ -181,7 +181,7 @@ describe('Index', () => {
 
     it('should support double font reference', () => {
         driver.given.css('.font-test{--some-font: "font(Body-M)"; font: "font(--some-font)";}')
-            .siteTextPresets({
+            .given.siteTextPresets({
                 'Body-M': {
                     displayName: 'Paragraph 2',
                     editorKey: 'font_8',
@@ -265,7 +265,7 @@ describe('Index', () => {
         let css = `.foo { rule1: "opacity(--foo, 0.5)"; }`;
 
         driver.given.css(css)
-            .styleParams({
+            .given.styleParams({
                 colors: {
                     foo: {value: '#FFFF00'}
                 }
@@ -281,7 +281,7 @@ describe('Index', () => {
         let css = `.foo { rule1: "join(--foo, 1, color(color-10), 1)"; }`;
 
         driver.given.css(css)
-            .styleParams({
+            .given.styleParams({
                 colors: {
                     foo: {value: '#FF0000'}
                 }
@@ -297,7 +297,7 @@ describe('Index', () => {
         let css = `.foo { border: "number(--foo)"px solid "color(--bar)"; }`;
 
         driver.given.css(css)
-            .styleParams({
+            .given.styleParams({
                 numbers: {
                     foo: 42
                 },
@@ -360,7 +360,7 @@ describe('Index', () => {
         let css = `.foo{ font: "font({theme: 'Body-M', size: '10px', lineHeight: '2em', weight: 'bold', style:'italic'})"}`;
 
         driver.given.css(css)
-            .siteTextPresets({
+            .given.siteTextPresets({
                 'Body-M': {
                     editorKey: 'font_8',
                     fontFamily: 'raleway',
@@ -382,7 +382,7 @@ describe('Index', () => {
         let css = `.foo{ --bodyText: "font({theme: 'Body-M', size: '10px', lineHeight: '2em', weight: 'bold', style:'italic'})"; font: "font(--bodyText)"}`;
 
         driver.given.css(css)
-            .siteTextPresets({
+            .given.siteTextPresets({
                 'Body-M': {
                     editorKey: 'font_8',
                     fontFamily: 'raleway',
@@ -393,7 +393,7 @@ describe('Index', () => {
                     weight: 'normal'
                 }
             })
-            .styleParams({
+            .given.styleParams({
                 fonts: {
                     bodyText: {
                         'value': 'font-family:\'mr de haviland\',\'cursive\';',
@@ -421,7 +421,7 @@ describe('Index', () => {
         let css = `.foo{ --bodyText: "font({theme: 'Body-M', size: '10px', lineHeight: '2em', weight: 'bold', style:'italic'})"; font: "font(--bodyText)"}`;
 
         driver.given.css(css)
-            .siteTextPresets({
+            .given.siteTextPresets({
                 'Body-M': {
                     editorKey: 'font_8',
                     fontFamily: 'raleway',
@@ -443,7 +443,7 @@ describe('Index', () => {
         let css = `.foo { --var1: "number(42)"; --var2: "number(--var1)"; rule4:"number(--var2)"; }`;
 
         driver.given.css(css)
-            .styleParams({numbers: {var1: 1}});
+            .given.styleParams({numbers: {var1: 1}});
 
         return driver.when.init().then(() => {
             expect(getOverrideStyleCallArg(driver))
@@ -453,7 +453,7 @@ describe('Index', () => {
 
     it('has declaration plugin support', () => {
         driver.given.css('.foo {bar: 4;}')
-            .declarationReplacerPlugin((key, val) => ({
+            .given.declarationReplacerPlugin((key, val) => ({
                 key: 'ZzZ' + key + 'ZzZ',
                 value: '#' + val + '#'
             }));
@@ -467,7 +467,7 @@ describe('Index', () => {
         let css = `.foo { --var1: "increment(1)"; border-radius: "number(--var1)"px }`;
 
         driver.given.css(css)
-            .cssFunctionPlugin('increment', (value) => 1 + +value);
+            .given.cssFunctionPlugin('increment', (value) => 1 + +value);
 
         return driver.when.init().then(() => {
             expect(getOverrideStyleCallArg(driver))

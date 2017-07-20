@@ -21,7 +21,7 @@ export default class Driver {
         }
     };
 
-    private when = {
+    public when = {
         init: (options = {}) => {
             return index.init(options, this.mocks.domService);
         },
@@ -30,10 +30,10 @@ export default class Driver {
         }
     };
 
-    private given = {
+    public given = {
         css: (css) => {
             this.css = css;
-            return this.given;
+            return this;
         },
         defaultSiteColors: () => {
             this.mocks.Wix.given.siteColors([{
@@ -97,27 +97,28 @@ export default class Driver {
                 'value': '#9C3F2C',
                 'reference': 'color-24'
             }, {'name': 'color_35', 'value': '#4E1F16', 'reference': 'color-25'}]);
-            return this.given;
+
+            return this;
         },
         siteTextPresets: (siteTextPresets) => {
             this.mocks.Wix.given.siteTextPresets(siteTextPresets);
-            return this.given;
+            return this;
         },
         styleParams: (styleParams) => {
             this.mocks.Wix.given.styleParams(styleParams);
-            return this.given;
+            return this;
         },
         declarationReplacerPlugin: (plugin: Function) => {
             index.plugins.addDeclarationReplacer(plugin);
-            return this.given;
+            return this;
         },
         cssFunctionPlugin: (funcName: string, func: Function) => {
             index.plugins.addCssFunction(funcName, func);
-            return this.given;
+            return this;
         }
     };
 
-    private get = {
+    public get = {
         domService: () => this.mocks.domService
     };
 }
