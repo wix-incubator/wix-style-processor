@@ -16,7 +16,10 @@ export default Wix => ({
     },
 
     isEditorMode(): boolean {
-        return Wix.Utils.getViewMode() === 'editor'
+        return Wix.Utils.getViewMode() === 'editor';
+    },
+    isPreviewMode(): boolean {
+        return Wix.Utils.getViewMode() === 'preview';
     }
 });
 

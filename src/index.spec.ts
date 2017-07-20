@@ -3,7 +3,7 @@ import {IndexDriver} from './index.driver';
 import {hash} from './hash';
 
 describe('Index', () => {
-    let driver;
+    let driver: IndexDriver;
 
     beforeEach(() => {
         driver = new IndexDriver();
@@ -21,7 +21,7 @@ describe('Index', () => {
 
     it('should update on init', () => {
         return driver.when.init().then(() => {
-            expect(getOverrideStyleCallArg(driver)).to.equal('.foo{--bar: #717070;color: #717070;}');
+            expect(driver.get.overrideStyleCallArg()).to.equal('.foo{--bar: #717070;color: #717070;}');
         });
     });
 
@@ -37,7 +37,7 @@ describe('Index', () => {
 
         return driver.when.init()
             .then(() => {
-                expect(getOverrideStyleCallArg(driver)).to.equal('.foo{color: rgb(255, 0, 0);}');
+                expect(driver.get.overrideStyleCallArg()).to.equal('.foo{color: rgb(255, 0, 0);}');
             });
     });
 
@@ -65,7 +65,7 @@ describe('Index', () => {
 
         return driver.when.init()
             .then(() => {
-                expect(getOverrideStyleCallArg(driver)).to
+                expect(driver.get.overrideStyleCallArg()).to
                     .equal(`.foo{font: normal normal normal 17px/1.4em mr de haviland,cursive;}`);
             });
     });
@@ -86,7 +86,7 @@ describe('Index', () => {
 
         return driver.when.init()
             .then(() => {
-                expect(getOverrideStyleCallArg(driver)).to.equal(`.foo{width: 100px;}`);
+                expect(driver.get.overrideStyleCallArg()).to.equal(`.foo{width: 100px;}`);
             });
     });
 
@@ -103,7 +103,7 @@ describe('Index', () => {
 
         return driver.when.init()
             .then(() => {
-                expect(getOverrideStyleCallArg(driver, 0)).to.equal(`.foo{--my_var: 0px;width: 0px;}`);
+                expect(driver.get.overrideStyleCallArg()).to.equal(`.foo{--my_var: 0px;width: 0px;}`);
             });
     });
 
@@ -122,7 +122,7 @@ describe('Index', () => {
 
         return driver.when.init()
             .then(() => {
-                expect(getOverrideStyleCallArg(driver)).to
+                expect(driver.get.overrideStyleCallArg()).to
                     .equal(':root{--my_var3: #717070;}.foo{color: rgba(128, 110, 66, 0.6193647540983607);}');
             });
     });
@@ -154,7 +154,7 @@ describe('Index', () => {
 
         return driver.when.init()
             .then(() => {
-                expect(getOverrideStyleCallArg(driver)).to
+                expect(driver.get.overrideStyleCallArg()).to
                     .equal(`:root{--cart_textFontStyle: normal normal normal 17px/1.4em raleway,sans-serif;--cartButton_textColor: #FFFFFF;}.foo{font: normal normal normal 17px/1.4em raleway,sans-serif;color: #FFFFFF;}`);
             });
     });
@@ -177,7 +177,7 @@ describe('Index', () => {
 
         return driver.when.init()
             .then(() => {
-                expect(getOverrideStyleCallArg(driver))
+                expect(driver.get.overrideStyleCallArg())
                     .to
                     .equal('.font-test{--some-font: normal normal normal 16px/1.4em din-next-w01-light,din-next-w02-light,din-next-w10-light,sans-serif;font: normal normal normal 16px/1.4em din-next-w01-light,din-next-w02-light,din-next-w10-light,sans-serif;}');
             });
@@ -188,7 +188,7 @@ describe('Index', () => {
         driver.given.css(css);
 
         return driver.when.init().then(() => {
-            expect(getOverrideStyleCallArg(driver))
+            expect(driver.get.overrideStyleCallArg())
                 .to.equal('.font-test:after{content: " ";}');
         });
     });
@@ -198,7 +198,7 @@ describe('Index', () => {
         driver.given.css(css);
 
         return driver.when.init().then(() => {
-            expect(getOverrideStyleCallArg(driver))
+            expect(driver.get.overrideStyleCallArg())
                 .to.equal('.font-test{--var: #F3F3F3;color: rgba(255, 255, 255, 0.5);}');
         });
     });
@@ -208,7 +208,7 @@ describe('Index', () => {
         driver.given.css(css);
 
         return driver.when.init().then(() => {
-            expect(getOverrideStyleCallArg(driver))
+            expect(driver.get.overrideStyleCallArg())
                 .to.equal('.foo{rule1: rgba(255, 0, 0, 0.5);--lala: #FF0000;}');
         });
     });
@@ -219,7 +219,7 @@ describe('Index', () => {
         driver.given.css(css);
 
         return driver.when.init().then(() => {
-            expect(getOverrideStyleCallArg(driver))
+            expect(driver.get.overrideStyleCallArg())
                 .to.equal('.foo{rule: bar;rule3: baz;rule4: #FFFFFF;rule5: #F3F3F3;}');
         });
     });
@@ -230,7 +230,7 @@ describe('Index', () => {
         driver.given.css(css);
 
         return driver.when.init().then(() => {
-            expect(getOverrideStyleCallArg(driver))
+            expect(driver.get.overrideStyleCallArg())
                 .to.equal(`.foo{rule1: rgb(128, 0, 0);}`);
         });
     });
@@ -241,7 +241,7 @@ describe('Index', () => {
         driver.given.css(css);
 
         return driver.when.init().then(() => {
-            expect(getOverrideStyleCallArg(driver))
+            expect(driver.get.overrideStyleCallArg())
                 .to.equal(`.foo{rule1: rgb(255, 0, 0);}`);
         });
     });
@@ -257,7 +257,7 @@ describe('Index', () => {
         });
 
         return driver.when.init().then(() => {
-            expect(getOverrideStyleCallArg(driver))
+            expect(driver.get.overrideStyleCallArg())
                 .to.equal(`.foo{rule1: rgba(255, 255, 0, 0.5);}`);
         });
     });
@@ -273,7 +273,7 @@ describe('Index', () => {
         });
 
         return driver.when.init().then(() => {
-            expect(getOverrideStyleCallArg(driver))
+            expect(driver.get.overrideStyleCallArg())
                 .to.equal(`.foo{rule1: rgb(255, 255, 0);}`);
         });
     });
@@ -292,7 +292,7 @@ describe('Index', () => {
         });
 
         return driver.when.init().then(() => {
-            expect(getOverrideStyleCallArg(driver))
+            expect(driver.get.overrideStyleCallArg())
                 .to.equal(`.foo{width: calc(100% - 42);}`);
         });
     });
@@ -311,7 +311,7 @@ describe('Index', () => {
         });
 
         return driver.when.init().then(() => {
-            expect(getOverrideStyleCallArg(driver))
+            expect(driver.get.overrideStyleCallArg())
                 .to.equal(`.foo{border: 42px solid #FF0000;}`);
         });
     });
@@ -322,7 +322,7 @@ describe('Index', () => {
         driver.given.css(css);
 
         return driver.when.init().then(() => {
-            expect(getOverrideStyleCallArg(driver))
+            expect(driver.get.overrideStyleCallArg())
                 .to.equal(`.foo{padding: 10px 11px 12px 13px;margin-right: 20px;color: blue;}`);
         });
     });
@@ -333,7 +333,7 @@ describe('Index', () => {
         driver.given.css(css);
 
         return driver.when.init().then(() => {
-            expect(getOverrideStyleCallArg(driver))
+            expect(driver.get.overrideStyleCallArg())
                 .to.equal(`.foo{--bar: var(42);--baz: var(21);padding: --baz;}`);
         });
     });
@@ -344,7 +344,7 @@ describe('Index', () => {
         driver.given.css(css);
 
         return driver.when.init().then(() => {
-            expect(getOverrideStyleCallArg(driver))
+            expect(driver.get.overrideStyleCallArg())
                 .to.equal(`.datepicker__day--highlighted:hover{background-color: #32be3f;}`);
         });
     });
@@ -355,7 +355,7 @@ describe('Index', () => {
         driver.given.css(css);
 
         return driver.when.init().then(() => {
-            expect(getOverrideStyleCallArg(driver))
+            expect(driver.get.overrideStyleCallArg())
                 .to.equal(`.foo{rule: bar;rule3: baz;rule4: #FF0000;rule5: #FF0000;}`);
         });
     });
@@ -377,7 +377,7 @@ describe('Index', () => {
         });
 
         return driver.when.init().then(() => {
-            expect(getOverrideStyleCallArg(driver))
+            expect(driver.get.overrideStyleCallArg())
                 .to.equal(`.foo{font: italic normal bold 10px/2em raleway,sans-serif;}`);
         });
     });
@@ -416,7 +416,7 @@ describe('Index', () => {
         });
 
         return driver.when.init().then(() => {
-            expect(getOverrideStyleCallArg(driver))
+            expect(driver.get.overrideStyleCallArg())
                 .to
                 .equal(`.foo{--bodyText: italic normal bold 10px/2em raleway,sans-serif;font: normal normal normal 17px/1.4em mr de haviland,cursive;}`);
         });
@@ -439,7 +439,7 @@ describe('Index', () => {
         });
 
         return driver.when.init().then(() => {
-            expect(getOverrideStyleCallArg(driver))
+            expect(driver.get.overrideStyleCallArg())
                 .to
                 .equal(`.foo{--bodyText: italic normal bold 10px/2em raleway,sans-serif;font: italic normal bold 10px/2em raleway,sans-serif;}`);
         });
@@ -452,7 +452,7 @@ describe('Index', () => {
             .given.styleParams({numbers: {var1: 1}});
 
         return driver.when.init().then(() => {
-            expect(getOverrideStyleCallArg(driver))
+            expect(driver.get.overrideStyleCallArg())
                 .to.equal(`.foo{--var1: 42;--var2: 1;rule4: 1;}`);
         });
     });
@@ -467,7 +467,7 @@ describe('Index', () => {
         }));
 
         return driver.when.init().then(() => {
-            expect(getOverrideStyleCallArg(driver)).to.equal('.foo{ZzZbarZzZ: #4#;}');
+            expect(driver.get.overrideStyleCallArg()).to.equal('.foo{ZzZbarZzZ: #4#;}');
         });
     });
 
@@ -478,7 +478,7 @@ describe('Index', () => {
             .given.cssFunctionPlugin('increment', (value) => 1 + +value);
 
         return driver.when.init().then(() => {
-            expect(getOverrideStyleCallArg(driver))
+            expect(driver.get.overrideStyleCallArg())
                 .to.equal(`.foo{--var1: 2;border-radius: 2px;}`);
         });
     });
@@ -488,7 +488,7 @@ describe('Index', () => {
 
         driver.given.css(css);
         return driver.when.init().then(() => {
-            expect(getOverrideStyleCallArg(driver))
+            expect(driver.get.overrideStyleCallArg())
                 .to.equal(`.foo{--var1: undefined;}`);
         });
     });
@@ -513,14 +513,14 @@ describe('Index', () => {
                 })
                 .then(driver.when.updateStyleParams)
                 .then(() => {
-                    expect(getOverrideStyleCallArg(driver, 1)).to.equal('.foo{--bar: #717070;color: #ffffff;}');
+                    expect(driver.get.overrideStyleCallArg(1)).to.equal('.foo{--bar: #717070;color: #ffffff;}');
                 });
         });
 
         describe('Enhanced mode', () => {
             const color = '"color(color-1)"';
-            const borderWidth = '"unit(1, px)"';
-            const borderColor = '"opacity(color(color-9), 0.5)"';
+            const borderWidth = '"unit(--borderWidth, px)"';
+            const borderColor = '"opacity(color(color-1), 0.5)"';
 
             beforeEach(() => {
                 driver.given.cssVarsSupported(true)
@@ -530,13 +530,33 @@ describe('Index', () => {
 
             it('should change custom syntax to native vars', () => {
                 driver.when.init()
-                    .then(() => expect(getOverrideStyleCallArg(driver)).to
-                        .equal(`.foo{color: var(--${hash(color)});border: var(--${hash(borderWidth)}) solid var(--${hash(borderColor)});}`))
+                    .then(() => expect(driver.get.overrideStyleCallArg()).to
+                        .equal(`.foo{color: var(--${hash(color)});border: var(--${hash(borderWidth)}) solid var(--${hash(borderColor)});}`));
+            });
+
+            it('should evaluate custom functions on style update', () => {
+                const newValues = {
+                    number: 42,
+                    color: '#000000'
+                };
+                driver.when.init()
+                    .then(() => {
+                        driver.given.styleParams({
+                            numbers: {
+                                borderWidth: newValues.number
+                            }
+                        }).given.siteColor('color-1', newValues.color);
+                    })
+                    .then(driver.when.updateStyleParams)
+                    .then(() => {
+                        expect(driver.get.updateCssVarsCallArg(1)).to
+                            .eql({
+                                [`--${hash(color)}`]: newValues.color,
+                                [`--${hash(borderWidth)}`]: `${newValues.number}px`,
+                                [`--${hash(borderColor)}`]: 'rgba(0, 0, 0, 0.5)'
+                            });
+                    });
             });
         });
     });
-
-    function getOverrideStyleCallArg(driver, callIdx = 0) {
-        return driver.get.domService().overrideStyle.getCall(callIdx).args[1];
-    }
 });

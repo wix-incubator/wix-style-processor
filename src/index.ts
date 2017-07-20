@@ -8,16 +8,17 @@ export default {
     plugins: new Plugins(),
 
     init(options, domServiceOverride = domService) {
+        const wixService = WixService(window.Wix);
+
         Object.keys(defaultPlugins)
             .forEach((funcName) => this.plugins.addCssFunction(funcName, defaultPlugins[funcName]));
 
         options = setDefaultOptions(options, this.plugins);
-        options.isCssVarsSupported = domService.isCssVarsSupported();
+        options.shouldUseCssVars = domService.isCssVarsSupported() && (wixService.isEditorMode() || wixService.isPreviewMode());
 
-        const wixService = WixService(window.Wix);
         const styleUpdater = StyleUpdater(wixService, domServiceOverride, options);
 
-        if (wixService.isEditorMode()) {
+        if (wixService.isEditorMode() || wixService.isPreviewMode()) {
             wixService.listenToStyleParamsChange(() => styleUpdater.update(true));
         }
         return styleUpdater.update();

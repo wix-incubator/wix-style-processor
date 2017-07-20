@@ -42,6 +42,11 @@ export default class WixMock {
         viewMode: (mode: string) => {
             this.viewMode = mode;
             return this;
+        },
+        siteColor: (ref: string, value: string) => {
+            this.siteColors.filter((color) => color.reference === ref)
+                .map(c => c.value = value);
+            return this;
         }
     };
 

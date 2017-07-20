@@ -7,9 +7,10 @@ const customSyntaxRegex = /"\w+\([^"]*\)"/g;
 
 export function processor({
     declaration,
-    vars,
+    varsResolver,
+    tpaParams,
     cacheMap
-}, {plugins, isCssVarsSupported}) {
+}, {plugins, shouldUseCssVars}) {
     let {key, value} = splitDeclaration(declaration);
 
     if (plugins.declarationReplacers.length > 0) {
@@ -22,7 +23,14 @@ export function processor({
 
     let newValue = value.replace(customSyntaxRegex, (part) => {
         if (plugins.isSupportedFunction(part)) {
-            return isCssVarsSupported ? generateCssVar(part) : executeFunction(part, plugins, vars)(vars.tpaParams);
+            const evaluationFunc = executeFunction(part, plugins, varsResolver);
+            if (shouldUseCssVars) {
+                const partHash = `--${hash(part)}`;
+                cacheMap[partHash] = evaluationFunc;
+                return `var(${partHash})`;
+            } else {
+                return evaluationFunc(tpaParams);
+            }
         }
         return part;
     });
@@ -30,30 +38,46 @@ export function processor({
     return key + ': ' + newValue;
 }
 
-function executeFunction(value, plugins, vars: VarsResolver) {
+function executeFunction(value, plugins, varsResolver: VarsResolver) {
     let functionSignature;
 
     if (functionSignature = plugins.getFunctionSignature(value)) {
-        const evaluationFunc = plugins.cssFunctions[functionSignature.funcName](...functionSignature.args.split(paramsRegex)
-            .map((v) => executeFunction(v.trim(), plugins, vars)(vars.tpaParams)));
-
-        return evaluationFunc;
+        return plugins.cssFunctions[functionSignature.funcName](...functionSignature.args.split(paramsRegex)
+            .map((v) => executeFunction(v.trim(), plugins, varsResolver)));
     } else {
-        return getVarOrPrimitiveValue(value, plugins, vars);
+        return getVarOrPrimitiveValue(value, plugins, varsResolver);
     }
 }
 
-function getVarOrPrimitiveValue(varName, plugins, vars) {
+function getVarOrPrimitiveValue(varName, plugins, varsResolver) {
     if (isCssVar(varName)) {
-        varName = vars.getValue(varName);
-        if (plugins.isSupportedFunction(varName)) {
-            return executeFunction(varName, plugins, vars);
+        const varValue = varsResolver.getValue(varName);
+        let defaultVarValue;
+        if (plugins.isSupportedFunction(varValue)) {
+            defaultVarValue = executeFunction(varValue, plugins, varsResolver);
+        } else {
+            defaultVarValue = () => varValue;
         }
+
+        return getDefaultValueOrValueFromSettings(varName, defaultVarValue);
     }
 
     return () => varName;
 }
 
-function generateCssVar(part) {
-    return `var(--${hash(part)})`;
+function getDefaultValueOrValueFromSettings(varName, defaultVarValue) {
+    return (tpaParams: ITPAParams) => {
+        let varNameInSettings = varName.substring(2, varName.length);
+        if (tpaParams.strings[varNameInSettings] && tpaParams.strings[varNameInSettings].value) {
+            return tpaParams.strings[varNameInSettings].value;
+        } else if (tpaParams.colors[varNameInSettings]) {
+            return tpaParams.colors[varNameInSettings];
+        } else if (tpaParams.fonts[varNameInSettings]) {
+            return tpaParams.fonts[varNameInSettings];
+        } else if (tpaParams.numbers[varNameInSettings]) {
+            return tpaParams.numbers[varNameInSettings];
+        }
+        //not found in settings
+        return defaultVarValue(tpaParams);
+    };
 }

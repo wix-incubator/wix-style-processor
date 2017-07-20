@@ -8,5 +8,10 @@ export default {
     },
     isCssVarsSupported(): boolean {
         return !!(window.CSS && window.CSS.supports && window.CSS.supports('--fake-var', 0));
+    },
+    updateCssVars(varMap) {
+        Object.keys(varMap).forEach((key) => {
+            document.documentElement.style.setProperty(key, varMap[key])
+        });
     }
 };

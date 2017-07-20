@@ -21,29 +21,24 @@ export default (wixService, domService, options) => {
                 const colors = wixStylesColorUtils.getFullColorStyles({colorStyles, siteColors}) || {};
                 const fonts = wixStylesFontUtils.getFullFontStyles({fontStyles, siteTextPresets}) || {};
                 const strings = pickBy(styleParams.fonts, isStringHack);
+                const tpaParams = {colors, fonts, numbers, strings};
 
-                if (options.isCssVarsSupported && isRerender) {
-
-                } else {
+                if (!isRerender || !options.shouldUseCssVars) {
                     domService.getAllStyleTags().forEach(tagStyle => {
                         let css = (tagStyle.originalTemplate || tagStyle.textContent);
                         css = css.replace(/}\[/g, '} [');
                         const stylis = new Stylis({semicolon: false, compress: false, preserve: true});
 
-                        const vars = new VarsResolver({
-                            colors,
-                            fonts,
-                            numbers,
-                            strings
-                        });
+                        const varsResolver = new VarsResolver();
 
-                        extractVars(css, vars.extractVar.bind(vars), stylis);
+                        extractVars(css, varsResolver.extractVar.bind(varsResolver), stylis);
 
                         stylis.use((context, declaration) => {
                             if (context === 1) {
                                 return processor({
                                     declaration,
-                                    vars,
+                                    varsResolver,
+                                    tpaParams,
                                     cacheMap
                                 }, options)
                             }
@@ -52,6 +47,15 @@ export default (wixService, domService, options) => {
 
                         domService.overrideStyle(tagStyle, newCss);
                     });
+                }
+
+                if (options.shouldUseCssVars) {
+                    const varMap = Object.keys(cacheMap).reduce((varMap, key) => {
+                        varMap[key] = cacheMap[key](tpaParams);
+                        return varMap;
+                    }, {});
+
+                    domService.updateCssVars(varMap);
                 }
             }).catch(err => {
                 console.error('failed updating styles', err);
