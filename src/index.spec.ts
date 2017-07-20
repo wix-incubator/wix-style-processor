@@ -1,5 +1,6 @@
 import {expect} from 'chai';
 import {IndexDriver} from './index.driver';
+import {hash} from './hash';
 
 describe('Index', () => {
     let driver;
@@ -11,10 +12,10 @@ describe('Index', () => {
             .given.css('.foo { --bar: "color(color-4)"; color: "color(--bar)"}')
             .given.defaultSiteColors()
             .given.styleParams({
-                numbers: {},
-                colors: {},
-                fonts: {}
-            })
+            numbers: {},
+            colors: {},
+            fonts: {}
+        })
             .given.siteTextPresets({});
     });
 
@@ -278,7 +279,7 @@ describe('Index', () => {
     });
 
     it('should support number', () => {
-        const css = `.foo { border: "number(--foo)"px solid "color(--bar)"; }`;
+        const css = `.foo { width: calc(100% - "number(--foo)"); }`;
 
         driver.given.css(css)
             .given.styleParams({
@@ -292,7 +293,7 @@ describe('Index', () => {
 
         return driver.when.init().then(() => {
             expect(getOverrideStyleCallArg(driver))
-                .to.equal(`.foo{border: 42 solid #FF0000;}`);
+                .to.equal(`.foo{width: calc(100% - 42);}`);
         });
     });
 
@@ -517,14 +518,20 @@ describe('Index', () => {
         });
 
         describe('Enhanced mode', () => {
+            const color = '"color(color-1)"';
+            const borderWidth = '"unit(1, px)"';
+            const borderColor = '"opacity(color(color-9), 0.5)"';
+
             beforeEach(() => {
                 driver.given.cssVarsSupported(true)
-                    .given.css(`.foo {color: "color(color-1)"; border: "number(1)"px solid "opacity(color(color-9), 0.5)"}`);
+                    .given
+                    .css(`.foo {color: ${color}; border: ${borderWidth} solid ${borderColor}`);
             });
 
             it('should change custom syntax to native vars', () => {
                 driver.when.init()
-                    .then(() => expect(getOverrideStyleCallArg(driver)).to.equal('.foo{color: var(--xxx);border: 1px solid rgba(255, 0, 0, 0.5);}'))
+                    .then(() => expect(getOverrideStyleCallArg(driver)).to
+                        .equal(`.foo{color: var(--${hash(color)});border: var(--${hash(borderWidth)}) solid var(--${hash(borderColor)});}`))
             });
         });
     });
