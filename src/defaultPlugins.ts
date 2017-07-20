@@ -70,5 +70,8 @@ export const defaultPlugins = {
     },
     number: (value) => {
         return +value;
+    },
+    unit: (value, unit) => {
+        return `${value}${unit}`;
     }
 };

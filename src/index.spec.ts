@@ -286,7 +286,26 @@ describe('Index', () => {
     });
 
     it('should support number', () => {
-        let css = `.foo { border: "number(--foo)"px solid "color(--bar)"; }`;
+        let css = `.foo { border: "number(--foo)" solid "color(--bar)"; }`;
+
+        driver.given.css(css)
+            .given.styleParams({
+            numbers: {
+                foo: 42
+            },
+            colors: {
+                bar: {value: '#FF0000'}
+            }
+        });
+
+        return driver.when.init().then(() => {
+            expect(getOverrideStyleCallArg(driver))
+                .to.equal(`.foo{border: 42 solid #FF0000;}`);
+        });
+    });
+
+    it('should support unit', () => {
+        let css = `.foo { border: "unit(--foo, px)" solid "color(--bar)"; }`;
 
         driver.given.css(css)
             .given.styleParams({
@@ -460,7 +479,7 @@ describe('Index', () => {
     });
 
     it('should support external css functions', () => {
-        let css = `.foo { --var1: "increment(1)"; border-radius: "number(--var1)"px }`;
+        let css = `.foo { --var1: "increment(1)"; border-radius: "unit(--var1, px)" }`;
 
         driver.given.css(css)
             .given.cssFunctionPlugin('increment', (value) => 1 + +value);

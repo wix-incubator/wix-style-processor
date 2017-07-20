@@ -33,7 +33,7 @@ function executeFunction(value, plugins, vars: VarsResolver) {
 
     if (functionSignature = plugins.getFunctionSignature(value)) {
         return plugins.cssFunctions[functionSignature.funcName](...functionSignature.args.split(paramsRegex)
-            .map((v) => executeFunction(v, plugins, vars)))(vars.tpaParams);
+            .map((v) => executeFunction(v.trim(), plugins, vars)))(vars.tpaParams);
     } else {
         return getVarOrPrimitiveValue(value, plugins, vars);
     }
