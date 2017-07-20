@@ -85,7 +85,7 @@ The CSS above will be replaced to:
 }
 ```
 
-#### Declaration Replacer plugins
+### 2. Declaration Replacer plugins
 These plugins allow you to replace the entire key / value of the CSS declaration.
 Since they're invoked upon each and every declaration, there's no need to name them.
 
@@ -123,6 +123,16 @@ The CSS above will be replaced to:
 
 # [RTL/LTR plugin](https://github.com/wix/wsp-plugin-rtl)
 It is a `DeclarationReplacer plugin` that allows you to change dynamically LTR/RTL replacements in your CSS, you can use this plugin.
+
+# Enhanced Editor mode
+This mode take leverage of native **css vars** to speed up the rendring of editor changes.
+This feature will be enabled only on browsers that [supports it](http://caniuse.com/#search=css-variables) and in `Editor / Preview` mode.
+
+#### Benchmarks
+Without css-vars usage: (the first line is a timing of first render)
+![without](https://files.slack.com/files-pri/T02T01M9Y-F6BJ22TU3/pasted_image_at_2017_07_21_01_42_am.png)
+With css-vars usage: (the first line is a timing of first render)
+![with](https://files.slack.com/files-pri/T02T01M9Y-F6CP4AA6B/pasted_image_at_2017_07_21_01_45_am.png)
 
 # Important
 This module only parses inline CSS.
