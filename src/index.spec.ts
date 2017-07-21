@@ -518,20 +518,31 @@ describe('Index', () => {
         });
 
         describe('Enhanced mode', () => {
-            const color = '"color(color-1)"';
-            const borderWidth = '"unit(--borderWidth, px)"';
-            const borderColor = '"opacity(color(color-1), 0.5)"';
+            const color = '"join(darken(color(color-9), 0.5), 0.5, color(color-10), 0.5)"';
+            const borderWidth = '"unit(number(--borderWidth), string(px))"';
+            const borderColor = '"withoutOpacity(opacity(color(color-1), 0.5))"';
+            const font = `"font({theme: 'Body-M', size: '30px'})"`;
 
             beforeEach(() => {
                 driver.given.cssVarsSupported(true)
-                    .given
-                    .css(`.foo {color: ${color}; border: ${borderWidth} solid ${borderColor}`);
+                    .given.css(`.foo {color: ${color}; border: ${borderWidth} solid ${borderColor}; font: ${font}`)
+                    .given.siteTextPresets({
+                    'Body-M': {
+                        editorKey: 'font_8',
+                        fontFamily: 'raleway',
+                        lineHeight: '1.4em',
+                        size: '17px',
+                        style: 'normal',
+                        value: 'font:normal normal normal 17px/1.4em raleway,sans-serif;',
+                        weight: 'normal'
+                    }
+                });
             });
 
             it('should change custom syntax to native vars', () => {
                 driver.when.init()
                     .then(() => expect(driver.get.overrideStyleCallArg()).to
-                        .equal(`.foo{color: var(--${hash(color)});border: var(--${hash(borderWidth)}) solid var(--${hash(borderColor)});}`));
+                        .equal(`.foo{color: var(--${hash(color)});border: var(--${hash(borderWidth)}) solid var(--${hash(borderColor)});font: var(--${hash(font)});}`));
             });
 
             it('should evaluate custom functions on style update', () => {
@@ -545,15 +556,17 @@ describe('Index', () => {
                             numbers: {
                                 borderWidth: newValues.number
                             }
-                        }).given.siteColor('color-1', newValues.color);
+                        }).given.siteColor('color-1', newValues.color)
+                            .given.siteColor('color-9', '#0000FF');
                     })
                     .then(driver.when.updateStyleParams)
                     .then(() => {
                         expect(driver.get.updateCssVarsCallArg(1)).to
                             .eql({
-                                [`--${hash(color)}`]: newValues.color,
+                                [`--${hash(color)}`]: 'rgb(0, 255, 128)',
                                 [`--${hash(borderWidth)}`]: `${newValues.number}px`,
-                                [`--${hash(borderColor)}`]: 'rgba(0, 0, 0, 0.5)'
+                                [`--${hash(borderColor)}`]: 'rgb(0, 0, 0)',
+                                [`--${hash(font)}`]: 'normal normal normal 30px/1.4em raleway,sans-serif'
                             });
                     });
             });
