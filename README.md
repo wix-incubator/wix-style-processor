@@ -132,11 +132,11 @@ This feature will be enabled only on browsers that [supports it](http://caniuse.
 #### Benchmarks
 Without css-vars usage: (the first line is a timing of first render)
 
-![without](https://files.slack.com/files-pri/T02T01M9Y-F6BJ22TU3/pasted_image_at_2017_07_21_01_42_am.png)
+![without](https://user-images.githubusercontent.com/9304194/28443749-b8c20e3c-6dc0-11e7-9ab5-03db9704d734.png)
 
 With css-vars usage: (the first line is a timing of first render)
 
-![with](https://files.slack.com/files-pri/T02T01M9Y-F6CP4AA6B/pasted_image_at_2017_07_21_01_45_am.png)
+![with](https://user-images.githubusercontent.com/9304194/28443748-b7a87496-6dc0-11e7-96e4-2367619d28dd.png)
 
 # Important
 This module only parses inline CSS.
