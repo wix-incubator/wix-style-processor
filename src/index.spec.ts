@@ -570,6 +570,14 @@ describe('Index', () => {
                             });
                     });
             });
+
+            it('should should allow to override shouldUseCssVars by options', () => {
+                driver
+                    .given.styleParams({numbers: {borderWidth: 42}})
+                    .when.init({shouldUseCssVars: false})
+                    .then(() => expect(driver.get.overrideStyleCallArg()).to
+                        .equal(`.foo{color: rgb(128, 255, 0);border: 42px solid rgb(255, 255, 255);font: normal normal normal 30px/1.4em raleway,sans-serif;}`));
+            });
         });
     });
 });

@@ -7,14 +7,16 @@ import {defaultPlugins} from './defaultPlugins';
 export default {
     plugins: new Plugins(),
 
-    init(options, domServiceOverride = domService) {
+    init(options = <any>{}, domServiceOverride = domService) {
         const wixService = WixService(window.Wix);
 
         Object.keys(defaultPlugins)
             .forEach((funcName) => this.plugins.addCssFunction(funcName, defaultPlugins[funcName]));
 
-        options = setDefaultOptions(options, this.plugins);
-        options.shouldUseCssVars = domService.isCssVarsSupported() && (wixService.isEditorMode() || wixService.isPreviewMode());
+        const defaultOptions = <any>{};
+        defaultOptions.plugins = this.plugins;
+        defaultOptions.shouldUseCssVars = domService.isCssVarsSupported() && (wixService.isEditorMode() || wixService.isPreviewMode());
+        options = Object.assign({}, defaultOptions, options);
 
         const styleUpdater = StyleUpdater(wixService, domServiceOverride, options);
 
@@ -23,10 +25,4 @@ export default {
         }
         return styleUpdater.update();
     }
-}
-
-function setDefaultOptions(options, plugins): any {
-    options = options || {};
-    options.plugins = options.plugins || plugins;
-    return options;
 }
