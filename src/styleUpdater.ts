@@ -31,16 +31,21 @@ export default (wixService, domService, options) => {
 
                         const varsResolver = new VarsResolver();
 
-                        extractVars(css, varsResolver.extractVar.bind(varsResolver), stylis);
-
-                        stylis.use((context, declaration) => {
+                        stylis.use((context, content) => {
                             if (context === 1) {
-                                return processor({
-                                    declaration,
-                                    varsResolver,
-                                    tpaParams,
-                                    cacheMap
-                                }, options)
+                                /* for each declaration */
+                                varsResolver.extractVar(content);
+                                return varsResolver.extractParts(content, options.plugins);
+                            }
+
+                            if (context === -2) {
+                                /* post-process */
+                                return varsResolver.parts.reduce((content, part) => {
+                                    const newValue = processor({
+                                        part, varsResolver, tpaParams, cacheMap
+                                    }, options);
+                                    return content.replace(new RegExp(escapeRegExp(part), 'g'), newValue);
+                                }, content);
                             }
                         });
                         const newCss = stylis('', css);
@@ -65,12 +70,6 @@ export default (wixService, domService, options) => {
     };
 };
 
-function extractVars(css: string, extractVarsFn, stylis) {
-    stylis.use((context, decleration) => {
-        if (context === 1) {
-            extractVarsFn(decleration);
-        }
-    });
-    stylis('', css);
-    stylis.use(null);
+function escapeRegExp(str) {
+    return str.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, "\\$&");
 }
