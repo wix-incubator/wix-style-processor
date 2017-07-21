@@ -6,36 +6,22 @@ const paramsRegex = /,(?![^(]*(?:\)|}))/g;
 const customSyntaxRegex = /"\w+\([^"]*\)"/g;
 
 export function processor({
-    declaration,
+    part,
     varsResolver,
     tpaParams,
     cacheMap
 }, {plugins, shouldUseCssVars}) {
-    let {key, value} = splitDeclaration(declaration);
-
-    if (plugins.declarationReplacers.length > 0) {
-        plugins.declarationReplacers.forEach(plugin => {
-            let pluginResult = plugin(key, value);
-            key = pluginResult.key;
-            value = pluginResult.value;
-        });
-    }
-
-    let newValue = value.replace(customSyntaxRegex, (part) => {
-        if (plugins.isSupportedFunction(part)) {
-            const evaluationFunc = executeFunction(part, plugins, varsResolver);
-            if (shouldUseCssVars) {
-                const partHash = `--${hash(part)}`;
-                cacheMap[partHash] = evaluationFunc;
-                return `var(${partHash})`;
-            } else {
-                return evaluationFunc(tpaParams);
-            }
+    if (plugins.isSupportedFunction(part)) {
+        const evaluationFunc = executeFunction(part, plugins, varsResolver);
+        if (shouldUseCssVars) {
+            const partHash = `--${hash(part)}`;
+            cacheMap[partHash] = evaluationFunc;
+            return `var(${partHash})`;
+        } else {
+            return evaluationFunc(tpaParams);
         }
-        return part;
-    });
-
-    return key + ': ' + newValue;
+    }
+    return part;
 }
 
 function executeFunction(value, plugins, varsResolver: VarsResolver) {
