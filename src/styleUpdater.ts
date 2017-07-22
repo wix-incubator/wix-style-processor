@@ -11,7 +11,6 @@ export default (wixService, domService, options) => ({
             domService.getAllStyleTags().forEach(fillVars => {
 
                 let css = (fillVars.originalTemplate || fillVars.textContent);
-                css = css.replace(/}\[/g, '} [');
                 const isStringHack = fontParam => fontParam.fontStyleParam === false;
                 const isValidFontParam = fontParam => fontParam.family !== undefined;
 
