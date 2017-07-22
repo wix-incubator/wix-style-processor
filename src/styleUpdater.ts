@@ -26,7 +26,7 @@ export default (wixService, domService, options) => {
                 if (!isRerender || !options.shouldUseCssVars) {
                     domService.getAllStyleTags().forEach(tagStyle => {
                         let css = (tagStyle.originalTemplate || tagStyle.textContent);
-                        css = css.replace(/}\[/g, '} [');
+
                         const stylis = new Stylis({semicolon: false, compress: false, preserve: true});
 
                         const varsResolver = new VarsResolver();
