@@ -4,6 +4,7 @@ import {isEqual, omitBy, pickBy} from 'lodash';
 import * as Stylis from 'stylis';
 import {processor} from './processor';
 import {VarsResolver} from './varsResolver';
+import {splitDeclaration} from './utils';
 
 export default (wixService, domService, options) => {
     const cacheMap = {};
@@ -31,23 +32,9 @@ export default (wixService, domService, options) => {
 
                         const varsResolver = new VarsResolver();
 
-                        stylis.use((context, content) => {
-                            if (context === 1) {
-                                /* for each declaration */
-                                varsResolver.extractVar(content);
-                                return varsResolver.extractParts(content, options.plugins);
-                            }
+                        applyDeclarationReplacers(options.plugins, stylis);
+                        applyCssFunctionsExtraction({varsResolver, tpaParams, cacheMap, options}, stylis);
 
-                            if (context === -2) {
-                                /* post-process */
-                                return varsResolver.parts.reduce((content, part) => {
-                                    const newValue = processor({
-                                        part, varsResolver, tpaParams, cacheMap
-                                    }, options);
-                                    return content.replace(new RegExp(escapeRegExp(part), 'g'), newValue);
-                                }, content);
-                            }
-                        });
                         const newCss = stylis('', css);
 
                         domService.overrideStyle(tagStyle, newCss);
@@ -71,5 +58,38 @@ export default (wixService, domService, options) => {
 };
 
 function escapeRegExp(str) {
-    return str.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, "\\$&");
+    return str.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, '\\$&');
+}
+
+function applyDeclarationReplacers(plugins, stylis) {
+    plugins.declarationReplacers
+        .forEach((replacer) => {
+            stylis.use((context, declaration) => {
+                if (context == 1) {
+                    let {key, value} = splitDeclaration(declaration);
+                    let pluginResult = replacer(key, value);
+                    return `${pluginResult.key}: ${pluginResult.value}`;
+                }
+            })
+        });
+}
+
+function applyCssFunctionsExtraction({varsResolver, tpaParams, cacheMap, options}, stylis) {
+    stylis.use((context, content) => {
+        if (context === 1) {
+            /* for each declaration */
+            varsResolver.extractVar(content);
+            return varsResolver.extractParts(content);
+        }
+
+        if (context === -2) {
+            /* post-process */
+            return varsResolver.parts.reduce((content, part) => {
+                const newValue = processor({
+                    part, varsResolver, tpaParams, cacheMap
+                }, options);
+                return content.replace(new RegExp(escapeRegExp(part), 'g'), newValue);
+            }, content);
+        }
+    });
 }

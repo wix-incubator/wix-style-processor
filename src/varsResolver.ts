@@ -14,16 +14,8 @@ export class VarsResolver {
         }
     }
 
-    public extractParts(declaration: string, plugins) {
+    public extractParts(declaration: string) {
         let {key, value} = splitDeclaration(declaration);
-
-        if (plugins.declarationReplacers.length > 0) {
-            plugins.declarationReplacers.forEach(plugin => {
-                let pluginResult = plugin(key, value);
-                key = pluginResult.key;
-                value = pluginResult.value;
-            });
-        }
 
         let match;
         if (match = value.match(customSyntaxRegex)) {
