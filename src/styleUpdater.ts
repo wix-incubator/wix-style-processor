@@ -3,7 +3,7 @@ import wixStylesFontUtils from './wixStylesFontUtils';
 import {isEqual, omitBy, pickBy} from 'lodash';
 import * as Stylis from 'stylis';
 import {processor} from './processor';
-import {VarsResolver} from './varsResolver';
+import {CustomSyntaxHelper} from './customSyntaxHelper';
 import {splitDeclaration} from './utils';
 
 export default (wixService, domService, options) => {
@@ -30,10 +30,8 @@ export default (wixService, domService, options) => {
 
                         const stylis = new Stylis({semicolon: false, compress: false, preserve: true});
 
-                        const varsResolver = new VarsResolver();
-
                         applyDeclarationReplacers(options.plugins, stylis);
-                        applyCssFunctionsExtraction({varsResolver, tpaParams, cacheMap, options}, stylis);
+                        applyCssFunctionsExtraction({tpaParams, cacheMap, options}, stylis);
 
                         const newCss = stylis('', css);
 
@@ -74,19 +72,24 @@ function applyDeclarationReplacers(plugins, stylis) {
         });
 }
 
-function applyCssFunctionsExtraction({varsResolver, tpaParams, cacheMap, options}, stylis) {
+function applyCssFunctionsExtraction({tpaParams, cacheMap, options}, stylis) {
+    const customSyntaxHelper = new CustomSyntaxHelper();
+
     stylis.use((context, content) => {
         if (context === 1) {
             /* for each declaration */
-            varsResolver.extractVar(content);
-            return varsResolver.extractParts(content);
+            let {key, value} = splitDeclaration(content);
+            customSyntaxHelper.extractVar(key, value);
+            customSyntaxHelper.extractCustomSyntax(key, value);
+
+            return `${key}: ${value}`;
         }
 
         if (context === -2) {
             /* post-process */
-            return varsResolver.parts.reduce((content, part) => {
+            return customSyntaxHelper.customSyntaxStrs.reduce((content, part) => {
                 const newValue = processor({
-                    part, varsResolver, tpaParams, cacheMap
+                    part, customSyntaxHelper: customSyntaxHelper, tpaParams, cacheMap
                 }, options);
                 return content.replace(new RegExp(escapeRegExp(part), 'g'), newValue);
             }, content);
