@@ -138,6 +138,9 @@ With css-vars usage: (the first line is a timing of first render)
 
 ![with](https://user-images.githubusercontent.com/9304194/28443748-b7a87496-6dc0-11e7-96e4-2367619d28dd.png)
 
+Demo:
+![6l3dkmbxgb](https://user-images.githubusercontent.com/9304194/28503201-9cd348ca-700a-11e7-8ae0-a1d56fcdfcc6.gif)
+
 # Important
 This module only parses inline CSS.
 It won't process any wix style params from an external (linked) CSS file.
