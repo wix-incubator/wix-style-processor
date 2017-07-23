@@ -1,18 +1,17 @@
-import {isCssVar, splitDeclaration} from './utils';
-import {VarsResolver} from './varsResolver';
+import {isCssVar} from './utils';
+import {CustomSyntaxHelper} from './customSyntaxHelper';
 import {hash} from './hash';
 
 const paramsRegex = /,(?![^(]*(?:\)|}))/g;
-const customSyntaxRegex = /"\w+\([^"]*\)"/g;
 
 export function processor({
     part,
-    varsResolver,
+    customSyntaxHelper,
     tpaParams,
     cacheMap
 }, {plugins, shouldUseCssVars}) {
     if (plugins.isSupportedFunction(part)) {
-        const evaluationFunc = executeFunction(part, plugins, varsResolver);
+        const evaluationFunc = executeFunction(part, plugins, customSyntaxHelper);
         if (shouldUseCssVars) {
             const partHash = `--${hash(part)}`;
             cacheMap[partHash] = evaluationFunc;
@@ -24,23 +23,23 @@ export function processor({
     return part;
 }
 
-function executeFunction(value, plugins, varsResolver: VarsResolver) {
+function executeFunction(value, plugins, customSyntaxHelper: CustomSyntaxHelper) {
     let functionSignature;
 
     if (functionSignature = plugins.getFunctionSignature(value)) {
         return plugins.cssFunctions[functionSignature.funcName](...functionSignature.args.split(paramsRegex)
-            .map((v) => executeFunction(v.trim(), plugins, varsResolver)));
+            .map((v) => executeFunction(v.trim(), plugins, customSyntaxHelper)));
     } else {
-        return getVarOrPrimitiveValue(value, plugins, varsResolver);
+        return getVarOrPrimitiveValue(value, plugins, customSyntaxHelper);
     }
 }
 
-function getVarOrPrimitiveValue(varName, plugins, varsResolver) {
+function getVarOrPrimitiveValue(varName, plugins, customSyntaxHelper) {
     if (isCssVar(varName)) {
-        const varValue = varsResolver.getValue(varName);
+        const varValue = customSyntaxHelper.getValue(varName);
         let defaultVarValue;
         if (plugins.isSupportedFunction(varValue)) {
-            defaultVarValue = executeFunction(varValue, plugins, varsResolver);
+            defaultVarValue = executeFunction(varValue, plugins, customSyntaxHelper);
         } else {
             defaultVarValue = () => varValue;
         }
