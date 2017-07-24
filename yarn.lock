@@ -31,26 +31,20 @@
   resolved "https://registry.npmjs.org/@types/chai/-/chai-3.5.2.tgz#c11cd2817d3a401b7ba0f5a420f35c56139b1c1e"
 
 "@types/lodash@^4.14.64":
-  version "4.14.70"
-  resolved "https://registry.npmjs.org/@types/lodash/-/lodash-4.14.70.tgz#37bda4acfb3bb79143009cc9d00abd559f7dca30"
+  version "4.14.71"
+  resolved "https://registry.npmjs.org/@types/lodash/-/lodash-4.14.71.tgz#0dc383f78981216ac76e2f2c3afd998e0450e4c1"
 
 "@types/mocha@^2.2.39":
   version "2.2.41"
   resolved "https://registry.npmjs.org/@types/mocha/-/mocha-2.2.41.tgz#e27cf0817153eb9f2713b2d3f6c68f1e1c3ca608"
 
 "@types/node@^6.0.46":
-  version "6.0.84"
-  resolved "https://registry.npmjs.org/@types/node/-/node-6.0.84.tgz#193ffe5a9f42864d425ffd9739d95b753c6a1eab"
+  version "6.0.85"
+  resolved "https://registry.npmjs.org/@types/node/-/node-6.0.85.tgz#ec02bfe54a61044f2be44f13b389c6a0e8ee05ae"
 
 "@types/promises-a-plus@*":
   version "0.0.27"
   resolved "https://registry.npmjs.org/@types/promises-a-plus/-/promises-a-plus-0.0.27.tgz#c64651134614c84b8f5d7114ce8901d36a609780"
-
-"@types/protractor@^4.0.0":
-  version "4.0.0"
-  resolved "https://registry.npmjs.org/@types/protractor/-/protractor-4.0.0.tgz#11915845b38d483f7060d74ec8e2eeee43573999"
-  dependencies:
-    protractor "*"
 
 "@types/q@^0.0.32":
   version "0.0.32"
@@ -206,10 +200,10 @@ ansi-styles@^2.2.1:
   resolved "https://repo.dev.wixpress.com/artifactory/api/npm/npm-repos/ansi-styles/-/ansi-styles-2.2.1.tgz#b432dd3358b634cf75e1e4664368240533c1ddbe"
 
 ansi-styles@^3.0.0, ansi-styles@^3.1.0:
-  version "3.1.0"
-  resolved "https://repo.dev.wixpress.com/artifactory/api/npm/npm-repos/ansi-styles/-/ansi-styles-3.1.0.tgz#09c202d5c917ec23188caa5c9cb9179cd9547750"
+  version "3.2.0"
+  resolved "https://repo.dev.wixpress.com/artifactory/api/npm/npm-repos/ansi-styles/-/ansi-styles-3.2.0.tgz#c159b8d5be0f9e5a6f346dab94f16ce022161b88"
   dependencies:
-    color-convert "^1.0.0"
+    color-convert "^1.9.0"
 
 any-promise@^1.0.0, any-promise@^1.3.0:
   version "1.3.0"
@@ -804,7 +798,7 @@ babel-plugin-transform-es2015-modules-amd@^6.24.1:
     babel-runtime "^6.22.0"
     babel-template "^6.24.1"
 
-babel-plugin-transform-es2015-modules-commonjs@^6.24.1:
+babel-plugin-transform-es2015-modules-commonjs@^6.24.1, babel-plugin-transform-es2015-modules-commonjs@~6.24.1:
   version "6.24.1"
   resolved "https://repo.dev.wixpress.com/artifactory/api/npm/npm-repos/babel-plugin-transform-es2015-modules-commonjs/-/babel-plugin-transform-es2015-modules-commonjs-6.24.1.tgz#d3e310b40ef664a36622200097c6d440298f2bfe"
   dependencies:
@@ -936,7 +930,7 @@ babel-plugin-transform-strict-mode@^6.24.1:
     babel-runtime "^6.22.0"
     babel-types "^6.24.1"
 
-babel-polyfill@^6.23.0:
+babel-polyfill@~6.23.0:
   version "6.23.0"
   resolved "https://repo.dev.wixpress.com/artifactory/api/npm/npm-repos/babel-polyfill/-/babel-polyfill-6.23.0.tgz#8364ca62df8eafb830499f699177466c3b03499d"
   dependencies:
@@ -1121,8 +1115,8 @@ big.js@^3.1.3:
   resolved "https://repo.dev.wixpress.com/artifactory/api/npm/npm-repos/big.js/-/big.js-3.1.3.tgz#4cada2193652eb3ca9ec8e55c9015669c9806978"
 
 binary-extensions@^1.0.0:
-  version "1.8.0"
-  resolved "https://repo.dev.wixpress.com/artifactory/api/npm/npm-repos/binary-extensions/-/binary-extensions-1.8.0.tgz#48ec8d16df4377eae5fa5884682480af4d95c774"
+  version "1.9.0"
+  resolved "https://repo.dev.wixpress.com/artifactory/api/npm/npm-repos/binary-extensions/-/binary-extensions-1.9.0.tgz#66506c16ce6f4d6928a5b3cd6a33ca41e941e37b"
 
 blob@0.0.4:
   version "0.0.4"
@@ -1263,11 +1257,11 @@ browserslist@^1.1.1, browserslist@^1.1.3, browserslist@^1.3.6, browserslist@^1.5
     electron-to-chromium "^1.2.7"
 
 browserslist@^2.1.5:
-  version "2.2.0"
-  resolved "https://repo.dev.wixpress.com/artifactory/api/npm/npm-repos/browserslist/-/browserslist-2.2.0.tgz#5e35ec993e467c6464b8cb708447386891de9f50"
+  version "2.2.2"
+  resolved "https://repo.dev.wixpress.com/artifactory/api/npm/npm-repos/browserslist/-/browserslist-2.2.2.tgz#e9b4618b8a01c193f9786beea09f6fd10dbe31c3"
   dependencies:
-    caniuse-lite "^1.0.30000701"
-    electron-to-chromium "^1.3.15"
+    caniuse-lite "^1.0.30000704"
+    electron-to-chromium "^1.3.16"
 
 bser@1.0.2:
   version "1.0.2"
@@ -1368,12 +1362,12 @@ caniuse-api@^1.5.2:
     lodash.uniq "^4.5.0"
 
 caniuse-db@^1.0.30000187, caniuse-db@^1.0.30000529, caniuse-db@^1.0.30000634, caniuse-db@^1.0.30000639:
-  version "1.0.30000703"
-  resolved "https://repo.dev.wixpress.com/artifactory/api/npm/npm-repos/caniuse-db/-/caniuse-db-1.0.30000703.tgz#c7d899b8adea6da1aa587355d39ac8533f878403"
+  version "1.0.30000704"
+  resolved "https://repo.dev.wixpress.com/artifactory/api/npm/npm-repos/caniuse-db/-/caniuse-db-1.0.30000704.tgz#8c5aa6fed8058e65c70f2c1f5d63f7088650705c"
 
-caniuse-lite@^1.0.30000697, caniuse-lite@^1.0.30000701:
-  version "1.0.30000703"
-  resolved "https://repo.dev.wixpress.com/artifactory/api/npm/npm-repos/caniuse-lite/-/caniuse-lite-1.0.30000703.tgz#666e8c3f1e4f7abb1d16d48e04e7e9e8df934925"
+caniuse-lite@^1.0.30000697, caniuse-lite@^1.0.30000704:
+  version "1.0.30000704"
+  resolved "https://repo.dev.wixpress.com/artifactory/api/npm/npm-repos/caniuse-lite/-/caniuse-lite-1.0.30000704.tgz#adb6ea01134515663682db93abab291d4c02946b"
 
 case-sensitive-paths-webpack-plugin@~2.1.1:
   version "2.1.1"
@@ -1412,7 +1406,7 @@ chalk@^1.0.0, chalk@^1.1.0, chalk@^1.1.1, chalk@^1.1.3:
     strip-ansi "^3.0.0"
     supports-color "^2.0.0"
 
-chalk@^2.0.0, chalk@^2.0.1:
+chalk@^2.0.0, chalk@^2.0.1, chalk@~2.0.1:
   version "2.0.1"
   resolved "https://repo.dev.wixpress.com/artifactory/api/npm/npm-repos/chalk/-/chalk-2.0.1.tgz#dbec49436d2ae15f536114e76d14656cdbc0f44d"
   dependencies:
@@ -1447,8 +1441,8 @@ cipher-base@^1.0.0, cipher-base@^1.0.1, cipher-base@^1.0.3:
     safe-buffer "^5.0.1"
 
 circular-json@^0.3.1:
-  version "0.3.1"
-  resolved "https://repo.dev.wixpress.com/artifactory/api/npm/npm-repos/circular-json/-/circular-json-0.3.1.tgz#be8b36aefccde8b3ca7aa2d6afc07a37242c0d2d"
+  version "0.3.3"
+  resolved "https://repo.dev.wixpress.com/artifactory/api/npm/npm-repos/circular-json/-/circular-json-0.3.3.tgz#815c99ea84f6809529d2f45791bdf82711352d66"
 
 clap@^1.0.9:
   version "1.2.0"
@@ -1534,7 +1528,7 @@ code-point-at@^1.0.0:
   version "1.1.0"
   resolved "https://repo.dev.wixpress.com/artifactory/api/npm/npm-repos/code-point-at/-/code-point-at-1.1.0.tgz#0d070b4d043a5bea33a2f1a40e2edb3d9a4ccf77"
 
-color-convert@^1.0.0, color-convert@^1.3.0, color-convert@^1.8.2:
+color-convert@^1.3.0, color-convert@^1.8.2, color-convert@^1.9.0:
   version "1.9.0"
   resolved "https://repo.dev.wixpress.com/artifactory/api/npm/npm-repos/color-convert/-/color-convert-1.9.0.tgz#1accf97dd739b983bf994d56fec8f95853641b7a"
   dependencies:
@@ -1623,15 +1617,15 @@ combined-stream@^1.0.5, combined-stream@~1.0.5:
   dependencies:
     delayed-stream "~1.0.0"
 
-commander@2.9.0, commander@2.9.x, commander@~2.9.0:
+commander@2.11.x, commander@^2.9.0, commander@~2.11.0:
+  version "2.11.0"
+  resolved "https://repo.dev.wixpress.com/artifactory/api/npm/npm-repos/commander/-/commander-2.11.0.tgz#157152fd1e7a6c8d98a5b715cf376df928004563"
+
+commander@2.9.0:
   version "2.9.0"
   resolved "https://repo.dev.wixpress.com/artifactory/api/npm/npm-repos/commander/-/commander-2.9.0.tgz#9c99094176e12240cb22d6c5146098400fe0f7d4"
   dependencies:
     graceful-readlink ">= 1.0.0"
-
-commander@^2.9.0, commander@~2.11.0:
-  version "2.11.0"
-  resolved "https://repo.dev.wixpress.com/artifactory/api/npm/npm-repos/commander/-/commander-2.11.0.tgz#157152fd1e7a6c8d98a5b715cf376df928004563"
 
 commander@~2.3.0:
   version "2.3.0"
@@ -1807,7 +1801,7 @@ cross-spawn@^3.0.0:
     lru-cache "^4.0.1"
     which "^1.2.9"
 
-cross-spawn@^5.1.0:
+cross-spawn@~5.1.0:
   version "5.1.0"
   resolved "https://repo.dev.wixpress.com/artifactory/api/npm/npm-repos/cross-spawn/-/cross-spawn-5.1.0.tgz#e8bd0efee58fcff6f8f94510a0a554bbfa235449"
   dependencies:
@@ -2312,7 +2306,7 @@ ee-first@1.1.1:
   version "1.1.1"
   resolved "https://repo.dev.wixpress.com/artifactory/api/npm/npm-repos/ee-first/-/ee-first-1.1.1.tgz#590c61156b0ae2f4f0255732a158b266bc56b21d"
 
-electron-to-chromium@^1.2.7, electron-to-chromium@^1.3.15:
+electron-to-chromium@^1.2.7, electron-to-chromium@^1.3.16:
   version "1.3.16"
   resolved "https://repo.dev.wixpress.com/artifactory/api/npm/npm-repos/electron-to-chromium/-/electron-to-chromium-1.3.16.tgz#d0e026735754770901ae301a21664cba45d92f7d"
 
@@ -2388,13 +2382,13 @@ engine.io@1.8.3:
     ws "1.1.2"
 
 enhanced-resolve@^3.0.0, enhanced-resolve@^3.3.0:
-  version "3.3.0"
-  resolved "https://repo.dev.wixpress.com/artifactory/api/npm/npm-repos/enhanced-resolve/-/enhanced-resolve-3.3.0.tgz#950964ecc7f0332a42321b673b38dc8ff15535b3"
+  version "3.4.1"
+  resolved "https://repo.dev.wixpress.com/artifactory/api/npm/npm-repos/enhanced-resolve/-/enhanced-resolve-3.4.1.tgz#0421e339fd71419b3da13d129b3979040230476e"
   dependencies:
     graceful-fs "^4.1.2"
     memory-fs "^0.4.0"
     object-assign "^4.0.1"
-    tapable "^0.2.5"
+    tapable "^0.2.7"
 
 ent@~2.2.0:
   version "2.2.0"
@@ -2520,15 +2514,16 @@ escope@^3.6.0:
     esrecurse "^4.1.0"
     estraverse "^4.1.1"
 
-eslint-config-wix@^1.1.14:
-  version "1.1.14"
-  resolved "https://repo.dev.wixpress.com/artifactory/api/npm/npm-repos/eslint-config-wix/-/eslint-config-wix-1.1.14.tgz#1aa1f3a05a5b4ee1f4938600a93c650d590f91a2"
+eslint-config-wix@~1.1.14:
+  version "1.1.15"
+  resolved "https://repo.dev.wixpress.com/artifactory/api/npm/npm-repos/eslint-config-wix/-/eslint-config-wix-1.1.15.tgz#0584bc97c793eae983eaf50be0b57c3f63ced424"
   dependencies:
     babel-eslint "^7.0.0"
     eslint-config-xo "^0.16.0"
     eslint-config-xo-react "^0.10.0"
     eslint-plugin-babel "^3.3.0"
     eslint-plugin-jasmine "^2.6.2"
+    eslint-plugin-lodash "^2.4.4"
     eslint-plugin-mocha "^4.0.0"
     eslint-plugin-react "^6.10.0"
     eslint-plugin-react-native-wix "^1.0.0"
@@ -2546,8 +2541,14 @@ eslint-plugin-babel@^3.3.0:
   resolved "https://repo.dev.wixpress.com/artifactory/api/npm/npm-repos/eslint-plugin-babel/-/eslint-plugin-babel-3.3.0.tgz#2f494aedcf6f4aa4e75b9155980837bc1fbde193"
 
 eslint-plugin-jasmine@^2.6.2:
-  version "2.7.1"
-  resolved "https://repo.dev.wixpress.com/artifactory/api/npm/npm-repos/eslint-plugin-jasmine/-/eslint-plugin-jasmine-2.7.1.tgz#bfa10f54653aec9bde96b8d7aae3bdd9474312db"
+  version "2.8.0"
+  resolved "https://repo.dev.wixpress.com/artifactory/api/npm/npm-repos/eslint-plugin-jasmine/-/eslint-plugin-jasmine-2.8.0.tgz#9c69dd311f0220c5d4c0ec8384afa5e46fd5a7cc"
+
+eslint-plugin-lodash@^2.4.4:
+  version "2.4.4"
+  resolved "https://repo.dev.wixpress.com/artifactory/api/npm/npm-repos/eslint-plugin-lodash/-/eslint-plugin-lodash-2.4.4.tgz#ecc7b216fdd487df2f542734ea1215203cb563ec"
+  dependencies:
+    lodash "~4.17.0"
 
 eslint-plugin-mocha@^4.0.0:
   version "4.11.0"
@@ -2556,8 +2557,8 @@ eslint-plugin-mocha@^4.0.0:
     ramda "^0.24.1"
 
 eslint-plugin-react-native-wix@^1.0.0:
-  version "1.1.472"
-  resolved "https://repo.dev.wixpress.com/artifactory/api/npm/npm-repos/eslint-plugin-react-native-wix/-/eslint-plugin-react-native-wix-1.1.472.tgz#68052dee4aabd03db7e6c67f0bf57e6e31831fbb"
+  version "1.1.479"
+  resolved "https://repo.dev.wixpress.com/artifactory/api/npm/npm-repos/eslint-plugin-react-native-wix/-/eslint-plugin-react-native-wix-1.1.479.tgz#e0faa4552b905b60f37e3dd7268199c707fbbf81"
 
 eslint-plugin-react@^6.10.0:
   version "6.10.3"
@@ -2569,7 +2570,7 @@ eslint-plugin-react@^6.10.0:
     jsx-ast-utils "^1.3.4"
     object.assign "^4.0.4"
 
-eslint@^3.18.0:
+eslint@~3.19.0:
   version "3.19.0"
   resolved "https://repo.dev.wixpress.com/artifactory/api/npm/npm-repos/eslint/-/eslint-3.19.0.tgz#c8fc6201c7f40dd08941b87c085767386a679acc"
   dependencies:
@@ -3079,7 +3080,7 @@ fs-extra@~1.0.0:
     jsonfile "^2.1.0"
     klaw "^1.0.0"
 
-fs-promise@^2.0.3:
+fs-promise@~2.0.3:
   version "2.0.3"
   resolved "https://repo.dev.wixpress.com/artifactory/api/npm/npm-repos/fs-promise/-/fs-promise-2.0.3.tgz#f64e4f854bcf689aa8bddcba268916db3db46854"
   dependencies:
@@ -3267,7 +3268,7 @@ glob@^6.0.1:
     once "^1.3.0"
     path-is-absolute "^1.0.0"
 
-glob@^7.0.0, glob@^7.0.3, glob@^7.0.5, glob@^7.0.6, glob@^7.1.1, glob@^7.1.2, glob@~7.1.1:
+glob@^7.0.0, glob@^7.0.3, glob@^7.0.5, glob@^7.0.6, glob@^7.1.1, glob@~7.1.1, glob@~7.1.2:
   version "7.1.2"
   resolved "https://repo.dev.wixpress.com/artifactory/api/npm/npm-repos/glob/-/glob-7.1.2.tgz#c19c9df9a028702d678612384a6552404c636d15"
   dependencies:
@@ -3371,7 +3372,7 @@ graceful-fs@~1.2.0:
   version "1.0.1"
   resolved "https://repo.dev.wixpress.com/artifactory/api/npm/npm-repos/graceful-readlink/-/graceful-readlink-1.0.1.tgz#4cafad76bc62f02fa039b2f94e9a3dd3a391a725"
 
-graphite-tcp@^1.0.4:
+graphite-tcp@~1.0.4:
   version "1.0.4"
   resolved "https://repo.dev.wixpress.com/artifactory/api/npm/npm-repos/graphite-tcp/-/graphite-tcp-1.0.4.tgz#5986b11955e5efa247bfa443d96ada460324a1bf"
   dependencies:
@@ -3381,7 +3382,7 @@ graphql-tag@~2.4.2:
   version "2.4.2"
   resolved "https://repo.dev.wixpress.com/artifactory/api/npm/npm-repos/graphql-tag/-/graphql-tag-2.4.2.tgz#6a63297d8522d03a2b72d26f1b239aab343840cd"
 
-graphql@~0.10.4:
+graphql@~0.10.5:
   version "0.10.5"
   resolved "https://repo.dev.wixpress.com/artifactory/api/npm/npm-repos/graphql/-/graphql-0.10.5.tgz#c9be17ca2bdfdbd134077ffd9bbaa48b8becd298"
   dependencies:
@@ -3659,12 +3660,12 @@ html-loader@~0.4.5:
     object-assign "^4.1.0"
 
 html-minifier@^3.0.1:
-  version "3.5.2"
-  resolved "https://repo.dev.wixpress.com/artifactory/api/npm/npm-repos/html-minifier/-/html-minifier-3.5.2.tgz#d73bc3ff448942408818ce609bf3fb0ea7ef4eb7"
+  version "3.5.3"
+  resolved "https://repo.dev.wixpress.com/artifactory/api/npm/npm-repos/html-minifier/-/html-minifier-3.5.3.tgz#4a275e3b1a16639abb79b4c11191ff0d0fcf1ab9"
   dependencies:
     camel-case "3.0.x"
     clean-css "4.1.x"
-    commander "2.9.x"
+    commander "2.11.x"
     he "1.1.x"
     ncname "1.0.x"
     param-case "2.1.x"
@@ -4397,7 +4398,7 @@ jest-snapshot@^20.0.3:
     natural-compare "^1.4.0"
     pretty-format "^20.0.3"
 
-jest-teamcity-reporter@^0.6.2:
+jest-teamcity-reporter@~0.6.2:
   version "0.6.2"
   resolved "https://repo.dev.wixpress.com/artifactory/api/npm/npm-repos/jest-teamcity-reporter/-/jest-teamcity-reporter-0.6.2.tgz#a71e350cc994186d3c6fbb6c3d7895e547026365"
 
@@ -4490,8 +4491,8 @@ jsesc@~0.5.0:
   resolved "https://repo.dev.wixpress.com/artifactory/api/npm/npm-repos/jsesc/-/jsesc-0.5.0.tgz#e7dee66e35d6fc16f710fe91d5cf69f70f08911d"
 
 json-loader@^0.5.4, json-loader@~0.5.4:
-  version "0.5.4"
-  resolved "https://repo.dev.wixpress.com/artifactory/api/npm/npm-repos/json-loader/-/json-loader-0.5.4.tgz#8baa1365a632f58a3c46d20175fc6002c96e37de"
+  version "0.5.7"
+  resolved "https://repo.dev.wixpress.com/artifactory/api/npm/npm-repos/json-loader/-/json-loader-0.5.7.tgz#dca14a70235ff82f0ac9a3abeb60d337a365185d"
 
 json-schema-traverse@^0.3.0:
   version "0.3.1"
@@ -4937,7 +4938,7 @@ lodash@^3.8.0:
   version "3.10.1"
   resolved "https://repo.dev.wixpress.com/artifactory/api/npm/npm-repos/lodash/-/lodash-3.10.1.tgz#5bf45e8e49ba4189e17d482789dfd15bd140b7b6"
 
-lodash@^4.0.0, lodash@^4.0.1, lodash@^4.1.0, lodash@^4.14.0, lodash@^4.17.4, lodash@^4.2.0, lodash@^4.3.0, lodash@^4.5.0, lodash@~4.17.4:
+lodash@^4.0.0, lodash@^4.0.1, lodash@^4.1.0, lodash@^4.14.0, lodash@^4.17.4, lodash@^4.2.0, lodash@^4.3.0, lodash@^4.5.0, lodash@~4.17.0, lodash@~4.17.4:
   version "4.17.4"
   resolved "https://repo.dev.wixpress.com/artifactory/api/npm/npm-repos/lodash/-/lodash-4.17.4.tgz#78203a4d1c328ae1d86dca6460e369b57f4055ae"
 
@@ -5197,7 +5198,7 @@ mkdirp@~0.3.5:
   version "0.3.5"
   resolved "https://repo.dev.wixpress.com/artifactory/api/npm/npm-repos/mkdirp/-/mkdirp-0.3.5.tgz#de3e5f8961c88c787ee1368df849ac4413eca8d7"
 
-mocha-env-reporter@^2.0.4:
+mocha-env-reporter@~2.0.4:
   version "2.0.4"
   resolved "https://repo.dev.wixpress.com/artifactory/api/npm/npm-repos/mocha-env-reporter/-/mocha-env-reporter-2.0.4.tgz#369be8fbc9b518abf993637d83dde444fb0289a9"
   dependencies:
@@ -5209,7 +5210,7 @@ mocha-teamcity-reporter@1.1.1, mocha-teamcity-reporter@~1.1.1:
   dependencies:
     mocha ">=1.13.0"
 
-mocha@>=1.13.0, mocha@^3.2.0, mocha@^3.3.0:
+mocha@>=1.13.0, mocha@^3.3.0, mocha@~3.4.2:
   version "3.4.2"
   resolved "https://repo.dev.wixpress.com/artifactory/api/npm/npm-repos/mocha/-/mocha-3.4.2.tgz#d0ef4d332126dbf18d0d640c9b382dd48be97594"
   dependencies:
@@ -5859,8 +5860,8 @@ performance-now@^0.2.0:
   resolved "https://repo.dev.wixpress.com/artifactory/api/npm/npm-repos/performance-now/-/performance-now-0.2.0.tgz#33ef30c5c77d4ea21c5a53869d91b56d8f2555e5"
 
 petri-specs@latest:
-  version "1.1.9"
-  resolved "https://repo.dev.wixpress.com/artifactory/api/npm/npm-repos/petri-specs/-/petri-specs-1.1.9.tgz#52bd7a25b19d6db32769c81a2e582776f250b80a"
+  version "1.1.10"
+  resolved "https://repo.dev.wixpress.com/artifactory/api/npm/npm-repos/petri-specs/-/petri-specs-1.1.10.tgz#2e32afcefc3070606d9dce85466d2afc2001cb23"
   dependencies:
     chalk "^1.1.3"
     commander "^2.9.0"
@@ -6256,8 +6257,8 @@ postcss@^5.0.0, postcss@^5.0.10, postcss@^5.0.11, postcss@^5.0.12, postcss@^5.0.
     supports-color "^3.2.3"
 
 postcss@^6.0.1, postcss@^6.0.2, postcss@^6.0.6:
-  version "6.0.7"
-  resolved "https://repo.dev.wixpress.com/artifactory/api/npm/npm-repos/postcss/-/postcss-6.0.7.tgz#6a097477c46d13d0560a817d69abc0bae549d0a0"
+  version "6.0.8"
+  resolved "https://repo.dev.wixpress.com/artifactory/api/npm/npm-repos/postcss/-/postcss-6.0.8.tgz#89067a9ce8b11f8a84cbc5117efc30419a0857b3"
   dependencies:
     chalk "^2.0.1"
     source-map "^0.5.6"
@@ -6316,7 +6317,7 @@ proto-list@~1.2.1:
   version "1.2.4"
   resolved "https://repo.dev.wixpress.com/artifactory/api/npm/npm-repos/proto-list/-/proto-list-1.2.4.tgz#212d5bfe1318306a420f6402b8e26ff39647a849"
 
-protractor@*, protractor@~5.1.2:
+protractor@~5.1.2:
   version "5.1.2"
   resolved "https://repo.dev.wixpress.com/artifactory/api/npm/npm-repos/protractor/-/protractor-5.1.2.tgz#9b221741709a4c62d5cd53c6aadd54a71137e95f"
   dependencies:
@@ -6995,7 +6996,7 @@ shelljs@^0.5.3:
   version "0.5.3"
   resolved "https://repo.dev.wixpress.com/artifactory/api/npm/npm-repos/shelljs/-/shelljs-0.5.3.tgz#c54982b996c76ef0c1e6b59fbdc5825f5b713113"
 
-shelljs@^0.7.5, shelljs@^0.7.7:
+shelljs@^0.7.5, shelljs@^0.7.7, shelljs@~0.7.8:
   version "0.7.8"
   resolved "https://repo.dev.wixpress.com/artifactory/api/npm/npm-repos/shelljs/-/shelljs-0.7.8.tgz#decbcf874b0d1e5fb72e14b164a9683048e9acb3"
   dependencies:
@@ -7423,8 +7424,8 @@ stylelint@~7.13.0:
     table "^4.0.1"
 
 stylis@^3.2.4:
-  version "3.2.5"
-  resolved "https://repo.dev.wixpress.com/artifactory/api/npm/npm-repos/stylis/-/stylis-3.2.5.tgz#132087969b2c9e2c71504eaed24d3f1987bb5d0f"
+  version "3.2.7"
+  resolved "https://repo.dev.wixpress.com/artifactory/api/npm/npm-repos/stylis/-/stylis-3.2.7.tgz#35e5a28e8d0f435f81aa10ff9971c4febabd9ff5"
 
 sugarss@^0.2.0:
   version "0.2.0"
@@ -7449,8 +7450,8 @@ supports-color@^3.1.2, supports-color@^3.2.3:
     has-flag "^1.0.0"
 
 supports-color@^4.0.0, supports-color@^4.2.0:
-  version "4.2.0"
-  resolved "https://repo.dev.wixpress.com/artifactory/api/npm/npm-repos/supports-color/-/supports-color-4.2.0.tgz#ad986dc7eb2315d009b4d77c8169c2231a684037"
+  version "4.2.1"
+  resolved "https://repo.dev.wixpress.com/artifactory/api/npm/npm-repos/supports-color/-/supports-color-4.2.1.tgz#65a4bb2631e90e02420dba5554c375a4754bb836"
   dependencies:
     has-flag "^2.0.0"
 
@@ -7502,9 +7503,9 @@ table@^4.0.1:
     slice-ansi "0.0.4"
     string-width "^2.0.0"
 
-tapable@^0.2.5, tapable@~0.2.5:
-  version "0.2.6"
-  resolved "https://repo.dev.wixpress.com/artifactory/api/npm/npm-repos/tapable/-/tapable-0.2.6.tgz#206be8e188860b514425375e6f1ae89bfb01fd8d"
+tapable@^0.2.7, tapable@~0.2.5:
+  version "0.2.7"
+  resolved "https://repo.dev.wixpress.com/artifactory/api/npm/npm-repos/tapable/-/tapable-0.2.7.tgz#e46c0daacbb2b8a98b9b0cea0f4052105817ed5c"
 
 tar-pack@^3.4.0:
   version "3.4.0"
@@ -7686,16 +7687,31 @@ tryor@~0.1.2:
   version "0.1.2"
   resolved "https://repo.dev.wixpress.com/artifactory/api/npm/npm-repos/tryor/-/tryor-0.1.2.tgz#8145e4ca7caff40acde3ccf946e8b8bb75b4172b"
 
-ts-loader@^2.2.2:
-  version "2.3.0"
-  resolved "https://repo.dev.wixpress.com/artifactory/api/npm/npm-repos/ts-loader/-/ts-loader-2.3.0.tgz#99ff0615ecaea7d554dd0cba733caedf9a2715a0"
+ts-loader@~2.3.0:
+  version "2.3.1"
+  resolved "https://repo.dev.wixpress.com/artifactory/api/npm/npm-repos/ts-loader/-/ts-loader-2.3.1.tgz#6edc603393c2775c40ad84e3420007f1c097eab0"
   dependencies:
     chalk "^2.0.1"
     enhanced-resolve "^3.0.0"
     loader-utils "^1.0.2"
     semver "^5.0.1"
 
-ts-node@^1.5.2:
+ts-node@^3.2.0:
+  version "3.2.1"
+  resolved "https://repo.dev.wixpress.com/artifactory/api/npm/npm-repos/ts-node/-/ts-node-3.2.1.tgz#9595dd840d03e62bc79214ce5a7b51e55e3c4ffc"
+  dependencies:
+    arrify "^1.0.0"
+    chalk "^2.0.0"
+    diff "^3.1.0"
+    make-error "^1.1.1"
+    minimist "^1.2.0"
+    mkdirp "^0.5.1"
+    source-map-support "^0.4.0"
+    tsconfig "^6.0.0"
+    v8flags "^3.0.0"
+    yn "^2.0.0"
+
+ts-node@~1.7.3:
   version "1.7.3"
   resolved "https://repo.dev.wixpress.com/artifactory/api/npm/npm-repos/ts-node/-/ts-node-1.7.3.tgz#dee7f8a84751732d3c2e497cac5a02fb117dfee7"
   dependencies:
@@ -7711,21 +7727,6 @@ ts-node@^1.5.2:
     v8flags "^2.0.11"
     xtend "^4.0.0"
     yn "^1.2.0"
-
-ts-node@^3.2.0:
-  version "3.2.0"
-  resolved "https://repo.dev.wixpress.com/artifactory/api/npm/npm-repos/ts-node/-/ts-node-3.2.0.tgz#9814f0c0141784900cf12fef1197ad4b7f4d23d1"
-  dependencies:
-    arrify "^1.0.0"
-    chalk "^2.0.0"
-    diff "^3.1.0"
-    make-error "^1.1.1"
-    minimist "^1.2.0"
-    mkdirp "^0.5.1"
-    source-map-support "^0.4.0"
-    tsconfig "^6.0.0"
-    v8flags "^2.0.11"
-    yn "^2.0.0"
 
 tsconfig@^5.0.2:
   version "5.0.3"
@@ -7747,7 +7748,7 @@ tslib@^1.0.0, tslib@^1.7.1:
   version "1.7.1"
   resolved "https://repo.dev.wixpress.com/artifactory/api/npm/npm-repos/tslib/-/tslib-1.7.1.tgz#bc8004164691923a79fe8378bbeb3da2017538ec"
 
-tslint-config-wix@latest:
+tslint-config-wix@~1.0.23:
   version "1.0.23"
   resolved "https://repo.dev.wixpress.com/artifactory/api/npm/npm-repos/tslint-config-wix/-/tslint-config-wix-1.0.23.tgz#cced60a54afce05a3ccaf3afaaa1000b4650fc10"
   dependencies:
@@ -7838,10 +7839,10 @@ typescript@~2.3.0:
   resolved "https://repo.dev.wixpress.com/artifactory/api/npm/npm-repos/typescript/-/typescript-2.3.4.tgz#3d38321828231e434f287514959c37a82b629f42"
 
 uglify-js@3.0.x:
-  version "3.0.25"
-  resolved "https://repo.dev.wixpress.com/artifactory/api/npm/npm-repos/uglify-js/-/uglify-js-3.0.25.tgz#3dc190b0ee437497e449bc6f785665b06afbe052"
+  version "3.0.26"
+  resolved "https://repo.dev.wixpress.com/artifactory/api/npm/npm-repos/uglify-js/-/uglify-js-3.0.26.tgz#ba279ca597b13fe6c62c2d87dd5188e57a7a3233"
   dependencies:
-    commander "~2.9.0"
+    commander "~2.11.0"
     source-map "~0.5.1"
 
 uglify-js@^2.6, uglify-js@^2.8.29:
@@ -7980,6 +7981,12 @@ uuid@^3.0.0:
 v8flags@^2.0.11, v8flags@^2.0.2:
   version "2.1.1"
   resolved "https://repo.dev.wixpress.com/artifactory/api/npm/npm-repos/v8flags/-/v8flags-2.1.1.tgz#aab1a1fa30d45f88dd321148875ac02c0b55e5b4"
+  dependencies:
+    user-home "^1.1.1"
+
+v8flags@^3.0.0:
+  version "3.0.0"
+  resolved "https://repo.dev.wixpress.com/artifactory/api/npm/npm-repos/v8flags/-/v8flags-3.0.0.tgz#4be9604488e0c4123645def705b1848d16b8e01f"
   dependencies:
     user-home "^1.1.1"
 
@@ -8234,8 +8241,8 @@ wix-tpa-style-loader@~1.0.8:
     postcss-extract-styles "^1.0.0"
 
 wnpm-ci@latest:
-  version "6.2.46"
-  resolved "https://repo.dev.wixpress.com/artifactory/api/npm/npm-repos/wnpm-ci/-/wnpm-ci-6.2.46.tgz#ad323bbf553019c60581dfc05b885c8bd9dd6f86"
+  version "6.2.49"
+  resolved "https://repo.dev.wixpress.com/artifactory/api/npm/npm-repos/wnpm-ci/-/wnpm-ci-6.2.49.tgz#a06f390458895a00bc4c602b8f51adbf47effa97"
   dependencies:
     shelljs "^0.5.3"
     thenify "^3.2.0"
@@ -8288,16 +8295,9 @@ write@^0.2.1:
   dependencies:
     mkdirp "^0.5.1"
 
-ws@1.1.2:
+ws@1.1.2, ws@^1.0.1:
   version "1.1.2"
   resolved "https://repo.dev.wixpress.com/artifactory/api/npm/npm-repos/ws/-/ws-1.1.2.tgz#8a244fa052401e08c9886cf44a85189e1fd4067f"
-  dependencies:
-    options ">=0.0.5"
-    ultron "1.0.x"
-
-ws@^1.0.1:
-  version "1.1.4"
-  resolved "https://repo.dev.wixpress.com/artifactory/api/npm/npm-repos/ws/-/ws-1.1.4.tgz#57f40d036832e5f5055662a397c4de76ed66bf61"
   dependencies:
     options ">=0.0.5"
     ultron "1.0.x"
@@ -8442,136 +8442,140 @@ yn@^2.0.0:
   resolved "https://repo.dev.wixpress.com/artifactory/api/npm/npm-repos/yn/-/yn-2.0.0.tgz#e5adabc8acf408f6385fc76495684c88e6af689a"
 
 yoshi-babel@latest:
-  version "1.0.7"
-  resolved "https://repo.dev.wixpress.com/artifactory/api/npm/npm-repos/yoshi-babel/-/yoshi-babel-1.0.7.tgz#e0d67b47c82a4cd951747fc5b1bf4c2d8b81b5ba"
+  version "1.0.9"
+  resolved "https://repo.dev.wixpress.com/artifactory/api/npm/npm-repos/yoshi-babel/-/yoshi-babel-1.0.9.tgz#f6df9135c2cbe20b65e8d6d229b14e952ddad6a7"
   dependencies:
-    chalk "^1.1.3"
+    babel-plugin-transform-es2015-modules-commonjs "~6.24.1"
+    chalk "~2.0.1"
     gulp "~3.9.1"
     gulp-babel "~6.1.2"
     gulp-file-transform-cache "~1.0.6"
     gulp-plumber "~1.1.0"
     gulp-sourcemaps "~2.6.0"
     mkdirp "~0.5.1"
+    shelljs "~0.7.8"
 
 yoshi-clean@latest:
-  version "1.0.8"
-  resolved "https://repo.dev.wixpress.com/artifactory/api/npm/npm-repos/yoshi-clean/-/yoshi-clean-1.0.8.tgz#6fb2a20377c90429b25d32415889f4d53c77f0bc"
+  version "1.0.9"
+  resolved "https://repo.dev.wixpress.com/artifactory/api/npm/npm-repos/yoshi-clean/-/yoshi-clean-1.0.9.tgz#7786d9a961be56fe39b11c67bc9a99cfb0414392"
   dependencies:
     del "~3.0.0"
 
 yoshi-copy@latest:
-  version "1.0.11"
-  resolved "https://repo.dev.wixpress.com/artifactory/api/npm/npm-repos/yoshi-copy/-/yoshi-copy-1.0.11.tgz#1bea21dcb52fbbc0fe5c8492e4a2c800a7e5b983"
+  version "1.0.14"
+  resolved "https://repo.dev.wixpress.com/artifactory/api/npm/npm-repos/yoshi-copy/-/yoshi-copy-1.0.14.tgz#0ac7d672412bed16b0e22d064d5c6fd6bef6ff74"
   dependencies:
-    glob "^7.1.2"
+    glob "~7.1.2"
     gulp "~3.9.1"
     mkdirp "~0.5.1"
 
 yoshi-eslint@latest:
-  version "1.0.32"
-  resolved "https://repo.dev.wixpress.com/artifactory/api/npm/npm-repos/yoshi-eslint/-/yoshi-eslint-1.0.32.tgz#59c23d490faffab9cacbb0e9896bde45f21ad887"
+  version "1.0.33"
+  resolved "https://repo.dev.wixpress.com/artifactory/api/npm/npm-repos/yoshi-eslint/-/yoshi-eslint-1.0.33.tgz#feb259b5c1530241df66136ec490c621f252f5ac"
   dependencies:
-    eslint "^3.18.0"
-    glob "^7.1.2"
+    eslint "~3.19.0"
+    glob "~7.1.2"
 
 yoshi-fedops-build-report@^1.0.0:
-  version "1.0.6"
-  resolved "https://repo.dev.wixpress.com/artifactory/api/npm/npm-repos/yoshi-fedops-build-report/-/yoshi-fedops-build-report-1.0.6.tgz#da402ce45605ae1f400e2a3fcf32179c1926d1fe"
+  version "1.0.7"
+  resolved "https://repo.dev.wixpress.com/artifactory/api/npm/npm-repos/yoshi-fedops-build-report/-/yoshi-fedops-build-report-1.0.7.tgz#13e7ce4001c6650f599130465afa205c5dc6b97d"
   dependencies:
-    glob "^7.1.2"
-    graphite-tcp "^1.0.4"
+    glob "~7.1.2"
+    graphite-tcp "~1.0.4"
 
 yoshi-maven-statics@latest:
-  version "1.0.4"
-  resolved "https://repo.dev.wixpress.com/artifactory/api/npm/npm-repos/yoshi-maven-statics/-/yoshi-maven-statics-1.0.4.tgz#3e4a0143706e27644eeaa38cec1918f94c9eee34"
+  version "1.0.5"
+  resolved "https://repo.dev.wixpress.com/artifactory/api/npm/npm-repos/yoshi-maven-statics/-/yoshi-maven-statics-1.0.5.tgz#a818e4d373450a9630111738c18836473ef9085e"
   dependencies:
     mkdirp "~0.5.1"
     xml2js "~0.4.17"
 
 yoshi-petri@latest:
-  version "1.0.7"
-  resolved "https://repo.dev.wixpress.com/artifactory/api/npm/npm-repos/yoshi-petri/-/yoshi-petri-1.0.7.tgz#790a6bf3f6ce3df11efe74d2018af77e94a71c3c"
+  version "1.0.8"
+  resolved "https://repo.dev.wixpress.com/artifactory/api/npm/npm-repos/yoshi-petri/-/yoshi-petri-1.0.8.tgz#624dbec408425fb19a533ccbc8b7bcabdd786e24"
   dependencies:
-    glob "^7.1.2"
+    glob "~7.1.2"
     petri-specs latest
 
 yoshi-runtime@^1.0.7:
-  version "1.0.12"
-  resolved "https://repo.dev.wixpress.com/artifactory/api/npm/npm-repos/yoshi-runtime/-/yoshi-runtime-1.0.12.tgz#e4e9d8f718979f7d9e9b3b277468f6e2fa1ccffe"
+  version "1.0.16"
+  resolved "https://repo.dev.wixpress.com/artifactory/api/npm/npm-repos/yoshi-runtime/-/yoshi-runtime-1.0.16.tgz#9e39f3c92fe4f548439f472c866b68b70180d752"
   dependencies:
     css-modules-require-hook "~4.0.6"
     generic-names "~1.0.2"
     yoshi-utils "^1.0.0"
 
 yoshi-sass@latest:
-  version "1.0.58"
-  resolved "https://repo.dev.wixpress.com/artifactory/api/npm/npm-repos/yoshi-sass/-/yoshi-sass-1.0.58.tgz#e8d309b67826fabae7c7e87816ce3e828e554fa7"
+  version "1.0.60"
+  resolved "https://repo.dev.wixpress.com/artifactory/api/npm/npm-repos/yoshi-sass/-/yoshi-sass-1.0.60.tgz#c41b71beaedc4192d37fa7cba90419f86bb3441f"
   dependencies:
-    fs-promise "^2.0.3"
-    glob "^7.1.2"
+    fs-promise "~2.0.3"
+    glob "~7.1.2"
     gulp "~3.9.1"
     mkdirp "~0.5.1"
     node-sass "~4.5.3"
 
 yoshi-stylelint@latest:
-  version "1.0.7"
-  resolved "https://repo.dev.wixpress.com/artifactory/api/npm/npm-repos/yoshi-stylelint/-/yoshi-stylelint-1.0.7.tgz#47a8473db5565f7359c11237ba0cc605f56e39ce"
+  version "1.0.8"
+  resolved "https://repo.dev.wixpress.com/artifactory/api/npm/npm-repos/yoshi-stylelint/-/yoshi-stylelint-1.0.8.tgz#ba6425c0c9c4d9dafc09b3a402932fc9ddc0723f"
   dependencies:
     cosmiconfig "~2.1.3"
     stylelint "~7.13.0"
 
 yoshi-tslint@latest:
-  version "1.0.5"
-  resolved "https://repo.dev.wixpress.com/artifactory/api/npm/npm-repos/yoshi-tslint/-/yoshi-tslint-1.0.5.tgz#455613c6a55dca8569dbd0b2d41495ed0e08aa89"
+  version "1.0.6"
+  resolved "https://repo.dev.wixpress.com/artifactory/api/npm/npm-repos/yoshi-tslint/-/yoshi-tslint-1.0.6.tgz#675a0b0cbe1efb0fc65ba8a4cf982627dbda51fe"
   dependencies:
-    glob "^7.1.2"
+    glob "~7.1.2"
     tslint "~5.5.0"
     typescript "~2.3.0"
 
 yoshi-typescript@latest:
-  version "1.0.8"
-  resolved "https://repo.dev.wixpress.com/artifactory/api/npm/npm-repos/yoshi-typescript/-/yoshi-typescript-1.0.8.tgz#383c2181a88d45765838aa4c3fba3f5e2d34b1ba"
+  version "1.0.9"
+  resolved "https://repo.dev.wixpress.com/artifactory/api/npm/npm-repos/yoshi-typescript/-/yoshi-typescript-1.0.9.tgz#f1cf4dd5c402a35e40472cba7a531728838f09ad"
   dependencies:
-    chalk "^1.1.3"
-    cross-spawn "^5.1.0"
+    chalk "~2.0.1"
+    cross-spawn "~5.1.0"
     lodash.flowright "^3.5.0"
     lodash.topairs "^4.3.0"
     typescript "~2.3.0"
 
 yoshi-update-node-version@latest:
-  version "1.0.4"
-  resolved "https://repo.dev.wixpress.com/artifactory/api/npm/npm-repos/yoshi-update-node-version/-/yoshi-update-node-version-1.0.4.tgz#e59757963dc3ca8aa69aefdd42b445d0a9dfa13c"
+  version "1.0.5"
+  resolved "https://repo.dev.wixpress.com/artifactory/api/npm/npm-repos/yoshi-update-node-version/-/yoshi-update-node-version-1.0.5.tgz#e0f315a2a0cfe50daef8458c16cf51284b78f2a6"
 
 yoshi-utils@^1.0.0:
-  version "1.0.17"
-  resolved "https://repo.dev.wixpress.com/artifactory/api/npm/npm-repos/yoshi-utils/-/yoshi-utils-1.0.17.tgz#5fcda6779a1bd3a897c52c0ae1578619ee368e49"
+  version "1.0.18"
+  resolved "https://repo.dev.wixpress.com/artifactory/api/npm/npm-repos/yoshi-utils/-/yoshi-utils-1.0.18.tgz#a84de7abd2881137545429b09f3f666307a2735b"
 
 yoshi-wnpm-release@latest:
-  version "1.0.4"
-  resolved "https://repo.dev.wixpress.com/artifactory/api/npm/npm-repos/yoshi-wnpm-release/-/yoshi-wnpm-release-1.0.4.tgz#8f5c48187ae570c89ef8817f4d5ffed2a8231abc"
+  version "1.0.5"
+  resolved "https://repo.dev.wixpress.com/artifactory/api/npm/npm-repos/yoshi-wnpm-release/-/yoshi-wnpm-release-1.0.5.tgz#e858853ad9daf145383ecd76efc1dab74d5bbbda"
   dependencies:
     wnpm-ci latest
 
 yoshi@latest:
-  version "1.1.177"
-  resolved "https://repo.dev.wixpress.com/artifactory/api/npm/npm-repos/yoshi/-/yoshi-1.1.177.tgz#c971438dc1a5bb9320eb6f7d678aa68bf335fc00"
+  version "1.1.185"
+  resolved "https://repo.dev.wixpress.com/artifactory/api/npm/npm-repos/yoshi/-/yoshi-1.1.185.tgz#df5073f8114f2f4cf974da58c217b819d7315db2"
   dependencies:
     autoprefixer "~7.1.2"
+    babel-jest "^20.0.3"
     babel-loader "~7.1.1"
-    babel-polyfill "^6.23.0"
+    babel-plugin-transform-es2015-modules-commonjs "~6.24.1"
+    babel-polyfill "~6.23.0"
     babel-register "~6.24.1"
     case-sensitive-paths-webpack-plugin "~2.1.1"
     commander "~2.11.0"
-    cross-spawn "^5.1.0"
+    cross-spawn "~5.1.0"
     css-loader "~0.28.4"
     css-modules-require-hook "~4.0.6"
     detect-port "~1.2.1"
-    eslint-config-wix "^1.1.14"
+    eslint-config-wix "~1.1.14"
     express "~4.15.3"
     extract-text-webpack-plugin "~3.0.0"
     file-loader "~0.11.2"
-    glob "^7.1.2"
-    graphql "~0.10.4"
+    glob "~7.1.2"
+    graphql "~0.10.5"
     graphql-tag "~2.4.2"
     gulp "~3.9.1"
     gulp-util "~3.0.8"
@@ -8580,7 +8584,7 @@ yoshi@latest:
     jasmine "2.4.1"
     jasmine-reporters "~2.2.0"
     jest-cli "~20.0.4"
-    jest-teamcity-reporter "^0.6.2"
+    jest-teamcity-reporter "~0.6.2"
     json-loader "~0.5.4"
     karma "~1.7.0"
     karma-chrome-launcher "~2.2.0"
@@ -8592,8 +8596,8 @@ yoshi@latest:
     less-loader "~4.0.5"
     lodash "~4.17.4"
     mkdirp "~0.5.1"
-    mocha "^3.2.0"
-    mocha-env-reporter "^2.0.4"
+    mocha "~3.4.2"
+    mocha-env-reporter "~2.0.4"
     mocha-teamcity-reporter "~1.1.1"
     ng-annotate-loader "~0.6.1"
     node-sass "~4.5.3"
@@ -8604,10 +8608,10 @@ yoshi@latest:
     sass-loader "~6.0.6"
     screenshot-reporter "~1.1.3"
     style-loader "~0.18.2"
-    ts-loader "^2.2.2"
-    ts-node "^1.5.2"
+    ts-loader "~2.3.0"
+    ts-node "~1.7.3"
     tslint "~5.5.0"
-    tslint-config-wix latest
+    tslint-config-wix "~1.0.23"
     typescript "~2.3.0"
     url-loader "~0.5.9"
     webpack "~3.2.0"
