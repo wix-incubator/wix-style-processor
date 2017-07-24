@@ -1,5 +1,9 @@
-import {each, map, reduce, startsWith, endsWith} from 'lodash';
-import * as Color from 'color';
+import each = require('lodash/each');
+import map = require('lodash/map');
+import reduce = require('lodash/reduce');
+import startsWith = require('lodash/startsWith');
+import endsWith = require('lodash/endsWith');
+import Color = require('color');
 
 let WixColorUtils = {
     getFullColorStyles({colorStyles, siteColors}) {

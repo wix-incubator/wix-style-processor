@@ -1,4 +1,8 @@
-import {each, extend, includes, omit, isNumber} from 'lodash';
+import each = require('lodash/each');
+import extend = require('lodash/extend');
+import includes = require('lodash/includes');
+import omit = require('lodash/omit');
+import isNumber = require('lodash/isNumber');
 import * as parseCssFont from 'parse-css-font';
 
 const WixFontUtils = {
@@ -12,9 +16,16 @@ const WixFontUtils = {
         const parsedSiteTextPresets = {};
         each(siteTextPresets, (preset, key) => {
             if (preset.displayName) {
-                parsedSiteTextPresets[key] = extend({}, parseCssFont(preset.value), {preset:key, editorKey:preset.editorKey, displayName:preset.displayName});
+                parsedSiteTextPresets[key] = extend({}, parseCssFont(preset.value), {
+                    preset: key,
+                    editorKey: preset.editorKey,
+                    displayName: preset.displayName
+                });
             } else {
-                parsedSiteTextPresets[key] = extend({}, parseCssFont(preset.value), {preset:key, editorKey:preset.editorKey});
+                parsedSiteTextPresets[key] = extend({}, parseCssFont(preset.value), {
+                    preset: key,
+                    editorKey: preset.editorKey
+                });
             }
         });
 
@@ -25,14 +36,14 @@ const WixFontUtils = {
         each(parsedSiteTextPresets, (preset, key) => ret[key] = parsedFontStyles[key] || preset);
 
         // LIGHT/MEDIUM/STRONG
-            ret['LIGHT'] = parseCssFont('12px HelveticaNeueW01-45Ligh');
-            ret['MEDIUM'] = parseCssFont('12px HelveticaNeueW01-55Roma');
-            ret['STRONG'] = parseCssFont('12px HelveticaNeueW01-65Medi');
+        ret['LIGHT'] = parseCssFont('12px HelveticaNeueW01-45Ligh');
+        ret['MEDIUM'] = parseCssFont('12px HelveticaNeueW01-55Roma');
+        ret['STRONG'] = parseCssFont('12px HelveticaNeueW01-65Medi');
 
         ret = Object.assign(ret, parsedFontStyles);
 
         each(ret, (font, key) => {
-            ret[key] = extend({}, font, {supports:{uppercase:true}});
+            ret[key] = extend({}, font, {supports: {uppercase: true}});
 
             if ((includes((<any>font).family, 'snellroundhandw')) || (includes((<any>font).family, 'niconne'))) {
                 ret[key].supports.uppercase = false;
@@ -89,7 +100,7 @@ function parseWixStylesFont(font) {
     let lineHeight = font.lineHeight || 'normal';
     if (isNumber(lineHeight)) lineHeight = lineHeight + 'px';
 
-    value += size + '/' + lineHeight +' ';
+    value += size + '/' + lineHeight + ' ';
 
     value += font.cssFontFamily || font.family;
 

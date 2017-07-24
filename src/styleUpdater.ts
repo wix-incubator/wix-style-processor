@@ -1,6 +1,8 @@
 import wixStylesColorUtils from './wixStylesColorUtils';
 import wixStylesFontUtils from './wixStylesFontUtils';
-import {isEqual, omitBy, pickBy} from 'lodash';
+import pickBy = require('lodash/pickBy');
+import omitBy = require('lodash/omitBy');
+import isEqual = require('lodash/isEqual');
 import * as Stylis from 'stylis';
 import {processor} from './processor';
 import {CustomSyntaxHelper} from './customSyntaxHelper';
