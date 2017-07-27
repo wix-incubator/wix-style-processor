@@ -2,6 +2,7 @@ import wixStylesColorUtils from './wixStylesColorUtils';
 import wixStylesFontUtils from './wixStylesFontUtils';
 import pickBy = require('lodash/pickBy');
 import omitBy = require('lodash/omitBy');
+import forEach = require('lodash/forEach');
 import isEqual = require('lodash/isEqual');
 import * as Stylis from 'stylis';
 import {processor} from './processor';
@@ -27,7 +28,7 @@ export default (wixService, domService, options) => {
                 const tpaParams = {colors, fonts, numbers, strings};
 
                 if (!isRerender || !options.shouldUseCssVars) {
-                    domService.getAllStyleTags().forEach(tagStyle => {
+                    forEach(domService.getAllStyleTags(), tagStyle => {
                         let css = (tagStyle.originalTemplate || tagStyle.textContent);
 
                         const stylis = new Stylis({semicolon: false, compress: false, preserve: true});
