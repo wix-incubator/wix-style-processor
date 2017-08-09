@@ -39,6 +39,8 @@
     "chai": "^3.5.0",
     "express": "^4.15.3",
     "express-session": "^1.15.3",
+    "jsdom": "^11.1.0",
+    "jsdom-global": "^3.0.2",
     "mocha": "^3.3.0",
     "sinon": "^2.2.0",
     "ts-node": "^3.2.0",
