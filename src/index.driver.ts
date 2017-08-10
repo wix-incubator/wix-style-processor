@@ -41,6 +41,10 @@ export class IndexDriver {
             this.css = css;
             return this;
         },
+        resetSiteColors: () => {
+            this.mocks.Wix.given.siteColors(null);
+            return this;
+        },
         defaultSiteColors: () => {
             this.mocks.Wix.given.siteColors([{
                 'name': 'color_1', 'value': '#FFFFFF', 'reference': 'color-1'
@@ -128,7 +132,10 @@ export class IndexDriver {
         },
         inEditorMode: () => {
             this.mocks.Wix.given.viewMode('editor');
-
+            return this;
+        },
+        inStandaloneMode: () => {
+            this.mocks.Wix.given.viewMode('standalone');
             return this;
         },
         cssVarsSupported: (flag) => {

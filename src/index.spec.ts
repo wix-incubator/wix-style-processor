@@ -493,6 +493,29 @@ describe('Index', () => {
         });
     });
 
+    describe('As Standalone', () => {
+        beforeEach(() => {
+            const css = `.foo {bar: 4;}`;
+
+            driver
+                .given.css(css)
+                .given.styleParams(null)
+                .given.siteTextPresets(null)
+                .given.resetSiteColors()
+                .given.declarationReplacerPlugin((key, val) => ({
+                    key: 'ZzZ' + key + 'ZzZ',
+                    value: '#' + val + '#'
+                }))
+                .given.inStandaloneMode();
+        });
+
+        it('should finish init', () => {
+            return driver.when.init().then(() => {
+                expect(driver.get.overrideStyleCallArg()).to.equal('.foo{ZzZbarZzZ: #4#;}');
+            });
+        });
+    });
+
     describe('In Editor', () => {
         beforeEach(() => {
             driver.given.inEditorMode();

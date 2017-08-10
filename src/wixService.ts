@@ -1,10 +1,12 @@
 export default Wix => ({
     getStyleParams() {
-        return Promise.all([
-            getSiteColors(Wix),
-            getSiteTextPresets(Wix),
-            getStyleParams(Wix)
-        ]);
+        return this.isStandaloneMode() ?
+            Promise.resolve([{},{},{}]) :
+            Promise.all([
+                getSiteColors(Wix),
+                getSiteTextPresets(Wix),
+                getStyleParams(Wix)
+            ]);
     },
 
     listenToStyleParamsChange(cb) {
@@ -18,8 +20,13 @@ export default Wix => ({
     isEditorMode(): boolean {
         return Wix.Utils.getViewMode() === 'editor';
     },
+
     isPreviewMode(): boolean {
         return Wix.Utils.getViewMode() === 'preview';
+    },
+
+    isStandaloneMode(): boolean {
+        return Wix.Utils.getViewMode() === 'standalone';
     }
 });
 

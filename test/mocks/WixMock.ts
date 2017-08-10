@@ -2,7 +2,7 @@ export default class WixMock {
     private siteColors: any;
     private siteTextPresets: any;
     private styleParams: any;
-    private viewMode: string = 'standalone';
+    private viewMode: string = 'site';
 
     constructor() {
 
