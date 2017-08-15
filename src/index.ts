@@ -16,6 +16,7 @@ export default {
         const defaultOptions = <any>{};
         defaultOptions.plugins = this.plugins;
         defaultOptions.shouldUseCssVars = domService.isCssVarsSupported() && (wixService.isEditorMode() || wixService.isPreviewMode());
+        defaultOptions.shouldApplyCSSFunctions = !wixService.isStandaloneMode();
         options = Object.assign({}, defaultOptions, options);
 
         const styleUpdater = StyleUpdater(wixService, domServiceOverride, options);

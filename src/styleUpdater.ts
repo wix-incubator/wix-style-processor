@@ -34,7 +34,9 @@ export default (wixService, domService, options) => {
                         const stylis = new Stylis({semicolon: false, compress: false, preserve: true});
 
                         applyDeclarationReplacers(options.plugins, stylis);
-                        applyCssFunctionsExtraction({tpaParams, cacheMap, options}, stylis);
+                        if(options.shouldApplyCSSFunctions) {
+                            applyCssFunctionsExtraction({tpaParams, cacheMap, options}, stylis);
+                        }
 
                         const newCss = stylis('', css);
 
@@ -51,7 +53,7 @@ export default (wixService, domService, options) => {
                     domService.updateCssVars(varMap);
                 }
             }).catch(err => {
-                console.error('failed updating styles', err);
+                console.error('Failed updating styles:', err);
                 throw err;
             });
         }

@@ -495,7 +495,7 @@ describe('Index', () => {
 
     describe('As Standalone', () => {
         beforeEach(() => {
-            const css = `.foo {bar: 4;}`;
+            const css = `.foo {bar: 4; color: "color(color-1)"}`;
 
             driver
                 .given.css(css)
@@ -503,15 +503,21 @@ describe('Index', () => {
                 .given.siteTextPresets(null)
                 .given.resetSiteColors()
                 .given.declarationReplacerPlugin((key, val) => ({
-                    key: 'ZzZ' + key + 'ZzZ',
-                    value: '#' + val + '#'
-                }))
+                key,
+                value: '#' + val + '#'
+            }))
                 .given.inStandaloneMode();
         });
 
         it('should finish init', () => {
             return driver.when.init().then(() => {
-                expect(driver.get.overrideStyleCallArg()).to.equal('.foo{ZzZbarZzZ: #4#;}');
+                expect(driver.get.overrideStyleCallArg()).to.equal('.foo{bar: #4#;color: #"color(color-1)"#;}');
+            });
+        });
+
+        it('should not apply css functions', () => {
+            return driver.when.init().then(() => {
+                expect(driver.get.overrideStyleCallArg()).to.equal('.foo{bar: #4#;color: #"color(color-1)"#;}');
             });
         });
     });
