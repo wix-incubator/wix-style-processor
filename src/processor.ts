@@ -59,7 +59,7 @@ function getDefaultValueOrValueFromSettings(varName, defaultVarValue) {
             return tpaParams.colors[varNameInSettings];
         } else if (tpaParams.fonts[varNameInSettings]) {
             return tpaParams.fonts[varNameInSettings];
-        } else if (tpaParams.numbers[varNameInSettings]) {
+        } else if (typeof tpaParams.numbers[varNameInSettings] === 'number') {
             return tpaParams.numbers[varNameInSettings];
         }
         //not found in settings

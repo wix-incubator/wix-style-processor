@@ -316,6 +316,25 @@ describe('Index', () => {
         });
     });
 
+    it('should support unit with value 0', () => {
+        let css = `.foo { border: "unit(--foo, px)" solid "color(--bar)"; }`;
+
+        driver.given.css(css)
+            .given.styleParams({
+            numbers: {
+                foo: 0
+            },
+            colors: {
+                bar: {value: '#FF0000'}
+            }
+        });
+
+        return driver.when.init().then(() => {
+            expect(driver.get.overrideStyleCallArg())
+                .to.equal(`.foo{border: 0px solid #FF0000;}`);
+        });
+    });
+
     it('does not modify static params', () => {
         const css = `.foo { padding: 10px 11px 12px 13px; margin-right: 20px; color: blue; }`;
 
