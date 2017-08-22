@@ -1,8 +1,4 @@
-import each = require('lodash/each');
-import extend = require('lodash/extend');
-import includes = require('lodash/includes');
-import omit = require('lodash/omit');
-import isNumber = require('lodash/isNumber');
+import * as _ from 'lodash';
 import * as parseCssFont from 'parse-css-font';
 
 const WixFontUtils = {
@@ -11,18 +7,18 @@ const WixFontUtils = {
 
         // Fix color styles due to '.' to '-' conversion
         const fixedFontStyles = {};
-        each(fontStyles, (v, k) => fixedFontStyles[k.replace(/\./g, '-')] = v);
+        _.each(fontStyles, (v, k: string) => fixedFontStyles[k.replace(/\./g, '-')] = v);
 
         const parsedSiteTextPresets = {};
-        each(siteTextPresets, (preset, key) => {
+        _.each(siteTextPresets, (preset: any, key: string) => {
             if (preset.displayName) {
-                parsedSiteTextPresets[key] = extend({}, parseCssFont(preset.value), {
+                parsedSiteTextPresets[key] = _.extend({}, parseCssFont(preset.value), {
                     preset: key,
                     editorKey: preset.editorKey,
                     displayName: preset.displayName
                 });
             } else {
-                parsedSiteTextPresets[key] = extend({}, parseCssFont(preset.value), {
+                parsedSiteTextPresets[key] = _.extend({}, parseCssFont(preset.value), {
                     preset: key,
                     editorKey: preset.editorKey
                 });
@@ -30,10 +26,10 @@ const WixFontUtils = {
         });
 
         const parsedFontStyles = {};
-        each(fixedFontStyles, (value, key) => parsedFontStyles[key] = parseWixStylesFont(value));
+        _.each(fixedFontStyles, (value, key) => parsedFontStyles[key] = parseWixStylesFont(value));
 
         // Basic template colors
-        each(parsedSiteTextPresets, (preset, key) => ret[key] = parsedFontStyles[key] || preset);
+        _.each(parsedSiteTextPresets, (preset, key) => ret[key] = parsedFontStyles[key] || preset);
 
         // LIGHT/MEDIUM/STRONG
         ret['LIGHT'] = parseCssFont('12px HelveticaNeueW01-45Ligh');
@@ -42,10 +38,10 @@ const WixFontUtils = {
 
         ret = Object.assign(ret, parsedFontStyles);
 
-        each(ret, (font, key) => {
-            ret[key] = extend({}, font, {supports: {uppercase: true}});
+        _.each(ret, (font, key) => {
+            ret[key] = _.extend({}, font, {supports: {uppercase: true}});
 
-            if ((includes((<any>font).family, 'snellroundhandw')) || (includes((<any>font).family, 'niconne'))) {
+            if ((_.includes((<any>font).family, 'snellroundhandw')) || (_.includes((<any>font).family, 'niconne'))) {
                 ret[key].supports.uppercase = false;
             }
 
@@ -63,7 +59,7 @@ const WixFontUtils = {
 
     calcValueFromString({str, values}) {
         const preset = (_default) => values[_default];
-        const font = (_default) => extend({}, values[_default.template], omit(_default, 'template'));
+        const font = (_default) => _.extend({}, values[_default.template], _.omit(_default, 'template'));
 
         let m = null;
 
@@ -77,8 +73,8 @@ const WixFontUtils = {
     },
 
     toFontCssValue(value) {
-        const size = isNumber(value.size) ? value.size + 'px' : value.size;
-        const lineHeight = isNumber(value.lineHeight) ? value.lineHeight + 'px' : value.lineHeight;
+        const size = _.isNumber(value.size) ? value.size + 'px' : value.size;
+        const lineHeight = _.isNumber(value.lineHeight) ? value.lineHeight + 'px' : value.lineHeight;
 
         return `${value.style} ${value.variant} ${value.weight} ${size}/${lineHeight} ${value.family.join(',')}`;
     }
@@ -96,9 +92,9 @@ function parseWixStylesFont(font) {
     }
 
     let size = font.size || 'normal';
-    if (isNumber(size)) size = size + 'px';
+    if (_.isNumber(size)) size = size + 'px';
     let lineHeight = font.lineHeight || 'normal';
-    if (isNumber(lineHeight)) lineHeight = lineHeight + 'px';
+    if (_.isNumber(lineHeight)) lineHeight = lineHeight + 'px';
 
     value += size + '/' + lineHeight + ' ';
 
