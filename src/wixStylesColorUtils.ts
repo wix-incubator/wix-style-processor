@@ -1,4 +1,8 @@
-import * as _ from 'lodash';
+import each = require('lodash/each');
+import map = require('lodash/map');
+import reduce = require('lodash/reduce');
+import startsWith = require('lodash/startsWith');
+import endsWith = require('lodash/endsWith');
 import Color = require('color');
 
 let WixColorUtils = {
@@ -16,7 +20,7 @@ let WixColorUtils = {
         returnValue['white'] = '#FFFFFF';
         returnValue['black'] = '#000000';
         // Basic template colors
-        _.each(siteColors,
+        each(siteColors,
             ({reference, value}) => {
                 returnValue[reference] = value;
             });
@@ -30,13 +34,13 @@ let WixColorUtils = {
     calcValueFromString({str, values}) {
         const functions = {
             'color': (key) => {
-                if (_.startsWith(key, '"') && _.endsWith(key, '"')) {
+                if (startsWith(key, '"') && endsWith(key, '"')) {
                     key = key.substr(1, key.length - 2);
                 }
 
                 key = key.replace(/\./g, '-');
 
-                if (_.startsWith(key, '--')) {
+                if (startsWith(key, '--')) {
                     key = key.substr(2, key.length - 2);
                 }
 
@@ -44,7 +48,7 @@ let WixColorUtils = {
                 // So, we need to make sure to check for both
                 const value = (() => {
                     if (values[key]) return values[key];
-                    if (_.startsWith(key, 'color-')) return values[key.substr(6)]; // support 'bbb' and 'color-bbb' for same variable
+                    if (startsWith(key, 'color-')) return values[key.substr(6)]; // support 'bbb' and 'color-bbb' for same variable
                 })();
 
                 if (value) return value;
@@ -64,7 +68,7 @@ let WixColorUtils = {
             },
             'join': (params) => {
 
-                if (_.startsWith(params, '[') && _.endsWith(params, ']')) {
+                if (startsWith(params, '[') && endsWith(params, ']')) {
                     params = params.substr(1, params.length - 2);
                 }
 
@@ -75,9 +79,9 @@ let WixColorUtils = {
                     const token = `_<_${m[1]}_>_`.replace(/,/g, '_|_');
                     params = params.replace(tokenRegex, token);
                 }
-                const arr = _.map(params.split(','), p => (<any>p).replace(/_<_/g, '(').replace(/_>_/g, ')').replace(/_\|_/g, ',').trim());
+                const arr = map(params.split(','), p => (<any>p).replace(/_<_/g, '(').replace(/_>_/g, ')').replace(/_\|_/g, ',').trim());
 
-                let ret = _.reduce(arr, (acc, color) => {
+                let ret = reduce(arr, (acc, color) => {
                     const c = new Color(fromDefaultString(color));
                     acc.red(acc.red() + c.red() * c.alpha());
                     acc.green(acc.green() + c.green() * c.alpha());
