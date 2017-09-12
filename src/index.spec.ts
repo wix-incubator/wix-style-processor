@@ -514,44 +514,44 @@ describe('Index', () => {
 
     describe('As Standalone', () => {
         beforeEach(() => {
-          const css = `.foo {bar: 4; color: "color(color-1)"}`;
+            const css = `.foo {bar: 4; color: "color(color-1)"}`;
 
-          driver
-          .given.css(css)
-          .given.styleParams(null)
-          .given.siteTextPresets(null)
-          .given.resetSiteColors()
-          .given.declarationReplacerPlugin((key, val) => ({
-            key,
-            value: '#' + val + '#'
-          }))
+            driver
+            .given.css(css)
+            .given.styleParams(null)
+            .given.siteTextPresets(null)
+            .given.resetSiteColors()
+            .given.declarationReplacerPlugin((key, val) => ({
+              key,
+              value: '#' + val + '#'
+            }))
         });
 
         describe('withoutStyleCapabilites', () => {
-          it('should not apply css functions', () => {
-            driver.given.withoutWixStyles();
-            return driver.when.init().then(() => {
-              expect(driver.get.overrideStyleCallArg()).to.equal('.foo{bar: #4#;color: #"color(color-1)"#;}');
+            it('should not apply css functions', () => {
+                driver.given.styleParams(null)
+                return driver.when.init().then(() => {
+                    expect(driver.get.overrideStyleCallArg()).to.equal('.foo{bar: #4#;color: #"color(color-1)"#;}');
+                });
             });
-          });
         });
 
         describe('inStandaloneMode', () => {
-          beforeEach(() => {
-            driver.given.inStandaloneMode();
-          });
-
-          it('should finish init', () => {
-            return driver.when.init().then(() => {
-              expect(driver.get.overrideStyleCallArg()).to.equal('.foo{bar: #4#;color: #"color(color-1)"#;}');
+            beforeEach(() => {
+                driver.given.inStandaloneMode();
             });
-          });
 
-          it('should not apply css functions', () => {
-            return driver.when.init().then(() => {
-              expect(driver.get.overrideStyleCallArg()).to.equal('.foo{bar: #4#;color: #"color(color-1)"#;}');
+            it('should finish init', () => {
+                return driver.when.init().then(() => {
+                    expect(driver.get.overrideStyleCallArg()).to.equal('.foo{bar: #4#;color: #"color(color-1)"#;}');
+                });
             });
-          });
+
+            it('should not apply css functions', () => {
+                return driver.when.init().then(() => {
+                    expect(driver.get.overrideStyleCallArg()).to.equal('.foo{bar: #4#;color: #"color(color-1)"#;}');
+                });
+            });
         });
     });
 
