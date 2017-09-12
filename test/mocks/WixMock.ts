@@ -47,6 +47,10 @@ export default class WixMock {
             this.siteColors.filter((color) => color.reference === ref)
                 .map(c => c.value = value);
             return this;
+        },
+        withoutStyles: () => {
+          this.Styles = null;
+          return this;
         }
     };
 

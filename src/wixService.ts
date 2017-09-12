@@ -30,7 +30,7 @@ export default Wix => ({
     },
 
     withoutStyleCapabilites(): boolean {
-      return !Wix.Style;
+      return !Wix.Styles;
     },
 
     isStandaloneMode(): boolean {
