@@ -72,12 +72,11 @@ function applyDeclarationReplacers(plugins, stylis, retainOriginal) {
                     let {key, value} = splitDeclaration(declaration);
                     let pluginResult = replacer(key, value);
                     let result = `${pluginResult.key}: ${pluginResult.value}`
+
                     if (retainOriginal && (pluginResult.key !== key || pluginResult.value !== value)) {
                       result += `;${key}: ${value}`
                     }
-                    if (key === 'margin-END') {
-                      console.log('!!!!!!!!!!!!', result);
-                    }
+
                     return result;
                 }
             })
