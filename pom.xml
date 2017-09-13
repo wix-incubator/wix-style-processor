@@ -22,5 +22,12 @@
                 <role>owner</role>
             </roles>
         </developer>
+        <developer>
+            <name>Ran Yitzhaki</name>
+            <email>rany@wix.com</email>
+            <roles>
+                <role>owner</role>
+            </roles>
+        </developer>
     </developers>
 </project>
