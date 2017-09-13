@@ -517,14 +517,14 @@ describe('Index', () => {
             const css = `.foo {bar: 4; color: "color(color-1)"}`;
 
             driver
-            .given.css(css)
-            .given.styleParams(null)
-            .given.siteTextPresets(null)
-            .given.resetSiteColors()
-            .given.declarationReplacerPlugin((key, val) => ({
-              key,
-              value: '#' + val + '#'
-            }))
+                .given.css(css)
+                .given.styleParams(null)
+                .given.siteTextPresets(null)
+                .given.resetSiteColors()
+                .given.declarationReplacerPlugin((key, val) => ({
+                    key,
+                    value: '#' + val + '#'
+                }));
         });
 
         describe('withoutStyleCapabilites', () => {
