@@ -33,7 +33,7 @@ export default (wixService, domService, options) => {
 
                         const stylis = new Stylis({semicolon: false, compress: false, preserve: true});
 
-                        applyDeclarationReplacers(options.plugins, stylis);
+                        applyDeclarationReplacers(options.plugins, stylis, options.retainOriginal);
                         if(options.shouldApplyCSSFunctions) {
                             applyCssFunctionsExtraction({tpaParams, cacheMap, options}, stylis);
                         }
@@ -64,14 +64,21 @@ function escapeRegExp(str) {
     return str.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, '\\$&');
 }
 
-function applyDeclarationReplacers(plugins, stylis) {
+function applyDeclarationReplacers(plugins, stylis, retainOriginal) {
     plugins.declarationReplacers
         .forEach((replacer) => {
             stylis.use((context, declaration) => {
                 if (context == 1) {
                     let {key, value} = splitDeclaration(declaration);
                     let pluginResult = replacer(key, value);
-                    return `${pluginResult.key}: ${pluginResult.value}`;
+                    let result = `${pluginResult.key}: ${pluginResult.value}`
+                    if (retainOriginal && (pluginResult.key !== key || pluginResult.value !== value)) {
+                      result += `;${key}: ${value}`
+                    }
+                    if (key === 'margin-END') {
+                      console.log('!!!!!!!!!!!!', result);
+                    }
+                    return result;
                 }
             })
         });
