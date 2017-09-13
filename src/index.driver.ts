@@ -141,6 +141,10 @@ export class IndexDriver {
         cssVarsSupported: (flag) => {
             this.isCssVarsSupported = flag;
             return this;
+        },
+        withoutWixStyles: () => {
+          this.mocks.Wix.given.withoutStyles();
+          return this;
         }
     };
 

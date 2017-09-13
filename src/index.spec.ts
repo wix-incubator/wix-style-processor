@@ -522,21 +522,35 @@ describe('Index', () => {
                 .given.siteTextPresets(null)
                 .given.resetSiteColors()
                 .given.declarationReplacerPlugin((key, val) => ({
-                key,
-                value: '#' + val + '#'
-            }))
-                .given.inStandaloneMode();
+                    key,
+                    value: '#' + val + '#'
+                }));
         });
 
-        it('should finish init', () => {
-            return driver.when.init().then(() => {
-                expect(driver.get.overrideStyleCallArg()).to.equal('.foo{bar: #4#;color: #"color(color-1)"#;}');
+        describe('withoutStyleCapabilites', () => {
+            it('should not apply css functions', () => {
+                driver.given.styleParams(null)
+                return driver.when.init().then(() => {
+                    expect(driver.get.overrideStyleCallArg()).to.equal('.foo{bar: #4#;color: #"color(color-1)"#;}');
+                });
             });
         });
 
-        it('should not apply css functions', () => {
-            return driver.when.init().then(() => {
-                expect(driver.get.overrideStyleCallArg()).to.equal('.foo{bar: #4#;color: #"color(color-1)"#;}');
+        describe('inStandaloneMode', () => {
+            beforeEach(() => {
+                driver.given.inStandaloneMode();
+            });
+
+            it('should finish init', () => {
+                return driver.when.init().then(() => {
+                    expect(driver.get.overrideStyleCallArg()).to.equal('.foo{bar: #4#;color: #"color(color-1)"#;}');
+                });
+            });
+
+            it('should not apply css functions', () => {
+                return driver.when.init().then(() => {
+                    expect(driver.get.overrideStyleCallArg()).to.equal('.foo{bar: #4#;color: #"color(color-1)"#;}');
+                });
             });
         });
     });

@@ -1,6 +1,6 @@
 export default Wix => ({
     getStyleParams() {
-        return this.isStandaloneMode() ?
+        return this.shouldRunAsStandalone() ?
             Promise.resolve([{},{},{}]) :
             Promise.all([
                 getSiteColors(Wix),
@@ -23,6 +23,14 @@ export default Wix => ({
 
     isPreviewMode(): boolean {
         return Wix.Utils.getViewMode() === 'preview';
+    },
+
+    shouldRunAsStandalone(): boolean {
+      return this.isStandaloneMode() || this.withoutStyleCapabilites();
+    },
+
+    withoutStyleCapabilites(): boolean {
+      return !Wix.Styles;
     },
 
     isStandaloneMode(): boolean {
