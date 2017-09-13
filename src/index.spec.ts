@@ -529,7 +529,7 @@ describe('Index', () => {
 
         describe('withoutStyleCapabilites', () => {
             it('should not apply css functions', () => {
-                driver.given.styleParams(null)
+                driver.given.withoutWixStyles();
                 return driver.when.init().then(() => {
                     expect(driver.get.overrideStyleCallArg()).to.equal('.foo{bar: #4#;color: #"color(color-1)"#;}');
                 });

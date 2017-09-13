@@ -5,6 +5,8 @@ import {Plugins} from './plugins';
 import {defaultPlugins} from './defaultPlugins';
 
 export default {
+    styleUpdater: null,
+
     plugins: new Plugins(),
 
     init(options = <any>{}, domServiceOverride = domService) {
@@ -19,11 +21,15 @@ export default {
         defaultOptions.shouldApplyCSSFunctions = !wixService.shouldRunAsStandalone();
         options = Object.assign({}, defaultOptions, options);
 
-        const styleUpdater = StyleUpdater(wixService, domServiceOverride, options);
+        this.styleUpdater = StyleUpdater(wixService, domServiceOverride, options);
 
         if (wixService.isEditorMode() || wixService.isPreviewMode()) {
-            wixService.listenToStyleParamsChange(() => styleUpdater.update(true));
+            wixService.listenToStyleParamsChange(() => this.styleUpdater.update(true));
         }
-        return styleUpdater.update();
+        return this.styleUpdater.update();
+    },
+
+    update(isRerender?: boolean) {
+        return this.styleUpdater.update(isRerender);
     }
 }
