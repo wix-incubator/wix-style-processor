@@ -26,11 +26,11 @@ export default Wix => ({
     },
 
     shouldRunAsStandalone(): boolean {
-      return this.isStandaloneMode() || this.withoutStyleCapabilites();
+        return this.isStandaloneMode() || this.withoutStyleCapabilites();
     },
 
     withoutStyleCapabilites(): boolean {
-      return !Wix.Styles;
+        return !Wix.Styles;
     },
 
     isStandaloneMode(): boolean {

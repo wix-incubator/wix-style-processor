@@ -476,20 +476,6 @@ describe('Index', () => {
         });
     });
 
-    it('has declaration plugin support', () => {
-        const css = `.foo {bar: 4;}`;
-
-        driver.given.css(css)
-            .given.declarationReplacerPlugin((key, val) => ({
-            key: 'ZzZ' + key + 'ZzZ',
-            value: '#' + val + '#'
-        }));
-
-        return driver.when.init().then(() => {
-            expect(driver.get.overrideStyleCallArg()).to.equal('.foo{ZzZbarZzZ: #4#;}');
-        });
-    });
-
     it('should support external css functions', () => {
         let css = `.foo { --var1: "increment(1)"; border-radius: "unit(--var1, px)" }`;
 
@@ -512,6 +498,29 @@ describe('Index', () => {
         });
     });
 
+    describe('Plugins', () => {
+        beforeEach(() => {
+            const css = `.foo {bar: 4;}`;
+
+            driver.given.css(css).given.declarationReplacerPlugin((key, val) => ({
+                key: 'ZzZ' + key + 'ZzZ',
+                value: '#' + val + '#'
+            }));
+        });
+
+        it('has declaration plugin support', () => {
+            return driver.when.init().then(() => {
+                expect(driver.get.overrideStyleCallArg()).to.equal('.foo{ZzZbarZzZ: #4#;}');
+            });
+        });
+
+        it('should retain the original css if the option is passed', () => {
+            return driver.when.init({ retainOriginal: true }).then(() => {
+                expect(driver.get.overrideStyleCallArg()).to.equal('.foo{ZzZbarZzZ: #4#;bar: 4;}');
+            });
+        });
+    })
+
     describe('As Standalone', () => {
         beforeEach(() => {
             const css = `.foo {bar: 4; color: "color(color-1)"}`;
@@ -529,7 +538,7 @@ describe('Index', () => {
 
         describe('withoutStyleCapabilites', () => {
             it('should not apply css functions', () => {
-                driver.given.styleParams(null)
+                driver.given.withoutWixStyles()
                 return driver.when.init().then(() => {
                     expect(driver.get.overrideStyleCallArg()).to.equal('.foo{bar: #4#;color: #"color(color-1)"#;}');
                 });
