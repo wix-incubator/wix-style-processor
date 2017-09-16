@@ -1,28 +1,24 @@
-import each = require('lodash/each');
-import extend = require('lodash/extend');
-import includes = require('lodash/includes');
-import omit = require('lodash/omit');
-import isNumber = require('lodash/isNumber');
+import {forEach, isNumber} from './utils';
 import * as parseCssFont from 'parse-css-font';
 
-const WixFontUtils = {
+export const wixStylesFontUtils = {
     getFullFontStyles({fontStyles, siteTextPresets}) {
         let ret = {};
 
         // Fix color styles due to '.' to '-' conversion
         const fixedFontStyles = {};
-        each(fontStyles, (v, k: string) => fixedFontStyles[k.replace(/\./g, '-')] = v);
+        forEach(fontStyles, (v, k: string) => fixedFontStyles[k.replace(/\./g, '-')] = v);
 
         const parsedSiteTextPresets = {};
-        each(siteTextPresets, (preset: any, key: string) => {
+        forEach(siteTextPresets, (preset: any, key: string) => {
             if (preset.displayName) {
-                parsedSiteTextPresets[key] = extend({}, parseCssFont(preset.value), {
+                parsedSiteTextPresets[key] = Object.assign({}, parseCssFont(preset.value), {
                     preset: key,
                     editorKey: preset.editorKey,
                     displayName: preset.displayName
                 });
             } else {
-                parsedSiteTextPresets[key] = extend({}, parseCssFont(preset.value), {
+                parsedSiteTextPresets[key] = Object.assign({}, parseCssFont(preset.value), {
                     preset: key,
                     editorKey: preset.editorKey
                 });
@@ -30,10 +26,10 @@ const WixFontUtils = {
         });
 
         const parsedFontStyles = {};
-        each(fixedFontStyles, (value, key) => parsedFontStyles[key] = parseWixStylesFont(value));
+        forEach(fixedFontStyles, (value, key) => parsedFontStyles[key] = parseWixStylesFont(value));
 
         // Basic template colors
-        each(parsedSiteTextPresets, (preset, key) => ret[key] = parsedFontStyles[key] || preset);
+        forEach(parsedSiteTextPresets, (preset, key) => ret[key] = parsedFontStyles[key] || preset);
 
         // LIGHT/MEDIUM/STRONG
         ret['LIGHT'] = parseCssFont('12px HelveticaNeueW01-45Ligh');
@@ -42,10 +38,10 @@ const WixFontUtils = {
 
         ret = Object.assign(ret, parsedFontStyles);
 
-        each(ret, (font, key) => {
-            ret[key] = extend({}, font, {supports: {uppercase: true}});
+        forEach(ret, (font, key) => {
+            ret[key] = Object.assign({}, font, {supports: {uppercase: true}});
 
-            if ((includes((<any>font).family, 'snellroundhandw')) || (includes((<any>font).family, 'niconne'))) {
+            if (['snellroundhandw', 'niconne'].some((fontName) => font.family.indexOf(fontName) > -1)) {
                 ret[key].supports.uppercase = false;
             }
 
@@ -60,27 +56,17 @@ const WixFontUtils = {
 
         return ret;
     },
-
-    calcValueFromString({str, values}) {
-        const preset = (_default) => values[_default];
-        const font = (_default) => extend({}, values[_default.template], omit(_default, 'template'));
-
-        let m = null;
-
-        if (m = str.match(/fontPreset\((.*)\)$/)) {
-            return preset(m[1].trim());
-        } else if (values[str]) {
-            return values[str];
-        } else {
-            throw(new Error(`Unknown font default ${str}`));
-        }
-    },
-
     toFontCssValue(value) {
         const size = isNumber(value.size) ? value.size + 'px' : value.size;
         const lineHeight = isNumber(value.lineHeight) ? value.lineHeight + 'px' : value.lineHeight;
 
         return `${value.style} ${value.variant} ${value.weight} ${size}/${lineHeight} ${value.family.join(',')}`;
+    },
+    isStringHack(fontParam) {
+        return fontParam.fontStyleParam === false;
+    },
+    isValidFontParam(fontParam) {
+        return fontParam.family !== undefined;
     }
 };
 
@@ -106,5 +92,3 @@ function parseWixStylesFont(font) {
 
     return parseCssFont(value);
 }
-
-export default WixFontUtils;

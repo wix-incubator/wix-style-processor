@@ -48,9 +48,9 @@ describe('Index', () => {
             .given.styleParams({
             fonts: {
                 'my_var': {
-                    'value': 'font-family:\'mr de haviland\',\'cursive\';',
+                    'value': `font-family:'mr de haviland','cursive';`,
                     'index': 93,
-                    'cssFontFamily': '\'mr de haviland\',\'cursive\'',
+                    'cssFontFamily': `'mr de haviland','cursive'`,
                     'family': 'mr de haviland',
                     'fontParam': true,
                     'size': 0,
@@ -419,9 +419,9 @@ describe('Index', () => {
             .given.styleParams({
             fonts: {
                 bodyText: {
-                    'value': 'font-family:\'mr de haviland\',\'cursive\';',
+                    'value': `font-family:'mr de haviland','cursive';`,
                     'index': 93,
-                    'cssFontFamily': '\'mr de haviland\',\'cursive\'',
+                    'cssFontFamily': `'mr de haviland','cursive'`,
                     'family': 'mr de haviland',
                     'fontParam': true,
                     'size': 0,

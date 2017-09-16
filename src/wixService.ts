@@ -39,13 +39,13 @@ export default Wix => ({
 });
 
 function getSiteColors(Wix) {
-    return new Promise((resolve, reject) => Wix.Styles.getSiteColors((res) => res ? resolve(res) : reject('')));
+    return new Promise((resolve, reject) => Wix.Styles.getSiteColors((res) => res ? resolve(res) : reject({})));
 }
 
 function getSiteTextPresets(Wix) {
-    return new Promise((resolve, reject) => Wix.Styles.getSiteTextPresets((res) => res ? resolve(res) : reject('')));
+    return new Promise((resolve, reject) => Wix.Styles.getSiteTextPresets((res) => res ? resolve(res) : reject({})));
 }
 
 function getStyleParams(Wix) {
-    return new Promise((resolve, reject) => Wix.Styles.getStyleParams((res) => res ? resolve(res) : reject('')));
+    return new Promise((resolve, reject) => Wix.Styles.getStyleParams((res) => res ? resolve(res) : reject({})));
 }

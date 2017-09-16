@@ -8,6 +8,7 @@
     <h1>Header</h1>
     <p data-hook="text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed felis lectus, blandit tristique fermentum nec, faucibus ac arcu. Vestibulum interdum metus dolor, sed pretium libero consequat quis. Donec dictum blandit est, sed aliquet lectus gravida sit amet. Aenean ultrices vitae lacus id semper. Ut congue nulla et diam volutpat, a sodales urna tincidunt. Nullam ultrices ullamcorper mauris, at aliquam turpis luctus ac. Maecenas in ligula pharetra, dictum lacus id, feugiat felis. In mollis erat in consequat porta. In euismod et tortor non maximus. Curabitur elementum iaculis eleifend. Nunc ut orci pretium orci varius ultricies. Nam auctor suscipit facilisis. Integer posuere ex vitae pulvinar porta. Aliquam erat volutpat. Morbi non commodo nibh.</p>
     <button>Checkout</button>
+    <script src="https://cdn.polyfill.io/v2/polyfill.min.js"></script>
     <script type="text/javascript" src="//static.parastorage.com/services/js-sdk/1.84.0/js/wix.min.js"></script>
     <script src="${baseStaticUrl}app.bundle#if(!${debug}).min#{end}.js"></script>
 </body>

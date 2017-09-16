@@ -1,5 +1,5 @@
 import * as Color from 'color';
-import fontUtils from './wixStylesFontUtils';
+import {wixStylesFontUtils} from './wixStylesFontUtils';
 import {isJsonLike, parseJson} from './utils';
 
 const hexColorRegex = /^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/;
@@ -47,7 +47,7 @@ export const defaultPlugins = {
         else {
             return font;
         }
-        let fontCssValue = fontUtils.toFontCssValue(fontValue);
+        let fontCssValue = wixStylesFontUtils.toFontCssValue(fontValue);
         if (fontCssValue[fontCssValue.length - 1] === ';') {
             fontCssValue = fontCssValue.split(';')[0];
         } else {

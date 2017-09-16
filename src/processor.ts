@@ -1,4 +1,4 @@
-import {isCssVar} from './utils';
+import {isCssVar, isNumber} from './utils';
 import {CustomSyntaxHelper} from './customSyntaxHelper';
 import {hash} from './hash';
 
@@ -59,7 +59,7 @@ function getDefaultValueOrValueFromSettings(varName, defaultVarValue) {
             return tpaParams.colors[varNameInSettings];
         } else if (tpaParams.fonts[varNameInSettings]) {
             return tpaParams.fonts[varNameInSettings];
-        } else if (typeof tpaParams.numbers[varNameInSettings] === 'number') {
+        } else if (isNumber(tpaParams.numbers[varNameInSettings])) {
             return tpaParams.numbers[varNameInSettings];
         }
         //not found in settings

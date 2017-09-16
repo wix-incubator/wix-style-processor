@@ -23,3 +23,20 @@ export function parseJson(value: string): { theme: string, size?: string, lineHe
             return json;
         }, {});
 }
+
+export function isNumber(value: any): boolean {
+    return typeof value === 'number';
+}
+
+export function forEach(obj: Object, iteratee: (value, key) => void) {
+    Object.keys(obj).forEach((key) => iteratee(obj[key], key));
+}
+
+export function pickBy(obj: Object, predicate: (value: any) => boolean): Object {
+    return Object.keys(obj || {}).reduce((result, key) => {
+        if(predicate(obj[key])) {
+            result[key] = obj[key];
+        }
+        return result;
+    }, {});
+}
