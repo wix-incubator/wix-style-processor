@@ -159,6 +159,29 @@ describe('Index', () => {
             });
     });
 
+    it('should not fail on present with none normal font-variant', () => {
+        const css = '.font-test{font: "font(Body-M)";}';
+        driver.given.css(css)
+            .given.siteTextPresets({
+            'Body-M': {
+                editorKey: 'font_8',
+                fontFamily: 'din-next-w01-light',
+                lineHeight: '1.4em',
+                size: '16px',
+                style: 'normal',
+                value: 'font:normal small-caps normal 12px/1.2em play,sans-serif;',
+                weight: 'normal'
+            }
+        });
+
+        return driver.when.init()
+            .then(() => {
+                expect(driver.get.overrideStyleCallArg())
+                    .to
+                    .equal('.font-test{font: normal normal normal 12px/1.2em play,sans-serif;}');
+            });
+    });
+
     it('should support double font reference', () => {
         const css = '.font-test{--some-font: "font(Body-M)"; font: "font(--some-font)";}';
         driver.given.css(css)
@@ -522,9 +545,9 @@ describe('Index', () => {
                 .given.siteTextPresets(null)
                 .given.resetSiteColors()
                 .given.declarationReplacerPlugin((key, val) => ({
-                    key,
-                    value: '#' + val + '#'
-                }));
+                key,
+                value: '#' + val + '#'
+            }));
         });
 
         describe('withoutStyleCapabilites', () => {

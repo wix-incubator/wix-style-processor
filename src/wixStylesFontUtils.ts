@@ -11,18 +11,14 @@ export const wixStylesFontUtils = {
 
         const parsedSiteTextPresets = {};
         forEach(siteTextPresets, (preset: any, key: string) => {
-            if (preset.displayName) {
-                parsedSiteTextPresets[key] = Object.assign({}, parseCssFont(preset.value), {
-                    preset: key,
-                    editorKey: preset.editorKey,
-                    displayName: preset.displayName
-                });
-            } else {
-                parsedSiteTextPresets[key] = Object.assign({}, parseCssFont(preset.value), {
+            const presetValue = preset.value.replace(/^font\s*:\s*/, '');
+            parsedSiteTextPresets[key] = Object.assign({},
+                parseCssFont(presetValue),
+                {
                     preset: key,
                     editorKey: preset.editorKey
-                });
-            }
+                },
+                preset.displayName ? {displayName: preset.displayName} : {});
         });
 
         const parsedFontStyles = {};
