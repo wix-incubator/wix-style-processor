@@ -13,13 +13,13 @@
     "dist"
   ],
   "scripts": {
-    "start": "yoshi start --entry-point=./test/mock/start-fake-server.js",
+    "start": "haste start --entry-point=./test/mock/start-fake-server.js",
     "build": ":",
-    "pretest": "yoshi lint && yoshi build",
-    "test:unit": "yoshi test --mocha",
-    "test:e2e": "yoshi test --protractor",
+    "pretest": "haste lint && haste build",
+    "test:unit": "haste test --mocha",
+    "test:e2e": "haste test --protractor",
     "test": "npm run test:unit && npm run test:e2e",
-    "release": "yoshi release"
+    "release": "haste release"
   },
   "dependencies": {
     "color": "^1.0.3",
@@ -40,7 +40,7 @@
     "ts-node": "^3.2.0",
     "typescript": "^2.4.2",
     "velocity": "^0.7.2",
-    "yoshi": "latest"
+    "haste-preset-yoshi": "latest"
   },
   "yoshi": {
     "entry": {
@@ -54,5 +54,8 @@
   },
   "publishConfig": {
     "registry": "https://registry.npmjs.org/"
+  },
+  "haste": {
+    "preset": "yoshi"
   }
 }
