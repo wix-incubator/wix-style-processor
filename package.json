@@ -10,7 +10,8 @@
   },
   "main": "dist/src/index.js",
   "files": [
-    "dist"
+    "dist/src",
+    "README.md"
   ],
   "scripts": {
     "start": "haste start --entry-point=./test/mock/start-fake-server.js",
