@@ -3,6 +3,7 @@ import domService from './domService';
 import WixService from './wixService';
 import {Plugins} from './plugins';
 import {defaultPlugins} from './defaultPlugins';
+import {defaultReplacers} from './defaultReplacers';
 
 export default {
     styleUpdater: null,
@@ -14,6 +15,8 @@ export default {
 
         Object.keys(defaultPlugins)
             .forEach((funcName) => this.plugins.addCssFunction(funcName, defaultPlugins[funcName]));
+        Object.keys(defaultReplacers)
+            .forEach((funcName) => this.plugins.addDeclarationReplacer(defaultReplacers[funcName]));
 
         const defaultOptions = <any>{};
         defaultOptions.plugins = this.plugins;

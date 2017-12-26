@@ -2113,8 +2113,8 @@
       },
       "booleans": {},
       "fonts": {
-        "gallery_borderWidth": {
-          "value": "5",
+        "buttonAlignment": {
+          "value": "right",
           "fontStyleParam": false
         }
       },

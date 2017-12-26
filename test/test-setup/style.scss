@@ -30,4 +30,6 @@ button {
     color: "color(--buttonTextColor)";
     border: "unit(--buttonBorderSize, px)" solid "color(--buttonBorderColor)";
     border-radius: "unit(--buttonBorderSize, px)";
+    width: 250px;
+    text-align: "string(--buttonAlignment)";
 }

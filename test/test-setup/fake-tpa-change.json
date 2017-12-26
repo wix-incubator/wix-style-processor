@@ -2125,7 +2125,7 @@
         "showQuickView": true
       },
       "fonts": {
-        "gallery_alignment": {
+        "buttonAlignment": {
           "value": "center",
           "fontStyleParam": false
         },
@@ -2147,7 +2147,7 @@
           "style": {
             "bold": false,
             "italic": false,
-            "underline": false
+            "underline": true
           },
           "family": "futura-lt-w01-light",
           "cssFontFamily": "'futura-lt-w01-light','sans-serif'",

@@ -40,22 +40,28 @@ export const defaultPlugins = {
             fontValue = font;
         } else if (isJsonLike(font)) {
             const {theme, ...overrides} = parseJson(font);
-            fontValue = Object.assign({style:'',variant:'',weight:'',stretch:'',size:'',lineHeight:'',family:[]}, tpaParams.fonts[theme], overrides);
+            fontValue = Object.assign({
+                style: '',
+                variant: '',
+                weight: '',
+                stretch: '',
+                size: '',
+                lineHeight: '',
+                family: []
+            }, tpaParams.fonts[theme], overrides);
         } else if (tpaParams.fonts[font]) {
             fontValue = tpaParams.fonts[font];
         }
         else {
             return font;
         }
+
         let fontCssValue = wixStylesFontUtils.toFontCssValue(fontValue);
+
         if (fontCssValue[fontCssValue.length - 1] === ';') {
             fontCssValue = fontCssValue.split(';')[0];
         } else {
             //todo: else never reached
-        }
-
-        if(font.underline) {
-            fontCssValue += `; text-decoration: underline`;
         }
 
         return fontCssValue;
@@ -75,6 +81,9 @@ export const defaultPlugins = {
     },
     number: (value) => {
         return +value;
+    },
+    underline: (font) => {
+        return font && font.underline ? 'underline' : '';
     },
     unit: (value, unit) => {
         return `${value}${unit}`;

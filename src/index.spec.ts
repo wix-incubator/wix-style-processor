@@ -66,7 +66,7 @@ describe('Index', () => {
         return driver.when.init()
             .then(() => {
                 expect(driver.get.overrideStyleCallArg()).to
-                    .equal(`.foo{font: normal normal normal 17px/1.4em mr de haviland,cursive;}`);
+                    .equal(`.foo{font: normal normal normal 17px/1.4em mr de haviland,cursive;text-decoration: ;}`);
             });
     });
 
@@ -155,7 +155,7 @@ describe('Index', () => {
         return driver.when.init()
             .then(() => {
                 expect(driver.get.overrideStyleCallArg()).to
-                    .equal(`:root{--cart_textFontStyle: normal normal normal 17px/1.4em raleway,sans-serif;--cartButton_textColor: #FFFFFF;}.foo{font: normal normal normal 17px/1.4em raleway,sans-serif;color: #FFFFFF;}`);
+                    .equal(`:root{--cart_textFontStyle: normal normal normal 17px/1.4em raleway,sans-serif;--cartButton_textColor: #FFFFFF;}.foo{font: normal normal normal 17px/1.4em raleway,sans-serif;text-decoration: ;color: #FFFFFF;}`);
             });
     });
 
@@ -202,7 +202,7 @@ describe('Index', () => {
             .then(() => {
                 expect(driver.get.overrideStyleCallArg())
                     .to
-                    .equal('.font-test{--some-font: normal normal normal 16px/1.4em din-next-w01-light,din-next-w02-light,din-next-w10-light,sans-serif;font: normal normal normal 16px/1.4em din-next-w01-light,din-next-w02-light,din-next-w10-light,sans-serif;}');
+                    .equal('.font-test{--some-font: normal normal normal 16px/1.4em din-next-w01-light,din-next-w02-light,din-next-w10-light,sans-serif;font: normal normal normal 16px/1.4em din-next-w01-light,din-next-w02-light,din-next-w10-light,sans-serif;text-decoration: ;}');
             });
     });
 
@@ -460,7 +460,7 @@ describe('Index', () => {
         return driver.when.init().then(() => {
             expect(driver.get.overrideStyleCallArg())
                 .to
-                .equal(`.foo{--bodyText: italic normal bold 10px/2em raleway,sans-serif;font: normal normal normal 17px/1.4em mr de haviland,cursive;}`);
+                .equal(`.foo{--bodyText: italic normal bold 10px/2em raleway,sans-serif;font: normal normal normal 17px/1.4em mr de haviland,cursive;text-decoration: ;}`);
         });
     });
 
@@ -483,7 +483,7 @@ describe('Index', () => {
         return driver.when.init().then(() => {
             expect(driver.get.overrideStyleCallArg())
                 .to
-                .equal(`.foo{--bodyText: italic normal bold 10px/2em raleway,sans-serif;font: italic normal bold 10px/2em raleway,sans-serif;}`);
+                .equal(`.foo{--bodyText: italic normal bold 10px/2em raleway,sans-serif;font: italic normal bold 10px/2em raleway,sans-serif;text-decoration: ;}`);
         });
     });
 
@@ -560,7 +560,7 @@ describe('Index', () => {
         return driver.when.init().then(() => {
             expect(driver.get.overrideStyleCallArg())
                 .to
-                .equal(`.foo{font: normal normal normal 17px/1.4em mr de haviland,cursive; text-decoration: underline;}`);
+                .equal(`.foo{font: normal normal normal 17px/1.4em mr de haviland,cursive;text-decoration: underline;}`);
         });
     });
 
@@ -636,7 +636,9 @@ describe('Index', () => {
             const borderWidth = '"unit(number(--borderWidth), string(px))"';
             const borderColor = '"withoutOpacity(opacity(color(color-1), 0.5))"';
             const font = `"font({theme: 'Body-M', size: '30px'})"`;
-            const fontWithUnderline = `"font(--fontVar)"`;
+            const fontVar = `--fontVar`;
+            const fontWithUnderline = `"font(${fontVar})"`;
+            const underline = `"underline(${fontVar})"`;
 
             beforeEach(() => {
                 driver.given.cssVarsSupported(true)
@@ -676,7 +678,7 @@ describe('Index', () => {
             it('should change custom syntax to native vars', () => {
                 return driver.when.init()
                     .then(() => expect(driver.get.overrideStyleCallArg()).to
-                        .equal(`.foo{color: var(--${hash(color)});border: var(--${hash(borderWidth)}) solid var(--${hash(borderColor)});font: var(--${hash(font)});font: var(--${hash(fontWithUnderline)});}`));
+                        .equal(`.foo{color: var(--${hash(color)});border: var(--${hash(borderWidth)}) solid var(--${hash(borderColor)});font: var(--${hash(font)});font: var(--${hash(fontWithUnderline)});text-decoration: var(--${hash(underline)});}`));
             });
 
             it('should evaluate custom functions on style update', () => {
@@ -697,7 +699,8 @@ describe('Index', () => {
                                 [`--${hash(borderWidth)}`]: `${newValues.number}px`,
                                 [`--${hash(borderColor)}`]: 'rgb(0, 0, 0)',
                                 [`--${hash(font)}`]: 'normal normal normal 30px/1.4em raleway,sans-serif',
-                                [`--${hash(fontWithUnderline)}`]: 'normal normal normal 17px/1.4em mr de haviland,cursive; text-decoration: underline'
+                                [`--${hash(fontWithUnderline)}`]: 'normal normal normal 17px/1.4em mr de haviland,cursive',
+                                [`--${hash(underline)}`]: 'underline'
                             });
                     });
             });
@@ -706,7 +709,7 @@ describe('Index', () => {
                 return driver
                     .when.init({shouldUseCssVars: false})
                     .then(() => expect(driver.get.overrideStyleCallArg()).to
-                        .equal(`.foo{color: rgb(128, 255, 0);border: 42px solid rgb(255, 255, 255);font: normal normal normal 30px/1.4em raleway,sans-serif;font: normal normal normal 17px/1.4em mr de haviland,cursive; text-decoration: underline;}`));
+                        .equal(`.foo{color: rgb(128, 255, 0);border: 42px solid rgb(255, 255, 255);font: normal normal normal 30px/1.4em raleway,sans-serif;font: normal normal normal 17px/1.4em mr de haviland,cursive;text-decoration: underline;}`));
             });
         });
     });

@@ -34,7 +34,7 @@ describe('Style Processor Scenario', () => {
         expect(await ($$('style').count())).toBe(styleNum);
     });
 
-    it('should update styles after change form sdk', async () => {
+    it('should update styles after change from sdk', async () => {
         await browser.get('/');
         waitForVisibilityOf(elementByDataHook('text'));
 
