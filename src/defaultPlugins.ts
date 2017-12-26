@@ -53,6 +53,11 @@ export const defaultPlugins = {
         } else {
             //todo: else never reached
         }
+
+        if(font.underline) {
+            fontCssValue += `; text-decoration: underline`;
+        }
+
         return fontCssValue;
 
     },

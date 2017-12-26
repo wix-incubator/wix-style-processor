@@ -85,6 +85,7 @@ function parseWixStylesFont(font) {
     value += size + '/' + lineHeight + ' ';
 
     value += font.cssFontFamily || font.family;
-
-    return parseCssFont(value);
+    const fontObj = {...parseCssFont(value)};
+    fontObj.underline = font.style && font.style.underline;
+    return fontObj;
 }

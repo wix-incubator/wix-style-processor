@@ -535,6 +535,35 @@ describe('Index', () => {
         });
     });
 
+    it('should support underline', () => {
+        let css = `.foo { font: "font(--fontVar)" }`;
+
+        driver.given.css(css)
+            .given.styleParams({
+            fonts: {
+                fontVar: {
+                    'value': `font-family:'mr de haviland','cursive';`,
+                    'index': 93,
+                    'cssFontFamily': `'mr de haviland','cursive'`,
+                    'family': 'mr de haviland',
+                    'fontParam': true,
+                    'size': 0,
+                    'style': {
+                        'bold': false,
+                        'italic': false,
+                        'underline': true
+                    }
+                }
+            }
+        });
+
+        return driver.when.init().then(() => {
+            expect(driver.get.overrideStyleCallArg())
+                .to
+                .equal(`.foo{font: normal normal normal 17px/1.4em mr de haviland,cursive; text-decoration: underline;}`);
+        });
+    });
+
     describe('As Standalone', () => {
         beforeEach(() => {
             const css = `.foo {bar: 4; color: "color(color-1)"}`;
