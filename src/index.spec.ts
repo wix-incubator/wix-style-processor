@@ -636,10 +636,30 @@ describe('Index', () => {
             const borderWidth = '"unit(number(--borderWidth), string(px))"';
             const borderColor = '"withoutOpacity(opacity(color(color-1), 0.5))"';
             const font = `"font({theme: 'Body-M', size: '30px'})"`;
+            const fontWithUnderline = `"font(--fontVar)"`;
 
             beforeEach(() => {
                 driver.given.cssVarsSupported(true)
-                    .given.css(`.foo {color: ${color}; border: ${borderWidth} solid ${borderColor}; font: ${font}`)
+                    .given
+                    .css(`.foo {color: ${color}; border: ${borderWidth} solid ${borderColor}; font: ${font}; font: ${fontWithUnderline}`)
+                    .given.styleParams({
+                    numbers: {borderWidth: 42},
+                    fonts: {
+                        fontVar: {
+                            'value': `font-family:'mr de haviland','cursive';`,
+                            'index': 93,
+                            'cssFontFamily': `'mr de haviland','cursive'`,
+                            'family': 'mr de haviland',
+                            'fontParam': true,
+                            'size': 0,
+                            'style': {
+                                'bold': false,
+                                'italic': false,
+                                'underline': true
+                            }
+                        }
+                    }
+                })
                     .given.siteTextPresets({
                     'Body-M': {
                         editorKey: 'font_8',
@@ -654,9 +674,9 @@ describe('Index', () => {
             });
 
             it('should change custom syntax to native vars', () => {
-                driver.when.init()
+                return driver.when.init()
                     .then(() => expect(driver.get.overrideStyleCallArg()).to
-                        .equal(`.foo{color: var(--${hash(color)});border: var(--${hash(borderWidth)}) solid var(--${hash(borderColor)});font: var(--${hash(font)});}`));
+                        .equal(`.foo{color: var(--${hash(color)});border: var(--${hash(borderWidth)}) solid var(--${hash(borderColor)});font: var(--${hash(font)});font: var(--${hash(fontWithUnderline)});}`));
             });
 
             it('should evaluate custom functions on style update', () => {
@@ -664,13 +684,9 @@ describe('Index', () => {
                     number: 42,
                     color: '#000000'
                 };
-                driver.when.init()
+                return driver.when.init()
                     .then(() => {
-                        driver.given.styleParams({
-                            numbers: {
-                                borderWidth: newValues.number
-                            }
-                        }).given.siteColor('color-1', newValues.color)
+                        driver.given.siteColor('color-1', newValues.color)
                             .given.siteColor('color-9', '#0000FF');
                     })
                     .then(driver.when.updateStyleParams)
@@ -680,17 +696,17 @@ describe('Index', () => {
                                 [`--${hash(color)}`]: 'rgb(0, 255, 128)',
                                 [`--${hash(borderWidth)}`]: `${newValues.number}px`,
                                 [`--${hash(borderColor)}`]: 'rgb(0, 0, 0)',
-                                [`--${hash(font)}`]: 'normal normal normal 30px/1.4em raleway,sans-serif'
+                                [`--${hash(font)}`]: 'normal normal normal 30px/1.4em raleway,sans-serif',
+                                [`--${hash(fontWithUnderline)}`]: 'normal normal normal 17px/1.4em mr de haviland,cursive; text-decoration: underline'
                             });
                     });
             });
 
-            it('should should allow to override shouldUseCssVars by options', () => {
-                driver
-                    .given.styleParams({numbers: {borderWidth: 42}})
+            it('should allow to override shouldUseCssVars by options', () => {
+                return driver
                     .when.init({shouldUseCssVars: false})
                     .then(() => expect(driver.get.overrideStyleCallArg()).to
-                        .equal(`.foo{color: rgb(128, 255, 0);border: 42px solid rgb(255, 255, 255);font: normal normal normal 30px/1.4em raleway,sans-serif;}`));
+                        .equal(`.foo{color: rgb(128, 255, 0);border: 42px solid rgb(255, 255, 255);font: normal normal normal 30px/1.4em raleway,sans-serif;font: normal normal normal 17px/1.4em mr de haviland,cursive; text-decoration: underline;}`));
             });
         });
     });
