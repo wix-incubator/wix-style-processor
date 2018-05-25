@@ -41,7 +41,7 @@
     "ts-node": "^3.2.0",
     "typescript": "^2.4.2",
     "velocity": "^0.7.2",
-    "yoshi": "^1.2.0"
+    "yoshi": "^2.6.1"
   },
   "yoshi": {
     "entry": {
