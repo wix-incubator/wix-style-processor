@@ -1,17 +1,18 @@
-import StyleUpdater from './styleUpdater';
-import domService from './domService';
-import WixService from './wixService';
+import {StyleUpdaterFactory} from './styleUpdater';
+import defaultDomService from './domService';
+import {WixService} from './wixService';
 import {Plugins} from './plugins';
 import {defaultPlugins} from './defaultPlugins';
 import {defaultReplacers} from './defaultReplacers';
 
+/* tslint:disable:no-invalid-this */
 export default {
     styleUpdater: null,
 
     plugins: new Plugins(),
 
-    init(options = <any>{}, domServiceOverride = domService) {
-        const wixService = WixService(window.Wix);
+    init(options = <any>{}, domService = defaultDomService) {
+        const wixService = new WixService(window.Wix);
 
         Object.keys(defaultPlugins)
             .forEach((funcName) => this.plugins.addCssFunction(funcName, defaultPlugins[funcName]));
@@ -24,7 +25,7 @@ export default {
         defaultOptions.shouldApplyCSSFunctions = !wixService.shouldRunAsStandalone();
         options = Object.assign({}, defaultOptions, options);
 
-        this.styleUpdater = StyleUpdater(wixService, domServiceOverride, options);
+        this.styleUpdater = StyleUpdaterFactory(wixService, domService, options);
 
         if (wixService.isEditorMode() || wixService.isPreviewMode()) {
             wixService.listenToStyleParamsChange(() => this.styleUpdater.update(true));
@@ -35,4 +36,4 @@ export default {
     update(isRerender?: boolean) {
         return this.styleUpdater.update(isRerender);
     }
-}
+};

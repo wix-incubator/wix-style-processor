@@ -51,8 +51,7 @@ export const defaultPlugins = {
             }, tpaParams.fonts[theme], overrides);
         } else if (tpaParams.fonts[font]) {
             fontValue = tpaParams.fonts[font];
-        }
-        else {
+        } else {
             return font;
         }
 

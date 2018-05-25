@@ -8,7 +8,7 @@ export default {
     },
     overrideStyle(tag, css) {
         tag.originalTemplate = tag.originalTemplate || tag.textContent;
-        if(isIE()) {
+        if (isIE()) {
             tag.innerHTML = css;
         } else {
             tag.textContent = css;
@@ -19,7 +19,7 @@ export default {
     },
     updateCssVars(varMap) {
         Object.keys(varMap).forEach((key) => {
-            document.documentElement.style.setProperty(key, varMap[key])
+            document.documentElement.style.setProperty(key, varMap[key]);
         });
     }
 };

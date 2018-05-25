@@ -1,4 +1,4 @@
-import 'jsdom-global/register'
+import 'jsdom-global/register';
 import {expect} from 'chai';
 import * as sinon from 'sinon';
 
@@ -48,7 +48,7 @@ describe('DomService', () => {
             const orgTextContent = regularStyle.textContent;
 
             Object.defineProperty(regularStyle, 'textContent', {
-                get: () => orgTextContent ,
+                get: () => orgTextContent,
                 set: spy
             });
 
@@ -63,7 +63,7 @@ describe('DomService', () => {
             global['window'] = {navigator: {userAgent: 'Trident'}};
 
             Object.defineProperty(regularStyle, 'textContent', {
-                get: () => orgTextContent ,
+                get: () => orgTextContent,
                 set: spy
             });
 

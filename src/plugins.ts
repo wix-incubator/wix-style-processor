@@ -1,3 +1,5 @@
+const paramsRegex = /,(?![^(]*(?:\)|}))/g;
+
 export class Plugins {
     public cssFunctions: { [index: string]: Function };
     public declarationReplacers: Function[];
@@ -27,13 +29,13 @@ export class Plugins {
         return this.regex.test(str);
     }
 
-    public getFunctionSignature(str: string) {
+    public getFunctionSignature(str: string): { funcName: string, args: string[] } {
         let groups = this.regex.exec(str);
         if (groups) {
             return {
                 funcName: groups[1],
-                args: groups[2]
-            }
+                args: groups[2].split(paramsRegex)
+            };
         }
 
         return null;
@@ -44,6 +46,6 @@ export class Plugins {
     }
 }
 
-function wrapWithValueProvider(fn: Function) {
-    return (...args) => (tpaParams: ITPAParams) => fn(...args.map(fn => fn(tpaParams)), tpaParams);
+function wrapWithValueProvider(fnToWrap: Function) {
+    return (...args) => (tpaParams: ITPAParams) => fnToWrap(...args.map(fn => fn(tpaParams)), tpaParams);
 }

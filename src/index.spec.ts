@@ -31,7 +31,7 @@ describe('Index', () => {
             .given.css(css)
             .given.styleParams({
             colors: {
-                'my_var': {value: 'red'}
+                my_var: {value: 'red'}
             }
         });
 
@@ -47,17 +47,17 @@ describe('Index', () => {
             .given.css(css)
             .given.styleParams({
             fonts: {
-                'my_var': {
-                    'value': `font-family:'mr de haviland','cursive';`,
-                    'index': 93,
-                    'cssFontFamily': `'mr de haviland','cursive'`,
-                    'family': 'mr de haviland',
-                    'fontParam': true,
-                    'size': 0,
-                    'style': {
-                        'bold': false,
-                        'italic': false,
-                        'underline': false
+                my_var: {
+                    value: `font-family:'mr de haviland','cursive';`,
+                    index: 93,
+                    cssFontFamily: `'mr de haviland','cursive'`,
+                    family: 'mr de haviland',
+                    fontParam: true,
+                    size: 0,
+                    style: {
+                        bold: false,
+                        italic: false,
+                        underline: false
                     }
                 }
             }
@@ -77,8 +77,8 @@ describe('Index', () => {
             .given.css(css)
             .given.styleParams({
             fonts: {
-                'my_var': {
-                    'value': '100px',
+                my_var: {
+                    value: '100px',
                     fontStyleParam: false
                 }
             }
@@ -114,7 +114,7 @@ describe('Index', () => {
             .given.styleParams({
             numbers: {},
             colors: {
-                'my_var3': {value: 'rgba(128,110,66,0.6193647540983607)'}
+                my_var3: {value: 'rgba(128,110,66,0.6193647540983607)'}
             },
             fonts: {}
         })
@@ -137,7 +137,7 @@ describe('Index', () => {
             .given.css(css)
             .given.styleParams({
             colors: {
-                'my_var2': {value: 'rgba(128,110,66,0.6193647540983607)'}
+                my_var2: {value: 'rgba(128,110,66,0.6193647540983607)'}
             }
         })
             .given.siteTextPresets({
@@ -442,16 +442,16 @@ describe('Index', () => {
             .given.styleParams({
             fonts: {
                 bodyText: {
-                    'value': `font-family:'mr de haviland','cursive';`,
-                    'index': 93,
-                    'cssFontFamily': `'mr de haviland','cursive'`,
-                    'family': 'mr de haviland',
-                    'fontParam': true,
-                    'size': 0,
-                    'style': {
-                        'bold': false,
-                        'italic': false,
-                        'underline': false
+                    value: `font-family:'mr de haviland','cursive';`,
+                    index: 93,
+                    cssFontFamily: `'mr de haviland','cursive'`,
+                    family: 'mr de haviland',
+                    fontParam: true,
+                    size: 0,
+                    style: {
+                        bold: false,
+                        italic: false,
+                        underline: false
                     }
                 }
             }
@@ -542,16 +542,16 @@ describe('Index', () => {
             .given.styleParams({
             fonts: {
                 fontVar: {
-                    'value': `font-family:'mr de haviland','cursive';`,
-                    'index': 93,
-                    'cssFontFamily': `'mr de haviland','cursive'`,
-                    'family': 'mr de haviland',
-                    'fontParam': true,
-                    'size': 0,
-                    'style': {
-                        'bold': false,
-                        'italic': false,
-                        'underline': true
+                    value: `font-family:'mr de haviland','cursive';`,
+                    index: 93,
+                    cssFontFamily: `'mr de haviland','cursive'`,
+                    family: 'mr de haviland',
+                    fontParam: true,
+                    size: 0,
+                    style: {
+                        bold: false,
+                        italic: false,
+                        underline: true
                     }
                 }
             }
@@ -623,7 +623,7 @@ describe('Index', () => {
                         colors: {
                             bar: {value: '#ffffff'}
                         }
-                    })
+                    });
                 })
                 .then(driver.when.updateStyleParams)
                 .then(() => {
@@ -648,16 +648,16 @@ describe('Index', () => {
                     numbers: {borderWidth: 42},
                     fonts: {
                         fontVar: {
-                            'value': `font-family:'mr de haviland','cursive';`,
-                            'index': 93,
-                            'cssFontFamily': `'mr de haviland','cursive'`,
-                            'family': 'mr de haviland',
-                            'fontParam': true,
-                            'size': 0,
-                            'style': {
-                                'bold': false,
-                                'italic': false,
-                                'underline': true
+                            value: `font-family:'mr de haviland','cursive';`,
+                            index: 93,
+                            cssFontFamily: `'mr de haviland','cursive'`,
+                            family: 'mr de haviland',
+                            fontParam: true,
+                            size: 0,
+                            style: {
+                                bold: false,
+                                italic: false,
+                                underline: true
                             }
                         }
                     }

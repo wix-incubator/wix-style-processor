@@ -1,51 +1,47 @@
-export default Wix => ({
+export class WixService {
+    constructor(private Wix) {
+
+    }
+
     getStyleParams() {
         return this.shouldRunAsStandalone() ?
-            Promise.resolve([{},{},{}]) :
+            Promise.resolve([{}, {}, {}]) :
             Promise.all([
-                getSiteColors(Wix),
-                getSiteTextPresets(Wix),
-                getStyleParams(Wix)
+                promisfy(this.Wix.Styles.getSiteColors),
+                promisfy(this.Wix.Styles.getSiteTextPresets),
+                promisfy(this.Wix.Styles.getStyleParams)
             ]);
-    },
+    }
 
     listenToStyleParamsChange(cb) {
-        Wix.addEventListener(Wix.Events.STYLE_PARAMS_CHANGE, cb);
-    },
+        this.Wix.addEventListener(this.Wix.Events.STYLE_PARAMS_CHANGE, cb);
+    }
 
     listenToSettingsUpdated(cb) {
-        Wix.addEventListener(Wix.Events.SETTINGS_UPDATED, cb);
-    },
+        this.Wix.addEventListener(this.Wix.Events.SETTINGS_UPDATED, cb);
+    }
 
     isEditorMode(): boolean {
-        return Wix.Utils.getViewMode() === 'editor';
-    },
+        return this.Wix.Utils.getViewMode() === 'editor';
+    }
 
     isPreviewMode(): boolean {
-        return Wix.Utils.getViewMode() === 'preview';
-    },
-
-    shouldRunAsStandalone(): boolean {
-      return this.isStandaloneMode() || this.withoutStyleCapabilites();
-    },
-
-    withoutStyleCapabilites(): boolean {
-      return !Wix.Styles;
-    },
+        return this.Wix.Utils.getViewMode() === 'preview';
+    }
 
     isStandaloneMode(): boolean {
-        return Wix.Utils.getViewMode() === 'standalone';
+        return this.Wix.Utils.getViewMode() === 'standalone';
     }
-});
 
-function getSiteColors(Wix) {
-    return new Promise((resolve, reject) => Wix.Styles.getSiteColors((res) => res ? resolve(res) : reject({})));
+    shouldRunAsStandalone(): boolean {
+        return this.isStandaloneMode() || this.withoutStyleCapabilites();
+    }
+
+    withoutStyleCapabilites(): boolean {
+        return !this.Wix.Styles;
+    }
 }
 
-function getSiteTextPresets(Wix) {
-    return new Promise((resolve, reject) => Wix.Styles.getSiteTextPresets((res) => res ? resolve(res) : reject({})));
-}
-
-function getStyleParams(Wix) {
-    return new Promise((resolve, reject) => Wix.Styles.getStyleParams((res) => res ? resolve(res) : reject({})));
+function promisfy(fn) {
+    return new Promise((resolve, reject) => fn((res) => res ? resolve(res) : reject({})));
 }

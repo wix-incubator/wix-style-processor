@@ -2,8 +2,6 @@ import {isCssVar, isNumber} from './utils';
 import {CustomSyntaxHelper} from './customSyntaxHelper';
 import {hash} from './hash';
 
-const paramsRegex = /,(?![^(]*(?:\)|}))/g;
-
 export function processor({
     part,
     customSyntaxHelper,
@@ -24,11 +22,11 @@ export function processor({
 }
 
 function executeFunction(value, plugins, customSyntaxHelper: CustomSyntaxHelper) {
-    let functionSignature;
+    const functionSignature = plugins.getFunctionSignature(value);
 
-    if (functionSignature = plugins.getFunctionSignature(value)) {
-        return plugins.cssFunctions[functionSignature.funcName](...functionSignature.args.split(paramsRegex)
-            .map((v) => executeFunction(v.trim(), plugins, customSyntaxHelper)));
+    if (functionSignature) {
+        return plugins.cssFunctions[functionSignature.funcName](...functionSignature.args
+            .map((arg) => executeFunction(arg.trim(), plugins, customSyntaxHelper)));
     } else {
         return getVarOrPrimitiveValue(value, plugins, customSyntaxHelper);
     }

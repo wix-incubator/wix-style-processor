@@ -5,7 +5,7 @@ import {processor} from './processor';
 import {CustomSyntaxHelper} from './customSyntaxHelper';
 import {pickBy, splitDeclaration} from './utils';
 
-export default (wixService, domService, options) => {
+export function StyleUpdaterFactory(wixService, domService, options) {
     const cacheMap = {};
 
     return {
@@ -27,7 +27,7 @@ export default (wixService, domService, options) => {
                         const stylis = new Stylis({semicolon: false, compress: false, preserve: true});
 
                         applyDeclarationReplacers(options.plugins, stylis);
-                        if(options.shouldApplyCSSFunctions) {
+                        if (options.shouldApplyCSSFunctions) {
                             applyCssFunctionsExtraction({tpaParams, cacheMap, options}, stylis);
                         }
 
@@ -38,20 +38,22 @@ export default (wixService, domService, options) => {
                 }
 
                 if (options.shouldUseCssVars) {
-                    const varMap = Object.keys(cacheMap).reduce((varMap, key) => {
-                        varMap[key] = cacheMap[key](tpaParams);
-                        return varMap;
-                    }, {});
+                    const varMap = Object.keys(cacheMap)
+                        .reduce((acc, key) => {
+                            acc[key] = cacheMap[key](tpaParams);
+                            return acc;
+                        }, {});
 
                     domService.updateCssVars(varMap);
                 }
             }).catch(err => {
+                //tslint:disable-next-line
                 console.error('Failed updating styles:', err);
                 throw err;
             });
         }
     };
-};
+}
 
 function escapeRegExp(str) {
     return str.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, '\\$&');
@@ -61,12 +63,12 @@ function applyDeclarationReplacers(plugins, stylis) {
     plugins.declarationReplacers
         .forEach((replacer) => {
             stylis.use((context, declaration) => {
-                if (context == 1) {
+                if (context === 1) {
                     let {key, value} = splitDeclaration(declaration);
                     let pluginResult = replacer(key, value);
                     return `${pluginResult.key}: ${pluginResult.value}`;
                 }
-            })
+            });
         });
 }
 
@@ -85,11 +87,11 @@ function applyCssFunctionsExtraction({tpaParams, cacheMap, options}, stylis) {
 
         if (context === -2) {
             /* post-process */
-            return customSyntaxHelper.customSyntaxStrs.reduce((content, part) => {
+            return customSyntaxHelper.customSyntaxStrs.reduce((processedContent, part) => {
                 const newValue = processor({
-                    part, customSyntaxHelper: customSyntaxHelper, tpaParams, cacheMap
+                    part, customSyntaxHelper, tpaParams, cacheMap
                 }, options);
-                return content.replace(new RegExp(escapeRegExp(part), 'g'), newValue);
+                return processedContent.replace(new RegExp(escapeRegExp(part), 'g'), newValue);
             }, content);
         }
     });

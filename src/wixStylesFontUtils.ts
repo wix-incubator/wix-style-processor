@@ -78,9 +78,13 @@ function parseWixStylesFont(font) {
     }
 
     let size = font.size || 'normal';
-    if (isNumber(size)) size = size + 'px';
+    if (isNumber(size)) {
+        size = size + 'px';
+    }
     let lineHeight = font.lineHeight || 'normal';
-    if (isNumber(lineHeight)) lineHeight = lineHeight + 'px';
+    if (isNumber(lineHeight)) {
+        lineHeight = lineHeight + 'px';
+    }
 
     value += size + '/' + lineHeight + ' ';
 

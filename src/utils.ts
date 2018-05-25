@@ -2,20 +2,20 @@ export function isCssVar(key: string) {
     return key.indexOf('--') === 0;
 }
 
-export function splitDeclaration(decl: string): {key: string, value: string} {
+export function splitDeclaration(decl: string): { key: string, value: string } {
     let [key, ...value] = decl.split(':');
     return {
         key: key.trim(),
         value: value.join(':').trim()
-    }
+    };
 }
 
 export function isJsonLike(value: string) {
     return typeof value === 'string' && value[0] === '{' && value.slice(-1) === '}';
 }
 
-export function parseJson(value: string): { theme: string, size?: string, lineHeight?: string, style?: string, weight: string } {
-    return <any>value.slice(1, -1)
+export function parseJson(strValue: string): { theme: string, size?: string, lineHeight?: string, style?: string, weight: string } {
+    return <any>strValue.slice(1, -1)
         .split(',')
         .reduce((json, current) => {
             const [key, value] = current.split(':');
@@ -34,7 +34,7 @@ export function forEach(obj: Object, iteratee: (value, key) => void) {
 
 export function pickBy(obj: Object, predicate: (value: any) => boolean): Object {
     return Object.keys(obj || {}).reduce((result, key) => {
-        if(predicate(obj[key])) {
+        if (predicate(obj[key])) {
             result[key] = obj[key];
         }
         return result;

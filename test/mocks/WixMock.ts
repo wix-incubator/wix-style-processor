@@ -4,10 +4,6 @@ export default class WixMock {
     private styleParams: any;
     private viewMode: string = 'site';
 
-    constructor() {
-
-    }
-
     private callbackQ = [];
     public Styles = {
         getSiteColors: (cb) => {

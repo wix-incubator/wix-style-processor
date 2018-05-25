@@ -1,5 +1,5 @@
 // murmurhash2 via https://gist.github.com/raycmorgan/588423
-
+/* tslint:disable */
 export function hash(str) {
     return murmur2(str, str.length).toString(36);
 }
@@ -68,5 +68,5 @@ function Umul32(n, m) {
     let nlo = n & 0xffff;
     let nhi = n >>> 16;
     let res = ((nlo * m) + (((nhi * m) & 0xffff) << 16)) | 0;
-    return res
+    return res;
 }
