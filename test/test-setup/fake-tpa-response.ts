@@ -1,4 +1,5 @@
-{
+/* tslint:disable */
+export const fakeTpaResponse = {
   "intent": "TPA_RESPONSE",
   "callId": 1,
   "type": "appIsAlive",
@@ -2123,4 +2124,4 @@
     }
   },
   "status": true
-}
+};

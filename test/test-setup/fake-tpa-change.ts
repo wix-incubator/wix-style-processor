@@ -1,4 +1,5 @@
-{
+/* tslint:disable */
+export const fakeTpaChanged = {
   "intent": "addEventListener",
   "eventType": "THEME_CHANGE",
   "params": {
@@ -2160,4 +2161,4 @@
       "uploadFontFaces": ""
     }
   }
-}
+};

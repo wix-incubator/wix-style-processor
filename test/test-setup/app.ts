@@ -1,6 +1,6 @@
 import './style.scss';
-import * as fakeTpaResponse from './fake-tpa-response.json';
-import * as fakeTpaChanged from './fake-tpa-change.json';
+import {fakeTpaResponse} from './fake-tpa-response';
+import {fakeTpaChanged} from './fake-tpa-change';
 
 import styleProcessor from '../../src/index';
 window.Wix.Utils.getViewMode = () => 'editor';
