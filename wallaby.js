@@ -1,1 +1,1 @@
-module.exports = require('yoshi/config/wallaby-mocha');
+module.exports = require('yoshi/config/wallaby-mocha-ts.ts');

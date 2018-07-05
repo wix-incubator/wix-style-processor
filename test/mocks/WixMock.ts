@@ -4,7 +4,7 @@ export default class WixMock {
     private styleParams: any;
     private viewMode: string = 'site';
 
-    private callbackQ = [];
+    private readonly callbackQ = [];
     public Styles = {
         getSiteColors: (cb) => {
             cb(this.siteColors);
@@ -35,16 +35,16 @@ export default class WixMock {
         styleParams: (styleParams) => {
             this.styleParams = styleParams;
         },
-        viewMode: (mode: string) => {
+        viewMode: (mode: string): WixMock => {
             this.viewMode = mode;
             return this;
         },
-        siteColor: (ref: string, value: string) => {
+        siteColor: (ref: string, value: string): WixMock => {
             this.siteColors.filter((color) => color.reference === ref)
                 .map(c => c.value = value);
             return this;
         },
-        withoutStyles: () => {
+        withoutStyles: (): WixMock => {
           this.Styles = null;
           return this;
         }

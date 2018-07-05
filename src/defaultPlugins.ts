@@ -31,7 +31,7 @@ export const defaultPlugins = {
             }
             return new Color(colorValue).rgb().string();
         } catch (e) {
-            throw `Unparsable color ${colorValue}`;
+            throw new Error(`Unparsable color ${colorValue}`);
         }
     },
     font: (font, tpaParams: ITPAParams) => {
@@ -40,15 +40,14 @@ export const defaultPlugins = {
             fontValue = font;
         } else if (isJsonLike(font)) {
             const {theme, ...overrides} = parseJson(font);
-            fontValue = Object.assign({
+            fontValue = {
                 style: '',
                 variant: '',
                 weight: '',
                 stretch: '',
                 size: '',
                 lineHeight: '',
-                family: []
-            }, tpaParams.fonts[theme], overrides);
+                family: [], ...tpaParams.fonts[theme], ...overrides};
         } else if (tpaParams.fonts[font]) {
             fontValue = tpaParams.fonts[font];
         } else {

@@ -5,7 +5,7 @@ import {processor} from './processor';
 import {CustomSyntaxHelper} from './customSyntaxHelper';
 import {pickBy, splitDeclaration} from './utils';
 
-export function StyleUpdaterFactory(wixService, domService, options) {
+export function StyleUpdaterFactory(wixService, domService, options): { update(isRerender: boolean): void } {
     const cacheMap = {};
 
     return {
@@ -22,7 +22,7 @@ export function StyleUpdaterFactory(wixService, domService, options) {
 
                 if (!isRerender || !options.shouldUseCssVars) {
                     Array.prototype.forEach.call(domService.getAllStyleTags(), (tagStyle: any) => {
-                        let css = (tagStyle.originalTemplate || tagStyle.textContent);
+                        const css = (tagStyle.originalTemplate || tagStyle.textContent);
 
                         const stylis = new Stylis({semicolon: false, compress: false, preserve: true});
 
@@ -64,8 +64,8 @@ function applyDeclarationReplacers(plugins, stylis) {
         .forEach((replacer) => {
             stylis.use((context, declaration) => {
                 if (context === 1) {
-                    let {key, value} = splitDeclaration(declaration);
-                    let pluginResult = replacer(key, value);
+                    const {key, value} = splitDeclaration(declaration);
+                    const pluginResult = replacer(key, value);
                     return `${pluginResult.key}: ${pluginResult.value}`;
                 }
             });
@@ -78,7 +78,7 @@ function applyCssFunctionsExtraction({tpaParams, cacheMap, options}, stylis) {
     stylis.use((context, content) => {
         if (context === 1) {
             /* for each declaration */
-            let {key, value} = splitDeclaration(content);
+            const {key, value} = splitDeclaration(content);
             customSyntaxHelper.extractVar(key, value);
             customSyntaxHelper.extractCustomSyntax(key, value);
 

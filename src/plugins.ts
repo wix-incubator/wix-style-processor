@@ -29,8 +29,8 @@ export class Plugins {
         return this.regex.test(str);
     }
 
-    public getFunctionSignature(str: string): { funcName: string, args: string[] } {
-        let groups = this.regex.exec(str);
+    public getFunctionSignature(str: string): { funcName: string; args: string[] } {
+        const groups = this.regex.exec(str);
         if (groups) {
             return {
                 funcName: groups[1],
@@ -42,7 +42,7 @@ export class Plugins {
     }
 
     private updateRegex() {
-        this.regex = new RegExp('(' + Object.keys(this.cssFunctions).join('|') + ')\\((.*)\\)');
+        this.regex = new RegExp(`(${Object.keys(this.cssFunctions).join('|')})\\((.*)\\)`);
     }
 }
 

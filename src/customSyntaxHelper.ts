@@ -3,7 +3,7 @@ import {isCssVar} from './utils';
 const customSyntaxRegex = /"\w+\([^"]*\)"/g;
 
 export class CustomSyntaxHelper {
-    private vars: {} = {};
+    private readonly vars: {} = {};
     public customSyntaxStrs = [];
 
     public extractVar(key: string, value: string) {
@@ -13,8 +13,8 @@ export class CustomSyntaxHelper {
     }
 
     public extractCustomSyntax(key: string, value: string) {
-        let match;
-        if (match = value.match(customSyntaxRegex)) {
+        const match = value.match(customSyntaxRegex);
+        if (match) {
             this.customSyntaxStrs.push(...match);
         }
     }

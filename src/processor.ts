@@ -50,7 +50,7 @@ function getVarOrPrimitiveValue(varName, plugins, customSyntaxHelper) {
 
 function getDefaultValueOrValueFromSettings(varName, defaultVarValue) {
     return (tpaParams: ITPAParams) => {
-        let varNameInSettings = varName.substring(2, varName.length);
+        const varNameInSettings = varName.substring(2, varName.length);
         if (tpaParams.strings[varNameInSettings] && tpaParams.strings[varNameInSettings].value) {
             return tpaParams.strings[varNameInSettings].value;
         } else if (tpaParams.colors[varNameInSettings]) {

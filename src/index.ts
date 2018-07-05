@@ -11,19 +11,17 @@ export default {
 
     plugins: new Plugins(),
 
-    init(options = <any>{}, domService = defaultDomService) {
-        const wixService = new WixService(window.Wix);
-
+    init(options = {} as any, domService = defaultDomService, wixService = new WixService(window.Wix)) {
         Object.keys(defaultPlugins)
             .forEach((funcName) => this.plugins.addCssFunction(funcName, defaultPlugins[funcName]));
         Object.keys(defaultReplacers)
             .forEach((funcName) => this.plugins.addDeclarationReplacer(defaultReplacers[funcName]));
 
-        const defaultOptions = <any>{};
+        const defaultOptions = {} as any;
         defaultOptions.plugins = this.plugins;
         defaultOptions.shouldUseCssVars = domService.isCssVarsSupported() && (wixService.isEditorMode() || wixService.isPreviewMode());
         defaultOptions.shouldApplyCSSFunctions = !wixService.shouldRunAsStandalone();
-        options = Object.assign({}, defaultOptions, options);
+        options = {...defaultOptions, ...options};
 
         this.styleUpdater = StyleUpdaterFactory(wixService, domService, options);
 

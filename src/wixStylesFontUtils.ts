@@ -1,9 +1,9 @@
 import {forEach, isNumber} from './utils';
-import * as parseCssFont from 'parse-css-font';
+import parseCssFont from 'parse-css-font';
 
 export const wixStylesFontUtils = {
     getFullFontStyles({fontStyles, siteTextPresets}) {
-        let ret = {};
+        let ret = {} as any;
 
         // Fix color styles due to '.' to '-' conversion
         const fixedFontStyles = {};
@@ -12,13 +12,11 @@ export const wixStylesFontUtils = {
         const parsedSiteTextPresets = {};
         forEach(siteTextPresets, (preset: any, key: string) => {
             const presetValue = preset.value.replace(/^font\s*:\s*/, '');
-            parsedSiteTextPresets[key] = Object.assign({},
-                parseCssFont(presetValue),
-                {
+            parsedSiteTextPresets[key] = {...parseCssFont(presetValue),
+                
                     preset: key,
-                    editorKey: preset.editorKey
-                },
-                preset.displayName ? {displayName: preset.displayName} : {});
+                    editorKey: preset.editorKey,
+                ...(preset.displayName ? {displayName: preset.displayName} : {})};
         });
 
         const parsedFontStyles = {};
@@ -28,14 +26,14 @@ export const wixStylesFontUtils = {
         forEach(parsedSiteTextPresets, (preset, key) => ret[key] = parsedFontStyles[key] || preset);
 
         // LIGHT/MEDIUM/STRONG
-        ret['LIGHT'] = parseCssFont('12px HelveticaNeueW01-45Ligh');
-        ret['MEDIUM'] = parseCssFont('12px HelveticaNeueW01-55Roma');
-        ret['STRONG'] = parseCssFont('12px HelveticaNeueW01-65Medi');
+        ret.LIGHT = parseCssFont('12px HelveticaNeueW01-45Ligh');
+        ret.MEDIUM = parseCssFont('12px HelveticaNeueW01-55Roma');
+        ret.STRONG = parseCssFont('12px HelveticaNeueW01-65Medi');
 
-        ret = Object.assign(ret, parsedFontStyles);
+        ret = {...ret, ...parsedFontStyles};
 
         forEach(ret, (font, key) => {
-            ret[key] = Object.assign({}, font, {supports: {uppercase: true}});
+            ret[key] = {...font, supports: {uppercase: true}};
 
             if (['snellroundhandw', 'niconne'].some((fontName) => font.family.indexOf(fontName) > -1)) {
                 ret[key].supports.uppercase = false;
@@ -79,17 +77,17 @@ function parseWixStylesFont(font) {
 
     let size = font.size || 'normal';
     if (isNumber(size)) {
-        size = size + 'px';
+        size = `${size}px`;
     }
     let lineHeight = font.lineHeight || 'normal';
     if (isNumber(lineHeight)) {
-        lineHeight = lineHeight + 'px';
+        lineHeight = `${lineHeight}px`;
     }
 
-    value += size + '/' + lineHeight + ' ';
+    value += `${size}/${lineHeight} `;
 
     value += font.cssFontFamily || font.family;
-    const fontObj = {...parseCssFont(value)};
+    const fontObj: any = {...parseCssFont(value)};
     fontObj.underline = font.style && font.style.underline;
     return fontObj;
 }

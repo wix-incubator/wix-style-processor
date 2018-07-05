@@ -1,5 +1,5 @@
 export class WixService {
-    constructor(private Wix) {
+    constructor(private readonly Wix) {
 
     }
 

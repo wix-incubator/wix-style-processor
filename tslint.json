@@ -1,8 +1,12 @@
 {
   "extends": [
-    "tslint-config-wix"
+    "tslint-config-yoshi-base"
   ],
   "rules": {
-    "no-conditional-assignment": false
+    "no-conditional-assignment": false,
+    "prettier": false,
+    "restrict-plus-operands": false,
+    "no-else-after-return": false,
+    "no-unnecessary-else": false
   }
 }

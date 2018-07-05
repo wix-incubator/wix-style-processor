@@ -9,7 +9,10 @@
     "url": ""
   },
   "main": "dist/src/index.js",
+  "module": "dist/es/src/index.js",
+  "types": "dist/src/index.d.ts",
   "files": [
+    "dist/es",
     "dist/src",
     "README.md"
   ],
@@ -24,24 +27,26 @@
   },
   "dependencies": {
     "color": "^1.0.3",
-    "parse-css-font": "^2.0.2",
-    "stylis": "^3.2.4"
+    "parse-css-font": "^3.0.2",
+    "stylis": "^3.5.1"
   },
   "devDependencies": {
-    "@types/chai": "^3.4.34",
-    "@types/chai-as-promised": "^0.0.29",
-    "@types/mocha": "^2.2.39",
-    "chai": "^3.5.0",
-    "express": "^4.15.3",
-    "express-session": "^1.15.3",
-    "jsdom": "^11.1.0",
+    "@types/chai": "^4.1.4",
+    "@types/chai-as-promised": "^7.1.0",
+    "@types/mocha": "^5.2.4",
+    "chai": "^4.1.2",
+    "express": "^4.16.3",
+    "express-session": "^1.15.6",
+    "jsdom": "^11.11.0",
     "jsdom-global": "^3.0.2",
-    "mocha": "^3.3.0",
-    "sinon": "^2.2.0",
-    "ts-node": "^3.2.0",
-    "typescript": "^2.4.2",
+    "mocha": "^5.2.0",
+    "protractor": "^5.3.2",
+    "sinon": "^6.1.0",
+    "ts-node": "^7.0.0",
+    "typescript": "^2.9.2",
     "velocity": "^0.7.2",
-    "yoshi": "^2.6.1"
+    "yoshi": "^3.0.0",
+    "yoshi-style-dependencies": "^3.0.0"
   },
   "yoshi": {
     "entry": {
