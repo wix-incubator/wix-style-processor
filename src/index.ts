@@ -4,6 +4,7 @@ import {WixService} from './wixService';
 import {Plugins} from './plugins';
 import {defaultPlugins} from './defaultPlugins';
 import {defaultReplacers} from './defaultReplacers';
+import {IWixService} from './types';
 
 /* tslint:disable:no-invalid-this */
 export default {
@@ -11,7 +12,7 @@ export default {
 
     plugins: new Plugins(),
 
-    init(options = {} as any, domService = defaultDomService, wixService = new WixService(window.Wix)) {
+    init(options = {} as any, domService = defaultDomService, wixService: IWixService = new WixService(window.Wix)) {
         Object.keys(defaultPlugins)
             .forEach((funcName) => this.plugins.addCssFunction(funcName, defaultPlugins[funcName]));
         Object.keys(defaultReplacers)

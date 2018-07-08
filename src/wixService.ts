@@ -1,4 +1,6 @@
-export class WixService {
+import {IWixService} from './types';
+
+export class WixService implements IWixService {
     constructor(private readonly Wix) {
 
     }
