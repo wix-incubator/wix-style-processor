@@ -19,10 +19,6 @@ export class WixService implements IWixService {
         this.Wix.addEventListener(this.Wix.Events.STYLE_PARAMS_CHANGE, cb);
     }
 
-    listenToSettingsUpdated(cb) {
-        this.Wix.addEventListener(this.Wix.Events.SETTINGS_UPDATED, cb);
-    }
-
     isEditorMode(): boolean {
         return this.Wix.Utils.getViewMode() === 'editor';
     }
