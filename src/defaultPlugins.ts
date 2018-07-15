@@ -28,8 +28,11 @@ export const defaultPlugins = {
         try {
             if (hexColorRegex.test(colorValue)) {
                 return colorValue;
+            } else if (colorValue) {
+                return new Color(colorValue).rgb().string();
+            } else {
+                return '';
             }
-            return new Color(colorValue).rgb().string();
         } catch (e) {
             throw new Error(`Unparsable color ${colorValue}`);
         }
@@ -47,7 +50,8 @@ export const defaultPlugins = {
                 stretch: '',
                 size: '',
                 lineHeight: '',
-                family: [], ...tpaParams.fonts[theme], ...overrides};
+                family: [], ...tpaParams.fonts[theme], ...overrides
+            };
         } else if (tpaParams.fonts[font]) {
             fontValue = tpaParams.fonts[font];
         } else {
@@ -85,5 +89,9 @@ export const defaultPlugins = {
     },
     unit: (value, unit) => {
         return `${value}${unit}`;
+    },
+    fallback: (...args) => {
+        const argsWithoutTPAparams = args.slice(0, -1);
+        return argsWithoutTPAparams.filter((value) => !!value)[0];
     }
 };

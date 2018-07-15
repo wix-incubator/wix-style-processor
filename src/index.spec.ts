@@ -564,6 +564,59 @@ describe('Index', () => {
         });
     });
 
+    describe('fallback css function', () => {
+        it('should return the first none falsy value', () => {
+            const css = '.foo {color: "fallback(color(--my_var3), color(color-1))";}';
+            driver
+                .given.css(css)
+                .given.styleParams({
+                numbers: {},
+                colors: {},
+                fonts: {}
+            })
+                .given.siteTextPresets({});
+
+            return driver.when.init()
+                .then(() => {
+                    expect(driver.get.overrideStyleCallArg()).to.equal('.foo{color: #FFFFFF;}');
+                });
+        });
+
+        it('should return first none falsy value', () => {
+            const css = '.foo {--my_var3: red; color: "fallback(color(--my_var3), color(color-1))";}';
+            driver
+                .given.css(css)
+                .given.styleParams({
+                numbers: {},
+                colors: {},
+                fonts: {}
+            })
+                .given.siteTextPresets({});
+
+            return driver.when.init()
+                .then(() => {
+                    expect(driver.get.overrideStyleCallArg()).to.equal('.foo{--my_var3: red;color: rgb(255, 0, 0);}');
+                });
+        });
+
+        it('should support multiple values', () => {
+            const css = '.foo {color: "fallback(--my_var2, --my_var3, color(color-1))";}';
+            driver
+                .given.css(css)
+                .given.styleParams({
+                numbers: {},
+                colors: {},
+                fonts: {}
+            })
+                .given.siteTextPresets({});
+
+            return driver.when.init()
+                .then(() => {
+                    expect(driver.get.overrideStyleCallArg()).to.equal('.foo{color: #FFFFFF;}');
+                });
+        });
+    });
+
     describe('As Standalone', () => {
         beforeEach(() => {
             const css = `.foo {bar: 4; color: "color(color-1)"}`;

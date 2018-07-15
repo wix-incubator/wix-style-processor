@@ -1,6 +1,6 @@
 # wix-style-processor
 ##### An alternative Wix Styles TPA processor.
-This package provides a parser / transformer that scans your inlined CSS, and replaces its dynamic style declarations to the values defined by the user's website / template.
+This package provides a parser / transformer that scans your inline CSS, and replaces its dynamic style declarations to the values defined by the user's website / template.
 
 
 # Installation
@@ -25,6 +25,7 @@ $ npm i -S wix-style-processor
     color: "darken(color-8, 0.3)";                                          /* make a darken version of site palette color */
     font: "font(--my-font2)";                                               /* will use the overridden default unless it was defined in settings  */
     border-width: "unit(--var-from-settings, px)";                          /* will produce border-width: 42px */
+    color: "fallback(color(--var-from-settings), color(color-8))";          /* will return the first none falsy value from left to right */
 }
 ```
 
