@@ -3,8 +3,8 @@ import {$, $$, browser, ElementFinder, ExpectedConditions} from 'protractor';
 interface IAndElementFinder {
     and: ElementFinder;
 }
-function waitForVisibilityOf(element: ElementFinder): IAndElementFinder {
-    browser.wait(ExpectedConditions.visibilityOf(element));
+async function waitForVisibilityOf(element: ElementFinder): IAndElementFinder {
+    await browser.wait(ExpectedConditions.visibilityOf(element));
     return {and: element};
 }
 
@@ -13,8 +13,8 @@ function elementByDataHook(dataHook: string): ElementFinder {
 }
 
 describe('Style Processor Scenario', () => {
-    beforeEach(() => {
-        browser.executeAsyncScript((executeDone) => {
+    beforeEach(async () => {
+        await browser.executeAsyncScript((executeDone) => {
             window.name = 'E2E';
             executeDone();
         });
@@ -25,7 +25,7 @@ describe('Style Processor Scenario', () => {
         waitForVisibilityOf(elementByDataHook('text'));
 
         const styleNum = await $$('style').count();
-        browser.executeAsyncScript((executeDone) => {
+        await browser.executeAsyncScript((executeDone) => {
             window.styleProcessor.init({})
                 .then(executeDone);
         });
@@ -39,12 +39,12 @@ describe('Style Processor Scenario', () => {
         waitForVisibilityOf(elementByDataHook('text'));
 
         const styleNum = await $$('style').count();
-        browser.executeAsyncScript((executeDone) => {
+        await browser.executeAsyncScript((executeDone) => {
             window.styleProcessor.init({})
                 .then(executeDone);
         });
 
-        browser.executeAsyncScript((executeDone) => {
+        await browser.executeAsyncScript((executeDone) => {
             window.changeStyles();
             executeDone();
         });
