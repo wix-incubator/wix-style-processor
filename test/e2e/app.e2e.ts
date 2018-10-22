@@ -1,9 +1,6 @@
 import {$, $$, browser, ElementFinder, ExpectedConditions} from 'protractor';
 
-interface IAndElementFinder {
-    and: ElementFinder;
-}
-async function waitForVisibilityOf(element: ElementFinder): IAndElementFinder {
+async function waitForVisibilityOf(element: ElementFinder) {
     await browser.wait(ExpectedConditions.visibilityOf(element));
     return {and: element};
 }
@@ -22,7 +19,7 @@ describe('Style Processor Scenario', () => {
 
     it('should not change the number of style tags', async () => {
         await browser.get('/');
-        waitForVisibilityOf(elementByDataHook('text'));
+        await waitForVisibilityOf(elementByDataHook('text'));
 
         const styleNum = await $$('style').count();
         await browser.executeAsyncScript((executeDone) => {
@@ -36,7 +33,7 @@ describe('Style Processor Scenario', () => {
 
     it('should update styles after change from sdk', async () => {
         await browser.get('/');
-        waitForVisibilityOf(elementByDataHook('text'));
+        await waitForVisibilityOf(elementByDataHook('text'));
 
         const styleNum = await $$('style').count();
         await browser.executeAsyncScript((executeDone) => {
