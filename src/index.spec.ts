@@ -535,6 +535,23 @@ describe('Index', () => {
         });
     });
 
+    [
+        '"opacity(color(color-1, 0.5)"',
+        `"fallback(font({theme: 'Body-M'), font(Body-M))"`,
+        '"join(darken(opacity(color(color-1, 1)), 1, color(color-1), 1)"'
+    ].forEach((decl) => {
+        it('should throw on unbalanced parenthesis', () => {
+            const css = `.font-test{color: ${decl}}`;
+            driver.given.css(css);
+
+            return driver.when.init()
+                .then(() => {throw new Error('was not supposed to succeed')})
+                .catch((e) => {
+                    expect(e.toString()).to.contain('contains unbalanced parenthesis');
+                });
+        });
+    });
+
     it('should not fail on undefined var for font', () => {
         let css = `.foo { --var1: "font(--var)" }`;
 

@@ -1,3 +1,5 @@
+import {parenthesisAreBalanced} from './utils';
+
 const paramsRegex = /,(?![^(]*(?:\)|}))/g;
 
 export class Plugins {
@@ -34,7 +36,7 @@ export class Plugins {
         if (groups) {
             return {
                 funcName: groups[1],
-                args: this.extractParams(groups[2])
+                args: this.extractArguments(groups[2])
             };
         }
 
@@ -45,21 +47,26 @@ export class Plugins {
         this.regex = new RegExp(`(${Object.keys(this.cssFunctions).join('|')})\\((.*)\\)`);
     }
 
-    private extractParams(params: string) {
-        const result = [];
-        const args = params.split(paramsRegex);
-        args.reduce((acc, arg) => {
-            if (this.isLegalExpression(acc + arg)) {
-                result.push(acc ? `${acc},${arg}`: arg);
-                return ''
-            }
-            return acc ? `${acc},${arg}`: arg;
-        }, '');
-        return result;
-    }
+    private extractArguments(argsString: string): string[] {
+        const result = argsString.split(paramsRegex)
+            .reduce((acc, currentPart: string) => {
 
-    private isLegalExpression(expression: string) {
-        return expression.split(/\(/g).length === expression.split(/\)/g).length;
+                acc.tmpParts = acc.tmpParts.concat(currentPart);
+                const tmpStr = acc.tmpParts.join(',');
+
+                if (parenthesisAreBalanced(tmpStr)) {
+                    acc.args.push(tmpStr);
+                    acc.tmpParts.length = 0;
+                }
+
+                return acc;
+            }, {args: [], tmpParts: []});
+
+        if (result.tmpParts.length > 0) {
+            throw new Error(`'${argsString}' contains unbalanced parenthesis.`);
+        }
+
+        return result.args;
     }
 }
 
