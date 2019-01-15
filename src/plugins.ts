@@ -34,7 +34,7 @@ export class Plugins {
         if (groups) {
             return {
                 funcName: groups[1],
-                args: groups[2].split(paramsRegex)
+                args: this.extractParams(groups[2])
             };
         }
 
@@ -43,6 +43,23 @@ export class Plugins {
 
     private updateRegex() {
         this.regex = new RegExp(`(${Object.keys(this.cssFunctions).join('|')})\\((.*)\\)`);
+    }
+
+    private extractParams(params: string) {
+        const result = [];
+        const args = params.split(paramsRegex);
+        args.reduce((acc, arg) => {
+            if (this.isLegalExpression(acc + arg)) {
+                result.push(acc ? `${acc},${arg}`: arg);
+                return ''
+            }
+            return acc ? `${acc},${arg}`: arg;
+        }, '');
+        return result;
+    }
+
+    private isLegalExpression(expression: string) {
+        return expression.split(/\(/g).length === expression.split(/\)/g).length;
     }
 }
 
