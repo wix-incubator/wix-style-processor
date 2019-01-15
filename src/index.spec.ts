@@ -226,6 +226,16 @@ describe('Index', () => {
         });
     });
 
+    it('should calculate nested functions with multiple functions params', () => {
+        const css = '.font-test{--var: "color(color-2)"; color:"fallback(join(opacity(color(color-1), 0.5), 1, opacity(--var, 0.5), 1), color(color-8))"}';
+        driver.given.css(css);
+
+        return driver.when.init().then(() => {
+            expect(driver.get.overrideStyleCallArg())
+                .to.equal('.font-test{--var: #F3F3F3;color: rgba(255, 255, 255, 0.5);}');
+        });
+    });
+
     it('opacity with default value', () => {
         const css = '.foo { rule1: "opacity(--lala, 0.5)"; --lala: "color(color-9)"}';
         driver.given.css(css);
