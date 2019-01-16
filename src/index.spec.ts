@@ -236,6 +236,27 @@ describe('Index', () => {
         });
     });
 
+    it('should handle nested font', () => {
+        const css = '.font-var-fallback {--var: "font(Body-M)"; font: "fallback(font(--var))";}';
+        driver.given.css(css)
+            .given.siteTextPresets({
+            'Body-M': {
+                editorKey: 'font_8',
+                fontFamily: 'raleway',
+                lineHeight: '1.4em',
+                size: '17px',
+                style: 'normal',
+                value: 'font:normal normal normal 17px/1.4em raleway,sans-serif;',
+                weight: 'normal'
+            }
+        });
+
+        return driver.when.init().then(() => {
+            expect(driver.get.overrideStyleCallArg())
+                .to.equal('.font-var-fallback{--var: normal normal normal 17px/1.4em raleway,sans-serif;font: normal normal normal 17px/1.4em raleway,sans-serif;text-decoration: ;}');
+        });
+    });
+
     it('opacity with default value', () => {
         const css = '.foo { rule1: "opacity(--lala, 0.5)"; --lala: "color(color-9)"}';
         driver.given.css(css);

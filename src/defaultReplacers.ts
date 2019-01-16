@@ -1,4 +1,4 @@
-const underlineFontHackRegex = /font\((--.*)\)/;
+const underlineFontHackRegex = /font\((--[^)]+)\)/;
 export const defaultReplacers = {
     underlineFontHackSupport: (key, value) => {
         let matches;
