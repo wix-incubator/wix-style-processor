@@ -95,6 +95,6 @@ export const defaultPlugins = {
         return argsWithoutTPAParams.filter(Boolean)[0];
     },
     zeroAsTrue: (zero) => {
-        return `${zero}`;
+        return (typeof zero === 'number') ? `${zero}` : zero;
     }
 };
