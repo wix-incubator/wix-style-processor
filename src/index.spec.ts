@@ -663,6 +663,23 @@ describe('Index', () => {
                     expect(driver.get.overrideStyleCallArg()).to.equal('.foo{color: #FFFFFF;}');
                 });
         });
+
+        it('should support 0 as true', () => {
+            const css = '.foo {border-width: "unit(fallback(zeroAsTrue(--borderWidth), number(1)), string(px))";}';
+            driver
+                .given.css(css)
+                .given.styleParams({
+                numbers: {borderWidth: 0},
+                colors: {},
+                fonts: {}
+            })
+                .given.siteTextPresets({});
+
+            return driver.when.init()
+                .then(() => {
+                    expect(driver.get.overrideStyleCallArg()).to.equal('.foo{border-width: 0px;}');
+                });
+        });
     });
 
     describe('As Standalone', () => {

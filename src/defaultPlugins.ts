@@ -93,5 +93,8 @@ export const defaultPlugins = {
     fallback: (...args) => {
         const argsWithoutTPAParams = args.slice(0, -1);
         return argsWithoutTPAParams.filter(Boolean)[0];
+    },
+    zeroAsTrue: (zero) => {
+        return `${zero}`;
     }
 };
