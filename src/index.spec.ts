@@ -612,6 +612,59 @@ describe('Index', () => {
         });
     });
 
+    describe('calc css function', () => {
+        it('should return native calc function with the numbers concatenated with the operator', () => {
+            const css = '.foo {padding: 0 "calc(+, unit(2, px), unit(number(--var1), px))";}';
+            driver
+                .given.css(css)
+                .given.styleParams({
+                numbers: {var1: 1},
+                colors: {},
+                fonts: {}
+            })
+                .given.siteTextPresets({});
+
+            return driver.when.init()
+                .then(() => {
+                    expect(driver.get.overrideStyleCallArg()).to.equal('.foo{padding: 0 calc(2px + 1px);}');
+                });
+        });
+
+        it('should return the first number if only one number was given', () => {
+            const css = '.foo {padding: 0 "calc(-, unit(2, px))";}';
+            driver
+                .given.css(css)
+                .given.styleParams({
+                numbers: {},
+                colors: {},
+                fonts: {}
+            })
+                .given.siteTextPresets({});
+
+            return driver.when.init()
+                .then(() => {
+                    expect(driver.get.overrideStyleCallArg()).to.equal('.foo{padding: 0 2px;}');
+                });
+        });
+
+        it('should support nested calc', () => {
+            const css = '.foo {padding: 0 "calc(+, unit(2, px), unit(number(--var1), px), calc(-, unit(number(--var2), px), 8px))";}';
+            driver
+                .given.css(css)
+                .given.styleParams({
+                numbers: {var1: 1, var2: 3},
+                colors: {},
+                fonts: {}
+            })
+                .given.siteTextPresets({});
+
+            return driver.when.init()
+                .then(() => {
+                    expect(driver.get.overrideStyleCallArg()).to.equal('.foo{padding: 0 calc(2px + 1px + calc(3px - 8px));}');
+                });
+        });
+    });
+
     describe('fallback css function', () => {
         it('should return the first none falsy value', () => {
             const css = '.foo {color: "fallback(color(--my_var3), color(color-1))";}';
