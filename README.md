@@ -26,7 +26,7 @@ $ npm i -S wix-style-processor
     font: "font(--my-font2)";                                               /* will use the overridden default unless it was defined in settings  */
     border-width: "unit(--var-from-settings, px)";                          /* will produce border-width: 42px */
     color: "fallback(color(--var-from-settings), color(color-8))";          /* will return the first none falsy value from left to right */
-    width: "calc(+, 2px, 4%, 3em)";                                         /* will return the native calc function for the given operator and numbers a work around for https://github.com/thysultan/stylis.js/issues/116 */
+    width: "calculate(+, 2px, 4%, 3em)";                                    /* will return the native calc function for the given operator and numbers a work around for https://github.com/thysultan/stylis.js/issues/116 */
 }
 ```
 

@@ -97,7 +97,7 @@ export const defaultPlugins = {
     zeroAsTrue: (zero) => {
         return (typeof zero === 'number') ? `${zero}` : zero;
     },
-    calc: (operator, ...args) => {
+    calculate: (operator, ...args) => {
         const numbersWithoutTPAParams = args.slice(0, -1);
         if (numbersWithoutTPAParams.length > 1) {
             return `calc(${numbersWithoutTPAParams.join(` ${operator} `)})`;

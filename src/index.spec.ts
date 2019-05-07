@@ -612,9 +612,9 @@ describe('Index', () => {
         });
     });
 
-    describe('calc css function', () => {
+    describe('calculate css function', () => {
         it('should return native calc function with the numbers concatenated with the operator', () => {
-            const css = '.foo {padding: 0 "calc(+, unit(2, px), unit(number(--var1), px))";}';
+            const css = '.foo {padding: 0 "calculate(+, unit(2, px), unit(number(--var1), px))";}';
             driver
                 .given.css(css)
                 .given.styleParams({
@@ -631,7 +631,7 @@ describe('Index', () => {
         });
 
         it('should return the first number if only one number was given', () => {
-            const css = '.foo {padding: 0 "calc(-, unit(2, px))";}';
+            const css = '.foo {padding: 0 "calculate(-, unit(2, px))";}';
             driver
                 .given.css(css)
                 .given.styleParams({
@@ -647,8 +647,8 @@ describe('Index', () => {
                 });
         });
 
-        it('should support nested calc', () => {
-            const css = '.foo {padding: 0 "calc(+, unit(2, px), unit(number(--var1), px), calc(-, unit(number(--var2), px), 8px))";}';
+        it('should support nested calculate', () => {
+            const css = '.foo {padding: 0 "calculate(+, unit(2, px), unit(number(--var1), px), calculate(-, unit(number(--var2), px), 8px))";}';
             driver
                 .given.css(css)
                 .given.styleParams({
