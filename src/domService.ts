@@ -15,7 +15,7 @@ export default {
         }
     },
     isCssVarsSupported(): boolean {
-        return !!(window && window.CSS && window.CSS.supports && window.CSS.supports('--fake-var', 0));
+        return !!(window && window.CSS && window.CSS.supports && window.CSS.supports('--fake-var', '0'));
     },
     updateCssVars(varMap) {
         Object.keys(varMap).forEach((key) => {
