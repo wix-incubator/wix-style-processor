@@ -44,7 +44,7 @@
     "protractor": "^5.3.2",
     "sinon": "^6.1.0",
     "ts-node": "^7.0.0",
-    "typescript": "^3.0.0",
+    "typescript": "3.6.4",
     "velocity": "^0.7.2",
     "yoshi": "^3.0.0",
     "yoshi-style-dependencies": "^3.0.0"
