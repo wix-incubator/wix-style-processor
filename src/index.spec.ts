@@ -583,6 +583,28 @@ describe('Index', () => {
         });
     });
 
+    it('should support nested font and fallback', () =>{
+        let css = `.foo { font: "font(string(font:normal normal normal 30px/1.4em raleway;))" }`;
+
+        driver.given.css(css)
+            .given.siteTextPresets({
+            'Body-M': {
+                editorKey: 'font_8',
+                fontFamily: 'raleway',
+                lineHeight: '1.4em',
+                size: '17px',
+                style: 'normal',
+                value: 'font:normal normal normal 17px/1.4em raleway,sans-serif;',
+                weight: 'normal'
+            }
+        });
+        return driver.when.init().then(() => {
+            expect(driver.get.overrideStyleCallArg())
+                .to
+                .equal(`.foo{font: normal normal normal 30px/1.4em raleway;}`);
+        });
+    });
+
     it('should support underline', () => {
         let css = `.foo { font: "font(--fontVar)" }`;
 

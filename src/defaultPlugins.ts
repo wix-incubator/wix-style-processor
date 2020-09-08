@@ -54,6 +54,8 @@ export const defaultPlugins = {
             };
         } else if (tpaParams.fonts[font]) {
             fontValue = tpaParams.fonts[font];
+        } else if (typeof font === 'string' && font.indexOf('font:') === 0) {
+            return font.slice(5, font.length - 1)
         } else {
             return font;
         }
