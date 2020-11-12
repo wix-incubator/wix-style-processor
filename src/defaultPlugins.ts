@@ -114,25 +114,25 @@ export const defaultPlugins = {
             return numbersWithoutTPAParams[0];
         }
     },
-    smartContrast: (baseColor, varColor) => {
-        const fgColor = new Color(baseColor);
-        let bgColor = new Color(varColor);
-        const fgLuminosity = fgColor.luminosity();
-        const bgLuminosity = bgColor.luminosity();
-        const ratio = fgLuminosity / bgLuminosity;
+    smartContrast: (baseColor, contrastColorSuggestion) => {
+        const color = new Color(baseColor);
+        let contrastColor = new Color(contrastColorSuggestion);
+        const baseLuminosity = color.luminosity();
+        const originalContrastLuminosity = contrastColor.luminosity();
+        const ratio = baseLuminosity / originalContrastLuminosity;
         const direction = ratio < 1 ? 1 : -1;
-        let contrast = getNormalizedContrast(fgColor, bgColor);
+        let contrast = getNormalizedContrast(color, contrastColor);
 
         while (contrast < 4.5) {
-            bgColor = bgColor.lightness(bgColor.lightness() + direction);
+            contrastColor = contrastColor.lightness(contrastColor.lightness() + direction);
 
-            if (['rgb(255, 255, 255)', 'rgb(0, 0, 0)'].indexOf(bgColor.rgb().string()) > -1) { // break if white or black
+            if (['rgb(255, 255, 255)', 'rgb(0, 0, 0)'].indexOf(contrastColor.rgb().string()) > -1) { // break if white or black
                 break;
             }
 
-            contrast = getNormalizedContrast(fgColor, bgColor);
+            contrast = getNormalizedContrast(color, contrastColor);
         }
 
-        return bgColor.rgb().string();
+        return contrastColor.rgb().string();
     }
 };
