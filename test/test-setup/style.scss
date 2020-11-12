@@ -10,7 +10,7 @@
     /* a11y contrast vars */
     --textColor: #DFF0D8;
     --badBGColor: #468847;
-    --goodBGColor: #427645;
+    --goodBGColor: #3C743D;
 }
 
 body {
@@ -45,10 +45,4 @@ button {
     border-radius: "unit(--buttonBorderSize, px)";
     width: 250px;
     text-align: "string(--buttonAlignment)";
-}
-
-[data-color-box] {
-    display: inline-block;
-    width: 20px;
-    height: 20px;
 }

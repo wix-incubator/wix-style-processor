@@ -790,9 +790,9 @@ describe('Index', () => {
 
     describe('smartContrast css function', () => {
         const textColor = '#DFF0D8';
-        const adjustedColor = 'rgb(255, 255, 255)';
+        const lightenedColor = 'rgb(255, 255, 255)';
         const badBgColor = '#468847';
-        const goodBgColor = 'rgb(60, 116, 61)';
+        const darkenedColor = 'rgb(60, 116, 61)';
 
         it('should return darkened color when contrast to low', () => {
             const css = `.foo {background-color: "smartContrast(${textColor}, ${badBgColor})";}`;
@@ -807,7 +807,7 @@ describe('Index', () => {
 
             return driver.when.init()
                 .then(() => {
-                    expect(driver.get.overrideStyleCallArg()).to.equal(`.foo{background-color: ${goodBgColor};}`);
+                    expect(driver.get.overrideStyleCallArg()).to.equal(`.foo{background-color: ${darkenedColor};}`);
                 });
         });
 
@@ -824,12 +824,12 @@ describe('Index', () => {
 
             return driver.when.init()
                 .then(() => {
-                    expect(driver.get.overrideStyleCallArg()).to.equal(`.foo{background-color: ${adjustedColor};}`);
+                    expect(driver.get.overrideStyleCallArg()).to.equal(`.foo{background-color: ${lightenedColor};}`);
                 });
         });
 
         it('should return same color when good contrast', () => {
-            const css = `.foo {background-color: "smartContrast(${textColor}, ${goodBgColor})";}`;
+            const css = `.foo {background-color: "smartContrast(${textColor}, ${darkenedColor})";}`;
             driver
                 .given.css(css)
                 .given.styleParams({
@@ -841,7 +841,7 @@ describe('Index', () => {
 
             return driver.when.init()
                 .then(() => {
-                    expect(driver.get.overrideStyleCallArg()).to.equal(`.foo{background-color: ${goodBgColor};}`);
+                    expect(driver.get.overrideStyleCallArg()).to.equal(`.foo{background-color: ${darkenedColor};}`);
                 });
         });
     });
