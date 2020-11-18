@@ -3,6 +3,15 @@ import {wixStylesFontUtils} from './wixStylesFontUtils';
 import {isJsonLike, parseJson} from './utils';
 
 const hexColorRegex = /^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/;
+const getNormalizedContrast = (color1, color2) => {
+    let contrast = color1.contrast(color2);
+
+    if (contrast < 1) {
+        contrast = 1 / contrast;
+    }
+
+    return contrast;
+}
 
 export const defaultPlugins = {
     join: (color1, strength1, color2, strength2) => {
@@ -105,4 +114,25 @@ export const defaultPlugins = {
             return numbersWithoutTPAParams[0];
         }
     },
+    smartContrast: (baseColor, contrastColorSuggestion) => {
+        const color = new Color(baseColor);
+        let contrastColor = new Color(contrastColorSuggestion);
+        const baseLuminosity = color.luminosity();
+        const originalContrastLuminosity = contrastColor.luminosity();
+        const ratio = baseLuminosity / originalContrastLuminosity;
+        const direction = ratio < 1 ? 1 : -1;
+        let contrast = getNormalizedContrast(color, contrastColor);
+
+        while (contrast < 4.5) {
+            contrastColor = contrastColor.lightness(contrastColor.lightness() + direction);
+
+            if (['rgb(255, 255, 255)', 'rgb(0, 0, 0)'].indexOf(contrastColor.rgb().string()) > -1) { // break if white or black
+                break;
+            }
+
+            contrast = getNormalizedContrast(color, contrastColor);
+        }
+
+        return contrastColor.rgb().string();
+    }
 };

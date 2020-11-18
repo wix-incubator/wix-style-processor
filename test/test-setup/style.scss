@@ -7,6 +7,10 @@
 	--buttonTextFont: "font({theme: 'Body-M', size: '22px', weight: 'bold'})";
 	--buttonBorderSize: "number(0)";
     --paragraphWidth: "number(50)";
+    /* a11y contrast vars */
+    --textColor: #DFF0D8;
+    --badBGColor: #468847;
+    --goodBGColor: #3C743D;
 }
 
 body {
@@ -19,7 +23,16 @@ h1 {
     font: "font(--titleFontStyle)";
 }
 
-p {
+h2[data-hook=bad-contrast-text] {
+    color: "color(--textColor)";
+    background-color: "smartContrast(color(--textColor), color(--badBGColor))";
+}
+
+h2[data-hook=good-contrast-text] {
+    background-color: "smartContrast(color(--textColor), color(--goodBGColor))";
+}
+
+p[data-hook=text] {
     width: "unit(--paragraphWidth, %)";
 }
 

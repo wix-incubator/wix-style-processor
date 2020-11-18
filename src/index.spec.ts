@@ -788,6 +788,64 @@ describe('Index', () => {
         });
     });
 
+    describe('smartContrast css function', () => {
+        const textColor = '#DFF0D8';
+        const lightenedColor = 'rgb(255, 255, 255)';
+        const badBgColor = '#468847';
+        const darkenedColor = 'rgb(60, 116, 61)';
+
+        it('should return darkened color when contrast to low', () => {
+            const css = `.foo {background-color: "smartContrast(${textColor}, ${badBgColor})";}`;
+            driver
+                .given.css(css)
+                .given.styleParams({
+                numbers: {},
+                colors: {},
+                fonts: {}
+            })
+                .given.siteTextPresets({});
+
+            return driver.when.init()
+                .then(() => {
+                    expect(driver.get.overrideStyleCallArg()).to.equal(`.foo{background-color: ${darkenedColor};}`);
+                });
+        });
+
+        it('should return lightened color when contrast to low', () => {
+            const css = `.foo {background-color: "smartContrast(${badBgColor}, ${textColor})";}`;
+            driver
+                .given.css(css)
+                .given.styleParams({
+                numbers: {},
+                colors: {},
+                fonts: {}
+            })
+                .given.siteTextPresets({});
+
+            return driver.when.init()
+                .then(() => {
+                    expect(driver.get.overrideStyleCallArg()).to.equal(`.foo{background-color: ${lightenedColor};}`);
+                });
+        });
+
+        it('should return same color when good contrast', () => {
+            const css = `.foo {background-color: "smartContrast(${textColor}, ${darkenedColor})";}`;
+            driver
+                .given.css(css)
+                .given.styleParams({
+                numbers: {},
+                colors: {},
+                fonts: {}
+            })
+                .given.siteTextPresets({});
+
+            return driver.when.init()
+                .then(() => {
+                    expect(driver.get.overrideStyleCallArg()).to.equal(`.foo{background-color: ${darkenedColor};}`);
+                });
+        });
+    });
+
     describe('As Standalone', () => {
         beforeEach(() => {
             const css = `.foo {bar: 4; color: "color(color-1)"}`;
