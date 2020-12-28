@@ -797,11 +797,6 @@ describe('Index', () => {
         const fallbackForBadLightColor = new TinyColor(badLightBgColor).lighten(40).toRgbString();
         const fallbackForBadDarkColor = new TinyColor(badDarkBgColor).darken(40).toRgbString();
 
-        // const textColor = '#DFF0D8';
-        // const lightenedColor = 'rgb(255, 255, 255)';
-        // const badBgColor = '#468847';
-        // const darkenedColor = 'rgb(60, 116, 61)';
-
         it('should return darkened color when contrast to low', () => {
             const css = `.foo {background-color: "smartBGContrast(${textColor}, ${badDarkBgColor})";}`;
             driver
