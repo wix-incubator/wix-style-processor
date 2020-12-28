@@ -114,6 +114,11 @@ export const defaultPlugins = {
             return numbersWithoutTPAParams[0];
         }
     },
+
+    readableFallback: (baseColor: string, suggestedColor: string, fallbackColor: string) => {
+        const contrast = getNormalizedContrast(new Color(baseColor), new Color(suggestedColor));
+        return contrast < 4.5 ? fallbackColor : suggestedColor;
+    },
     smartBGContrast: (foreground, background) => {
         const color = new Color(foreground);
         let contrastColor = new Color(background);

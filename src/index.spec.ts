@@ -1,3 +1,4 @@
+import * as Color from 'color';
 import {expect} from 'chai';
 import {IndexDriver} from './index.driver';
 import {hash} from './hash';
@@ -789,13 +790,13 @@ describe('Index', () => {
     });
 
     describe('smartBGContrast css function', () => {
-        const textColor = 'hsl(196, 57, 39)'; // some kind of blue
-        const goodLightBgColor = new TinyColor(textColor).lighten(60).toHslString(); // 'hsl(196, 57, 99)';
-        const goodDarkBgColor = new TinyColor(textColor).darken(40).toHslString(); // 'hsl(196, 57, 99)';
-        const badLightBgColor = 'hsl(196, 57, 60)'; // brighter than textColor
-        const badDarkBgColor = 'hsl(196, 57, 35)'; // darker than textColor
-        const fallbackForBadLightColor = new TinyColor(badLightBgColor).lighten(40).toRgbString();
-        const fallbackForBadDarkColor = new TinyColor(badDarkBgColor).darken(40).toRgbString();
+        const textColor = 'hsl(196, 57%, 39%)'; // some kind of blue
+        const goodLightBgColor = new Color(textColor).lightness(99).rgb().string(); // 'hsl(196, 57, 99)';
+        const goodDarkBgColor = new Color(textColor).lightness(0).rgb().string(); // 'hsl(196, 57, 0)';
+        const badLightBgColor = 'hsl(196, 57%, 60%)'; // brighter than textColor
+        const badDarkBgColor = 'hsl(196, 57%, 35%)'; // darker than textColor
+        const fallbackForBadLightColor = new Color(badLightBgColor).lightness(100).rgb().string();
+        const fallbackForBadDarkColor = new Color(badDarkBgColor).lightness(0).rgb().string();
 
         it('should return darkened color when contrast to low', () => {
             const css = `.foo {background-color: "smartBGContrast(${textColor}, ${badDarkBgColor})";}`;
@@ -862,6 +863,47 @@ describe('Index', () => {
             return driver.when.init()
                 .then(() => {
                     expect(driver.get.overrideStyleCallArg()).to.equal(`.foo{background-color: ${goodLightBgColor};}`);
+                });
+        });
+    });
+
+    describe('readableFallback', () => {
+        const baseColor = 'white';
+        const goodSuggestionColor = '#333333';
+        const fallbackColor = 'black';
+        const badSuggestionColor = 'yellow';
+
+        it('should return suggested color if base and suggestion colors are readable together', () => {
+            const css = `.foo {color: "readableFallback(${baseColor}, ${goodSuggestionColor}, ${fallbackColor})";}`;
+            driver
+                .given.css(css)
+                .given.styleParams({
+                numbers: {},
+                colors: {},
+                fonts: {}
+            })
+                .given.siteTextPresets({});
+
+            return driver.when.init()
+                .then(() => {
+                    expect(driver.get.overrideStyleCallArg()).to.equal(`.foo{color: ${goodSuggestionColor};}`);
+                });
+        });
+
+        it('should return fallback color if base and suggestion colors are not readable together', () => {
+            const css = `.foo {color: "readableFallback(${baseColor}, ${badSuggestionColor}, ${fallbackColor})";}`;
+            driver
+                .given.css(css)
+                .given.styleParams({
+                numbers: {},
+                colors: {},
+                fonts: {}
+            })
+                .given.siteTextPresets({});
+
+            return driver.when.init()
+                .then(() => {
+                    expect(driver.get.overrideStyleCallArg()).to.equal(`.foo{color: ${fallbackColor};}`);
                 });
         });
     });
