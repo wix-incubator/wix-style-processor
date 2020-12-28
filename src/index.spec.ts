@@ -788,14 +788,22 @@ describe('Index', () => {
         });
     });
 
-    describe('smartContrast css function', () => {
-        const textColor = '#DFF0D8';
-        const lightenedColor = 'rgb(255, 255, 255)';
-        const badBgColor = '#468847';
-        const darkenedColor = 'rgb(60, 116, 61)';
+    describe('smartBGContrast css function', () => {
+        const textColor = 'hsl(196, 57, 39)'; // some kind of blue
+        const goodLightBgColor = new TinyColor(textColor).lighten(60).toHslString(); // 'hsl(196, 57, 99)';
+        const goodDarkBgColor = new TinyColor(textColor).darken(40).toHslString(); // 'hsl(196, 57, 99)';
+        const badLightBgColor = 'hsl(196, 57, 60)'; // brighter than textColor
+        const badDarkBgColor = 'hsl(196, 57, 35)'; // darker than textColor
+        const fallbackForBadLightColor = new TinyColor(badLightBgColor).lighten(40).toRgbString();
+        const fallbackForBadDarkColor = new TinyColor(badDarkBgColor).darken(40).toRgbString();
+
+        // const textColor = '#DFF0D8';
+        // const lightenedColor = 'rgb(255, 255, 255)';
+        // const badBgColor = '#468847';
+        // const darkenedColor = 'rgb(60, 116, 61)';
 
         it('should return darkened color when contrast to low', () => {
-            const css = `.foo {background-color: "smartContrast(${textColor}, ${badBgColor})";}`;
+            const css = `.foo {background-color: "smartBGContrast(${textColor}, ${badDarkBgColor})";}`;
             driver
                 .given.css(css)
                 .given.styleParams({
@@ -807,12 +815,12 @@ describe('Index', () => {
 
             return driver.when.init()
                 .then(() => {
-                    expect(driver.get.overrideStyleCallArg()).to.equal(`.foo{background-color: ${darkenedColor};}`);
+                    expect(driver.get.overrideStyleCallArg()).to.equal(`.foo{background-color: ${fallbackForBadDarkColor};}`);
                 });
         });
 
         it('should return lightened color when contrast to low', () => {
-            const css = `.foo {background-color: "smartContrast(${badBgColor}, ${textColor})";}`;
+            const css = `.foo {background-color: "smartBGContrast(${textColor}, ${badLightBgColor})";}`;
             driver
                 .given.css(css)
                 .given.styleParams({
@@ -824,12 +832,12 @@ describe('Index', () => {
 
             return driver.when.init()
                 .then(() => {
-                    expect(driver.get.overrideStyleCallArg()).to.equal(`.foo{background-color: ${lightenedColor};}`);
+                    expect(driver.get.overrideStyleCallArg()).to.equal(`.foo{background-color: ${fallbackForBadLightColor};}`);
                 });
         });
 
-        it('should return same color when good contrast', () => {
-            const css = `.foo {background-color: "smartContrast(${textColor}, ${darkenedColor})";}`;
+        it('should return same color when good contrast (dark background)', () => {
+            const css = `.foo {background-color: "smartBGContrast(${textColor}, ${goodDarkBgColor})";}`;
             driver
                 .given.css(css)
                 .given.styleParams({
@@ -841,7 +849,24 @@ describe('Index', () => {
 
             return driver.when.init()
                 .then(() => {
-                    expect(driver.get.overrideStyleCallArg()).to.equal(`.foo{background-color: ${darkenedColor};}`);
+                    expect(driver.get.overrideStyleCallArg()).to.equal(`.foo{background-color: ${goodDarkBgColor};}`);
+                });
+        });
+
+        it('should return same color when good contrast (light background)', () => {
+            const css = `.foo {background-color: "smartBGContrast(${textColor}, ${goodLightBgColor})";}`;
+            driver
+                .given.css(css)
+                .given.styleParams({
+                numbers: {},
+                colors: {},
+                fonts: {}
+            })
+                .given.siteTextPresets({});
+
+            return driver.when.init()
+                .then(() => {
+                    expect(driver.get.overrideStyleCallArg()).to.equal(`.foo{background-color: ${goodLightBgColor};}`);
                 });
         });
     });

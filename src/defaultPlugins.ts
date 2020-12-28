@@ -114,22 +114,23 @@ export const defaultPlugins = {
             return numbersWithoutTPAParams[0];
         }
     },
-    smartContrast: (baseColor, contrastColorSuggestion) => {
-        const color = new Color(baseColor);
-        let contrastColor = new Color(contrastColorSuggestion);
+    smartBGContrast: (foreground, background) => {
+        const color = new Color(foreground);
+        let contrastColor = new Color(background);
         const baseLuminosity = color.luminosity();
         const originalContrastLuminosity = contrastColor.luminosity();
         const ratio = baseLuminosity / originalContrastLuminosity;
         const direction = ratio < 1 ? 1 : -1;
         let contrast = getNormalizedContrast(color, contrastColor);
+        const luminositySteps = [1, 5, 10, 20, 30, 40, 50, 60];
 
-        while (contrast < 4.5) {
-            contrastColor = contrastColor.lightness(contrastColor.lightness() + direction);
-
-            if (['rgb(255, 255, 255)', 'rgb(0, 0, 0)'].indexOf(contrastColor.rgb().string()) > -1) { // break if white or black
+        // tslint:disable-next-line:prefer-for-of
+        for (let i = 0; i < luminositySteps.length; i++) {
+            if (contrast < 4.5) {
+                contrastColor = contrastColor.lightness(contrastColor.lightness() + (direction * luminositySteps[i]));
+            } else {
                 break;
             }
-
             contrast = getNormalizedContrast(color, contrastColor);
         }
 

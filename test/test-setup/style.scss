@@ -25,11 +25,11 @@ h1 {
 
 h2[data-hook=bad-contrast-text] {
     color: "color(--textColor)";
-    background-color: "smartContrast(color(--textColor), color(--badBGColor))";
+    background-color: "smartBGContrast(color(--textColor), color(--badBGColor))";
 }
 
 h2[data-hook=good-contrast-text] {
-    background-color: "smartContrast(color(--textColor), color(--goodBGColor))";
+    background-color: "smartBGContrast(color(--textColor), color(--goodBGColor))";
 }
 
 p[data-hook=text] {
