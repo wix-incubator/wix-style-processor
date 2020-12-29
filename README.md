@@ -27,7 +27,6 @@ $ npm i -S wix-style-processor
     border-width: "unit(--var-from-settings, px)";                          /* will produce border-width: 42px */
     color: "fallback(color(--var-from-settings), color(color-8))";          /* will return the first none falsy value from left to right */
     width: "calculate(+, 2px, 4%, 3em)";                                    /* will return the native calc function for the given operator and numbers a work around for https://github.com/thysultan/stylis.js/issues/116 */
-    background-color: "smartContrast(color(--base-color), color(--contrast-color))"; /* given a base color and a suggested contrast color, returns the given contrast color if it's A11Y compliant or a lightened/darkened color that will comply */
 }
 ```
 
