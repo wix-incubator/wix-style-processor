@@ -290,6 +290,17 @@ describe('Index', () => {
         });
     });
 
+    it('lighten transformation', () => {
+        const css = `.foo { rule1: "lighten(color(color-9), 0.5)"; }`;
+
+        driver.given.css(css);
+
+        return driver.when.init().then(() => {
+            expect(driver.get.overrideStyleCallArg())
+                .to.equal(`.foo{rule1: rgb(255, 128, 128);}`);
+        });
+    });
+
     it('without opacity', () => {
         const css = `.foo { rule1: "withoutOpacity(opacity(color(color-9), 0.1))"; }`;
 

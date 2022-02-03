@@ -90,6 +90,9 @@ export const defaultPlugins = {
     darken: (colorVal, darkenValue) => {
         return (new Color(colorVal)).darken(darkenValue).rgb().string();
     },
+    lighten: (colorVal, lightenValue) => {
+        return (new Color(colorVal)).lighten(lightenValue).rgb().string();
+    },
     number: (value) => {
         return +value;
     },

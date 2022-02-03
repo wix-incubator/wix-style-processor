@@ -23,6 +23,7 @@ $ npm i -S wix-style-processor
     color: "opacity(color-8, 0.3)";                                         /* add opacity to a site palette color */
     color: "withoutOpacity(opacity(color-8, 0.3))";                         /* will remove the opacity of site palette color */
     color: "darken(color-8, 0.3)";                                          /* make a darken version of site palette color */
+    color: "lighten(color-8, 0,3)";                                         /* make a lighten version of site palette color */
     font: "font(--my-font2)";                                               /* will use the overridden default unless it was defined in settings  */
     border-width: "unit(--var-from-settings, px)";                          /* will produce border-width: 42px */
     color: "fallback(color(--var-from-settings), color(color-8))";          /* will return the first none falsy value from left to right */
